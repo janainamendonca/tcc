@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".br.furb.corpusmapping.PatientsListFragment">
+
+    <item
+        android:id="@+id/action_insert_patient"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="100"
+        app:showAsAction="always|withText"
+        android:title="@string/action_insert_patient" />
+
+    <item
+        android:id="@+id/action_edit_patient"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="100"
+        app:showAsAction="always|withText"
+        android:title="@string/action_edit_patient" />
+</menu>
+

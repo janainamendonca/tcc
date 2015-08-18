@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Corpus Mapping</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="options">
+        <item>Pacientes</item>
+        <item>Mapeamento Corporal</item>
+    </string-array>
+
+    <string name="title_activity_patients_activity">Pacientes</string>
+
+    <string name="dialog_yes">Sim</string>
+    <string name="dialog_no">Não</string>
+    <string name="dialog_delete_title">Excluir</string>
+    <string name = "action_insert_patient">Inserir Paciente</string>
+    <string name="title_activity_patient_form">Paciente</string>
+    <string name="name">Nome</string>
+    <string name="cpf">CPF</string>
+    <string name="birthDate">Data de nascimento</string>
+    <string name="gender">Sexo</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_edit_patient">Editar</string>
+
+</resources>
