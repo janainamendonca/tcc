@@ -147,6 +147,12 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
 
         listPatients.setItemChecked(position, true);
 
+        //
+        Intent intent = new Intent(getActivity(), PatientSelectedActivity.class);
+        intent.putExtra(PatientSelectedActivity.PARAM_PATIENT_ID, selectedItem);
+        startActivity(intent);
+        //
+
        // changePatient();
     }
     private void changePatient() {
@@ -169,10 +175,11 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
             Intent i = new Intent(getActivity(), PatientFormActivity.class);
             startActivity(i);
             return true;
-        }else if(id == R.id.action_edit_patient){
+        }
+        /*else if(id == R.id.action_edit_patient){
             changePatient();
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

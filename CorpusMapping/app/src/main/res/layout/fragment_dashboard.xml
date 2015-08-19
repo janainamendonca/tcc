@@ -1,0 +1,74 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.furb.corpusmapping.DashboardFragment">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:stretchColumns="1,2">
+
+
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Paciente:"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:id="@+id/txtPatient"
+                android:layout_gravity="start"
+                android:paddingLeft="8dp"
+                android:layout_span="2"/>
+            <!--
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnChangePatient"
+                android:layout_gravity="right"
+                android:src="@drawable/abc_ic_search_api_mtrl_alpha"
+                android:layout_column="3" />-->
+
+
+        </TableRow>
+
+        <TableRow>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:paddingTop="8dp"
+                android:layout_span="3"
+                android:background="@android:color/darker_gray"/>
+        </TableRow>
+    <!--
+        <TableRow
+            android:paddingTop="16dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Capturar imagem"
+                android:id="@+id/btnAddImage"
+                android:drawableRight="@drawable/ic_camera3"
+                />
+
+        </TableRow> -->
+
+        <Button
+            android:paddingTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capturar imagem"
+            android:id="@+id/btnAddImage"
+            android:drawableRight="@drawable/ic_camera3"
+            />
+
+    </TableLayout>
+
+</FrameLayout>

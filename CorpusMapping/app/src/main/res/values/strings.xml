@@ -4,8 +4,10 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="options">
-        <item>Pacientes</item>
-        <item>Mapeamento Corporal</item>
+        <item>Mapeamento corporal</item>
+        <item>Ver imagens</item>
+        <item>Dados do paciente</item>
+
     </string-array>
 
     <string name="title_activity_patients_activity">Pacientes</string>

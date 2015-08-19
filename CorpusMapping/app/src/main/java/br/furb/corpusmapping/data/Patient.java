@@ -55,7 +55,7 @@ public class Patient implements Serializable {
     }
 
     public String getBirthDateStr() {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         return df.format(birthDate);
     }
 

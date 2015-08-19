@@ -10,11 +10,12 @@
         app:showAsAction="always|withText"
         android:title="@string/action_insert_patient" />
 
+    <!--
     <item
         android:id="@+id/action_edit_patient"
         android:icon="@android:drawable/ic_menu_edit"
         android:orderInCategory="100"
         app:showAsAction="always|withText"
-        android:title="@string/action_edit_patient" />
+        android:title="@string/action_edit_patient" />-->
 </menu>
 
