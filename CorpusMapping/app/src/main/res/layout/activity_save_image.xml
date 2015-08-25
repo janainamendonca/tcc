@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="br.furb.corpusmapping.SaveImageActivity">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Qual a localização da pinta?"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imgBody"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/corpo_completo"
+        android:clickable="true"
+        android:paddingTop="32dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <!--
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/textView"
+        android:paddingTop="16dp"
+        android:layout_centerHorizontal="true">
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgHead"
+                android:layout_gravity="center_horizontal"
+                android:layout_column="1"
+                android:src="@drawable/cabeca_frente"
+                android:clickable="true" />
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgArmRight"
+                android:layout_gravity="center_horizontal"
+
+                android:src="@drawable/braco_direito_cima"
+                />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgBody"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/tronco_frente"
+                />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgArmLeft"
+                android:layout_gravity="center_horizontal"
+
+                android:src="@drawable/braco_esquerdo_frente"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TableLayout
+                android:layout_column="1">
+
+
+                <TableRow>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgLegRight"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/perna_direita_frente"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgLegLeft"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/perna_esquerda_frente"
+                        />
+                </TableRow>
+
+            </TableLayout>
+
+
+        </TableRow>
+
+    </TableLayout>
+-->
+
+
+
+</RelativeLayout>

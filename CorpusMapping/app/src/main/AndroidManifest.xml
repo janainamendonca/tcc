@@ -37,6 +37,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PatientsActivity" />
         </activity>
+        <activity
+            android:name=".SaveImageActivity"
+            android:label="@string/title_activity_save_image"
+            android:parentActivityName=".PatientSelectedActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.furb.corpusmapping.PatientSelectedActivity" />
+        </activity>
+        <activity
+            android:name=".SelectBodyPartActivity"
+            android:label="@string/title_activity_select_body_part"
+            android:parentActivityName=".SaveImageActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.furb.corpusmapping.SaveImageActivity" />
+        </activity>
     </application>
 
 </manifest>

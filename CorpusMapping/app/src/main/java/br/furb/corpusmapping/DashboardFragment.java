@@ -29,6 +29,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     private OnFragmentInteractionListener mListener;
 
     public static final String PARAM_PATIENT_ID = "patientId";
+    private static final int REQUEST_CODE_IMAGE = 1;
 
     private long patientId;
     private PatientRepository repository;
@@ -62,7 +63,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View view =xzzz inflater.inflate(R.layout.fragment_dashboard, container, false);
         txtPatient = (TextView) view.findViewById(R.id.txtPatient);
 
         txtPatient.setText(patient.getName());
@@ -91,8 +92,22 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 1);
+        //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //startActivityForResult(intent, REQUEST_CODE_IMAGE);
+
+        Intent intent = new Intent(getActivity(), SaveImageActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK
+                && requestCode == REQUEST_CODE_IMAGE) {
+            // TODO perguntar onde é a mancha
+            Intent intent = new Intent(getActivity(), SaveImageActivity.class);
+            startActivity(intent);
+        }
     }
 
     public interface OnFragmentInteractionListener {
