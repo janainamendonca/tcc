@@ -2,171 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
     tools:context="br.furb.corpusmapping.SelectionHeadFragment">
 
-    <!--
-
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="16dp">
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_column="2"
-                android:layout_gravity="center"
-                android:text="Cabeça | Pescoço"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_gravity="center">
-
-            <TableLayout
-                android:layout_column="1"
-                android:layout_gravity="center"
-                >
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_column="1"
-                        android:layout_gravity="center"
-                        android:text="Frente"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_column="2"
-                        android:layout_gravity="center"
-                        android:text="Atrás"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:paddingTop="16dp">
-
-                    <ImageView
-                        android:id="@+id/imgHeadFront"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_gravity="center_horizontal"
-                        android:clickable="true"
-                        android:src="@drawable/cabeca_1" />
-
-                    <ImageView
-                        android:id="@+id/imgHeadBack"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="center_horizontal"
-                        android:clickable="true"
-                        android:src="@drawable/cabeca_2" />
-
-                </TableRow>
-            </TableLayout>
-        </TableRow>
-
-    </TableLayout>
--->
-
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="left|top">
-
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:showDividers="middle|beginning|end">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Cabeça | Pescoço"
+            android:layout_gravity="center"
             android:paddingTop="16dp"
-            android:layout_gravity="center" />
+            android:text="Cabeça | Pescoço"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:paddingTop="16dp"
-            android:paddingRight="8dp"
+            android:background="@android:color/darker_gray"
             android:paddingLeft="8dp"
-            android:background="@android:color/darker_gray"/>
-        <!--
-                <TableLayout
-                    android:layout_width="fill_parent"
-                    android:stretchColumns="1,2"
-                    android:paddingTop="16dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <TableRow>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_column="1"
-                            android:layout_gravity="center"
-                            android:text="Frente"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_column="2"
-                            android:layout_gravity="center"
-                            android:text="Atrás"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:paddingTop="16dp">
-
-                        <ImageView
-                            android:id="@+id/imgHeadFront"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_gravity="center_horizontal"
-                            android:clickable="true"
-                            android:src="@drawable/cabeca_frente" /> -->
-                <!--
-                <ImageView
-                    android:id="@+id/imgHeadBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2"
-                    android:layout_gravity="center_horizontal"
-                    android:clickable="true"
-                    android:src="@drawable/cabeca_2" /> -->
-
-           <!-- </TableRow> -->
-
+            android:paddingRight="8dp"
+            android:paddingTop="16dp" />
 
         <TableLayout
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <TableRow
                 android:layout_width="fill_parent"
@@ -174,28 +38,25 @@
                 android:layout_gravity="center"
                 android:paddingTop="16dp">
 
-            <ImageView
-                android:id="@+id/imgHeadFront"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_gravity="center_horizontal"
-                android:clickable="true"
-                android:paddingLeft="16dp"
-                android:paddingRight="8dp"
-                android:src="@drawable/cabeca_frente" /> -->
+                <ImageView
+                    android:id="@+id/imgHeadFront"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/cabeca_frente" />
 
-            <ImageView
-                android:id="@+id/imgHeadBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_gravity="center_horizontal"
-                android:clickable="true"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:src="@drawable/cabeca_atras" />
-
+                <ImageView
+                    android:id="@+id/imgHeadBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_gravity="center_horizontal"
+                    android:clickable="true"
+                    android:padding="8dp"
+                    android:src="@drawable/cabeca_atras" />
             </TableRow>
 
             <TableRow
@@ -211,9 +72,8 @@
                     android:layout_column="1"
                     android:layout_gravity="center_horizontal"
                     android:clickable="true"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="8dp"
-                    android:src="@drawable/cabeca_esquerda" /> -->
+                    android:padding="8dp"
+                    android:src="@drawable/cabeca_esquerda" />
 
                 <ImageView
                     android:id="@+id/imgHeadRight"
@@ -222,27 +82,11 @@
                     android:layout_column="2"
                     android:layout_gravity="center_horizontal"
                     android:clickable="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
+                    android:padding="8dp"
                     android:src="@drawable/cabeca_direita" />
-
             </TableRow>
 
         </TableLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingLeft="16dp"
-            android:id="@+id/txtX"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingLeft="16dp"
-            android:id="@+id/txtY"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </FrameLayout>

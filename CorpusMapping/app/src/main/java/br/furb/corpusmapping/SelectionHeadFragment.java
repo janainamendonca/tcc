@@ -1,15 +1,20 @@
 package br.furb.corpusmapping;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import br.furb.corpusmapping.util.BBox;
+import br.furb.corpusmapping.util.ImageDrawer;
 
 public class SelectionHeadFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
@@ -64,7 +69,6 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_selection_head, container, false);
 
         imgHeadFront = (ImageView) view.findViewById(R.id.imgHeadFront);
@@ -72,14 +76,10 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
         imgHeadLeft = (ImageView) view.findViewById(R.id.imgHeadLeft);
         imgHeadRight = (ImageView) view.findViewById(R.id.imgHeadRight);
 
-        txtX = (TextView) view.findViewById(R.id.txtX);
-        txtY = (TextView) view.findViewById(R.id.txtY);
-        //imgHeadFront.setOnClickListener(this);
-        MyOnTouchListener touchListener = new MyOnTouchListener();
-        imgHeadFront.setOnTouchListener(touchListener);
-        imgHeadBack.setOnTouchListener(touchListener);
-        imgHeadLeft.setOnTouchListener(touchListener);
-        imgHeadRight.setOnTouchListener(touchListener);
+        imgHeadFront.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_frente, getHeadFrontBBox()));
+        imgHeadBack.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_atras));
+        imgHeadLeft.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_esquerda));
+        imgHeadRight.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_direita));
 
         return view;
     }
@@ -134,32 +134,13 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
         public void onFragmentInteraction(Uri uri);
     }
 
-    private class MyOnTouchListener implements View.OnTouchListener {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-
-                txtX.setText(String.valueOf( event
-                        .getX()));
-
-
-                txtY.setText(String.valueOf( event
-                        .getY()));
-
-                System.out.println("Img: " + v.getX() + " - " + v.getY());
-
-                System.out.println("Raw: " + event
-                        .getRawX() + " - " + event.getRawY());
-
-                System.out.println("  : " + event
-                        .getX() + " - " + event.getY());
-
-            }
-         /*   System.out.println(event
-                    .getXPrecision() + " - " + event.getYPrecision());*/
-
-            return false;
-        }
+    public BBox[] getHeadFrontBBox() {
+        BBox[] bbox = new BBox[3];
+        bbox[0] = (new BBox(50, 250, 230, 370));// orelha p/ baixo
+        bbox[1] = (new BBox(10, 160, 275, 250)); // orelhas
+        bbox[2] = (new BBox(20, 15, 260, 250)); // testa
+        return bbox;
     }
+
+
 }
