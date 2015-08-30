@@ -53,6 +53,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.furb.corpusmapping.SaveImageActivity" />
         </activity>
+        <activity
+            android:name=".ImageSliderActivity"
+            android:label="@string/title_activity_image_slider"
+            android:parentActivityName=".SaveImageActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.furb.corpusmapping.SaveImageActivity" />
+        </activity>
     </application>
 
 </manifest>

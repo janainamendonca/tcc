@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import java.util.Arrays;
 import java.util.List;
 
-import br.furb.corpusmapping.util.BBox;
+import br.furb.corpusmapping.util.BoundingBox;
 
 /**
  * Created by Janaina on 25/08/2015.
@@ -32,10 +32,16 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
     PointF mid = new PointF();
     float oldDist = 1f;
 
-    private List<BBox> bbox;
+    private List<BoundingBox> bbox;
 
-    public ImageBoundingBoxTouchListener(BBox... boundingBoxes) {
+    private boolean zoomEnabled;
+
+    private boolean moveEnabled;
+
+    public ImageBoundingBoxTouchListener(BoundingBox... boundingBoxes) {
         this.bbox = Arrays.asList(boundingBoxes);
+        this.zoomEnabled = true;
+        this.moveEnabled = true;
     }
 
     @Override
@@ -79,26 +85,33 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
 
             case MotionEvent.ACTION_MOVE:
                 if (mode == DRAG) { //movimento do 1º dedo: translada a imagem
-                    matrix.set(savedMatrix);
-                    if (view.getLeft() >= -392) {
-                        matrix.postTranslate(event.getX() - startPoint.x, event.getY() - startPoint.y);
+                    if (isMoveEnabled()) {
+                        matrix.set(savedMatrix);
+                        if (view.getLeft() >= -392) {
+                            matrix.postTranslate(event.getX() - startPoint.x, event.getY() - startPoint.y);
+                        }
                     }
                 } else if (mode == ZOOM) { //
-                    float newDist = spacing(event);
-                    Log.d(TAG, "newDist=" + newDist);
-                    if (newDist > 5f) {
-                        matrix.set(savedMatrix);
-                        scale = newDist / oldDist;
-                        Log.d(TAG, "scale=" + scale);
-                        matrix.postScale(scale, scale, mid.x, mid.y);
+
+                    if (isZoomEnabled()) {
+
+                        float newDist = spacing(event);
+                        Log.d(TAG, "newDist=" + newDist);
+                        if (newDist > 5f) {
+                            matrix.set(savedMatrix);
+                            scale = newDist / oldDist;
+                            Log.d(TAG, "scale=" + scale);
+                            matrix.postScale(scale, scale, mid.x, mid.y);
+                        }
                     }
                 }
                 break;
         }
 
-        // Aplica a transformação
-        view.setImageMatrix(matrix);
-
+        if (isMoveEnabled() || isZoomEnabled()) {
+            // Aplica a transformação
+            view.setImageMatrix(matrix);
+        }
         return true;
     }
 
@@ -114,24 +127,41 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
         float y = touchPoint[1];
 
         boolean inner = bbox.isEmpty(); // se não tiver bouding box, considera sempre 'dentro'
-
-        for (BBox box : bbox) {
+        int bboxId = -1;
+        for (BoundingBox box : bbox) {
             if (box.isInner(x, y)) {
                 inner = true;
+                bboxId = box.id;
                 break;
             }
         }
 
         if (inner) {
-            onClickInnerBoundingBox(view, new PointF(x, y));
+            onClickInnerBoundingBox(view, new PointF(x, y), bboxId);
         }
 
         Log.d(TAG, inner ? "Dentro" : "Fora" + x + " - " + y);
     }
 
-    public void onClickInnerBoundingBox(ImageView view, PointF touchPoint) {
+    public void onClickInnerBoundingBox(ImageView view, PointF touchPoint, int boundingBoxId) {
         // por padrão não faz nada
         // subclasses devem implementar
+    }
+
+    public void setZoomEnabled(boolean zoomEnabled) {
+        this.zoomEnabled = zoomEnabled;
+    }
+
+    public boolean isZoomEnabled() {
+        return zoomEnabled;
+    }
+
+    public void setMoveEnabled(boolean moveEnabled) {
+        this.moveEnabled = moveEnabled;
+    }
+
+    public boolean isMoveEnabled() {
+        return moveEnabled;
     }
 
     private float spacing(MotionEvent event) {
@@ -145,4 +175,6 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
         float y = event.getY(0) + event.getY(1);
         point.set(x / 2, y / 2);
     }
+
+
 }

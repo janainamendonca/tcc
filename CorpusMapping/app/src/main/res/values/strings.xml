@@ -29,5 +29,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_select_body_part">SelectBodyPartActivity</string>
+    <string name="title_activity_image_slider">ImageSliderActivity</string>
 
 </resources>

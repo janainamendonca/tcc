@@ -1,9 +1,7 @@
 package br.furb.corpusmapping;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PointF;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,56 +11,33 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import br.furb.corpusmapping.util.BBox;
-import br.furb.corpusmapping.util.ImageDrawer;
+import br.furb.corpusmapping.util.BoundingBox;
+
+import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionHeadFragment extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
     private ImageView imgHeadFront;
-    private TextView txtX;
-    private TextView txtY;
     private ImageView imgHeadBack;
     private ImageView imgHeadLeft;
     private ImageView imgHeadRight;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectionHeadFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SelectionHeadFragment newInstance(String param1, String param2) {
+    public static SelectionHeadFragment newInstance() {
         SelectionHeadFragment fragment = new SelectionHeadFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
     public SelectionHeadFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -76,11 +51,16 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
         imgHeadLeft = (ImageView) view.findViewById(R.id.imgHeadLeft);
         imgHeadRight = (ImageView) view.findViewById(R.id.imgHeadRight);
 
+        imgHeadFront.setOnClickListener(this);
+        imgHeadBack.setOnClickListener(this);
+        imgHeadLeft.setOnClickListener(this);
+        imgHeadRight.setOnClickListener(this);
+        /*
         imgHeadFront.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_frente, getHeadFrontBBox()));
         imgHeadBack.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_atras));
         imgHeadLeft.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_esquerda));
         imgHeadRight.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_direita));
-
+*/
         return view;
     }
 
@@ -110,13 +90,22 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        Intent i = new Intent(getActivity(), ImageSliderActivity.class);
         switch (v.getId()) {
             case R.id.imgHeadFront:
-
-
+                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_frente, R.drawable.cabeca_atras, R.drawable.cabeca_direita, R.drawable.cabeca_esquerda});
                 break;
-
+            case R.id.imgHeadBack:
+                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_atras, R.drawable.cabeca_frente, R.drawable.cabeca_direita, R.drawable.cabeca_esquerda});
+                break;
+            case R.id.imgHeadLeft:
+                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_esquerda, R.drawable.cabeca_direita, R.drawable.cabeca_frente, R.drawable.cabeca_atras});
+                break;
+            case R.id.imgHeadRight:
+                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_direita, R.drawable.cabeca_esquerda, R.drawable.cabeca_frente, R.drawable.cabeca_atras});
+                break;
         }
+        getActivity().startActivity(i);
     }
 
     /**
@@ -132,14 +121,6 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-    }
-
-    public BBox[] getHeadFrontBBox() {
-        BBox[] bbox = new BBox[3];
-        bbox[0] = (new BBox(50, 250, 230, 370));// orelha p/ baixo
-        bbox[1] = (new BBox(10, 160, 275, 250)); // orelhas
-        bbox[2] = (new BBox(20, 15, 260, 250)); // testa
-        return bbox;
     }
 
 

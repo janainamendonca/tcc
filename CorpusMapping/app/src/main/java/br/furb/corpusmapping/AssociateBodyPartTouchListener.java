@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.widget.ImageView;
 
-import br.furb.corpusmapping.util.BBox;
+import br.furb.corpusmapping.util.BoundingBox;
 import br.furb.corpusmapping.util.ImageDrawer;
 
 /**
@@ -16,13 +16,13 @@ public class AssociateBodyPartTouchListener extends ImageBoundingBoxTouchListene
     private Bitmap bitmap;
     private int resourceId;
 
-    public AssociateBodyPartTouchListener(int resourceId, BBox... boundingBoxes) {
+    public AssociateBodyPartTouchListener(int resourceId, BoundingBox... boundingBoxes) {
         super(boundingBoxes);
         this.resourceId = resourceId;
     }
 
     @Override
-    public void onClickInnerBoundingBox(ImageView view, PointF touchPoint) {
+    public void onClickInnerBoundingBox(ImageView view, PointF touchPoint, int boundingBoxId) {
         if (bitmap == null) {
             bitmap = BitmapFactory.decodeResource(view.getResources(), resourceId);
         }

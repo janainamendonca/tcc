@@ -1,22 +1,46 @@
 package br.furb.corpusmapping;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class SelectBodyPartActivity extends ActionBarActivity {
 
+    public static final String PARAM_BODY_PART = "BODY_PART";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_body_part);
 
-        Fragment fragment = SelectionHeadFragment.newInstance("a", "b");
-        // TODO verificar qual fragmento instanciar
+        BodyPart bodyPart = BodyPart.valueOf(getIntent().getStringExtra(PARAM_BODY_PART));
+
+        Fragment fragment = null;
+        switch (bodyPart) {
+            case HEAD:
+                fragment = SelectionHeadFragment.newInstance();
+                break;
+            case BODY:
+                fragment = SelectionBodyFragment.newInstance();
+                break;
+            case LEFT_ARM:
+                fragment = SelectionArmLeftFragment.newInstance();
+                break;
+            case RIGHT_ARM:
+                fragment = SelectionArmRightFragment.newInstance();
+                break;
+            case LEFT_LEG:
+                fragment = SelectionLegLeftFragment.newInstance();
+                break;
+            case RIGHT_LEG:
+                fragment = SelectionLegRightFragment.newInstance();
+                break;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.body_frame, fragment)
