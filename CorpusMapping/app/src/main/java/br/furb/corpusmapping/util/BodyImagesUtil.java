@@ -2,8 +2,6 @@ package br.furb.corpusmapping.util;
 
 import br.furb.corpusmapping.R;
 
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
-
 /**
  * Created by Janaina on 27/08/2015.
  */
@@ -16,11 +14,11 @@ public class BodyImagesUtil {
 
     private static BoundingBox[] headBackBBox = {};
 
-    private static BoundingBox[] headLeftBBox = {};
+    private static final BoundingBox[] headLeftBBox = {};
 
-    private static BoundingBox[] headRightBBox = {};
+    private static final BoundingBox[] headRightBBox = {};
 
-    private static BoundingBox[] armRightTopBBox = {//
+    private static final BoundingBox[] armRightTopBBox = {//
             new BoundingBox(58, 290, 150, 420),//
             new BoundingBox(50, 200, 130, 290),//
             new BoundingBox(50, 140, 100, 200),//
@@ -34,6 +32,20 @@ public class BodyImagesUtil {
             new BoundingBox(20, 140, 70, 200),//
             new BoundingBox(15, 15, 90, 140)//mão
     };
+
+
+    private static final BoundingBox[] legRightFrontBBox = {};
+    private static final BoundingBox[] legRightBackBBox = {};
+    private static final BoundingBox[] footRightFrontBBox = {};
+    private static final BoundingBox[] footRightBackBBox = {};
+
+    private static final BoundingBox[] legLeftFrontBBox = {};
+    private static final BoundingBox[] legLeftBackBBox = {};
+    private static final BoundingBox[] footLeftFrontBBox = {};
+    private static final BoundingBox[] footLeftBackBBox = {};
+
+    private static final BoundingBox[] bodyFrontBBox = {};
+    private static final BoundingBox[] bodyBackBBox = {};
 
 
     public static BoundingBox[] getBoundingBoxForImage(int resourceId) {
@@ -78,5 +90,45 @@ public class BodyImagesUtil {
 
     public static BoundingBox[] getArmRightDownBBox() {
         return armRightDownBBox;
+    }
+
+    public static BoundingBox[] getLegRightFrontBBox() {
+        return legRightFrontBBox;
+    }
+
+    public static BoundingBox[] getLegRightBackBBox() {
+        return legRightBackBBox;
+    }
+
+    public static BoundingBox[] getFootRightFrontBBox() {
+        return footRightFrontBBox;
+    }
+
+    public static BoundingBox[] getFootRightBackBBox() {
+        return footRightBackBBox;
+    }
+
+    public static BoundingBox[] getLegLeftFrontBBox() {
+        return legLeftFrontBBox;
+    }
+
+    public static BoundingBox[] getLegLeftBackBBox() {
+        return legLeftBackBBox;
+    }
+
+    public static BoundingBox[] getFootLeftFrontBBox() {
+        return footLeftFrontBBox;
+    }
+
+    public static BoundingBox[] getFootLeftBackBBox() {
+        return footLeftBackBBox;
+    }
+
+    public static BoundingBox[] getBodyFrontBBox() {
+        return bodyFrontBBox;
+    }
+
+    public static BoundingBox[] getBodyBackBBox() {
+        return bodyBackBBox;
     }
 }

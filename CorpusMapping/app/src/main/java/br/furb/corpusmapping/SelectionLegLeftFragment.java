@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import br.furb.corpusmapping.util.ImageDrawer;
+
 import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionLegLeftFragment extends Fragment implements View.OnClickListener {
@@ -52,6 +54,11 @@ public class SelectionLegLeftFragment extends Fragment implements View.OnClickLi
         imgLegFront.setOnClickListener(this);
         imgFootTop.setOnClickListener(this);
         imgFootDown.setOnClickListener(this);
+
+        ImageDrawer.drawPoints(imgLegFront, SpecificBodyPart.LEFT_LEG_FRONT, R.drawable.perna_esquerda_frente);
+        ImageDrawer.drawPoints(imgLegBack, SpecificBodyPart.LEFT_LEG_BACK, R.drawable.perna_esquerda_atras);
+        ImageDrawer.drawPoints(imgFootDown, SpecificBodyPart.LEFT_FOOT_DOWN, R.drawable.pe_esquerdo_baixo);
+        ImageDrawer.drawPoints(imgFootTop, SpecificBodyPart.LEFT_FOOT_TOP, R.drawable.pe_esquerdo_cima);
         return view;
     }
 
@@ -90,7 +97,7 @@ public class SelectionLegLeftFragment extends Fragment implements View.OnClickLi
                 break;
 
         }
-        getActivity().startActivity(i);
+        getActivity().startActivityForResult(i, SelectBodyPartActivity.REQUEST_CODE);
     }
 
     /**

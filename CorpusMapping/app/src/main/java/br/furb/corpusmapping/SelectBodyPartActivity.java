@@ -1,5 +1,6 @@
 package br.furb.corpusmapping;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 public class SelectBodyPartActivity extends ActionBarActivity {
 
     public static final String PARAM_BODY_PART = "BODY_PART";
+    public static final int REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +20,6 @@ public class SelectBodyPartActivity extends ActionBarActivity {
         setContentView(R.layout.activity_select_body_part);
 
         BodyPart bodyPart = BodyPart.valueOf(getIntent().getStringExtra(PARAM_BODY_PART));
-
         Fragment fragment = null;
         switch (bodyPart) {
             case HEAD:
@@ -41,6 +42,7 @@ public class SelectBodyPartActivity extends ActionBarActivity {
                 break;
         }
 
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.body_frame, fragment)
@@ -48,6 +50,17 @@ public class SelectBodyPartActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
+            if(resultCode == AssociateBodyPartTouchListener.RESULT_CODE_OK){
+                setResult(AssociateBodyPartTouchListener.RESULT_CODE_OK, data);
+                finish();
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

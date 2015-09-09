@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import br.furb.corpusmapping.util.ImageDrawer;
+
+import static br.furb.corpusmapping.ImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionArmRightFragment extends Fragment implements View.OnClickListener {
@@ -46,6 +49,10 @@ public class SelectionArmRightFragment extends Fragment implements View.OnClickL
 
         imgArmDown.setOnClickListener(this);
         imgArmTop.setOnClickListener(this);
+
+        ImageDrawer.drawPoints(imgArmDown, SpecificBodyPart.RIGHT_ARM_DOWN, R.drawable.braco_direito_baixo);
+        ImageDrawer.drawPoints(imgArmTop, SpecificBodyPart.RIGHT_ARM_TOP, R.drawable.braco_direito_cima);
+
         return view;
     }
 
@@ -72,13 +79,16 @@ public class SelectionArmRightFragment extends Fragment implements View.OnClickL
         switch (v.getId()) {
             case R.id.imgArmRightDown:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.braco_direito_baixo, R.drawable.braco_direito_cima});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_ARM_DOWN.name(), SpecificBodyPart.RIGHT_ARM_TOP.name()});
+
                 break;
             case R.id.imgArmRightTop:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.braco_direito_cima, R.drawable.braco_direito_baixo});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_ARM_TOP.name(), SpecificBodyPart.RIGHT_ARM_DOWN.name()});
                 break;
 
         }
-        getActivity().startActivity(i);
+        getActivity().startActivityForResult(i, SelectBodyPartActivity.REQUEST_CODE);
     }
 
     /**

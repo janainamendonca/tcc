@@ -2,6 +2,9 @@ package br.furb.corpusmapping;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import br.furb.corpusmapping.util.BoundingBox;
+import java.util.ArrayList;
+import java.util.List;
 
+import br.furb.corpusmapping.data.ImageRecord;
+import br.furb.corpusmapping.data.ImageRecordRepository;
+import br.furb.corpusmapping.util.BoundingBox;
+import br.furb.corpusmapping.util.ImageDrawer;
+
+import static br.furb.corpusmapping.ImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionHeadFragment extends Fragment implements View.OnClickListener {
@@ -55,12 +65,12 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
         imgHeadBack.setOnClickListener(this);
         imgHeadLeft.setOnClickListener(this);
         imgHeadRight.setOnClickListener(this);
-        /*
-        imgHeadFront.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_frente, getHeadFrontBBox()));
-        imgHeadBack.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_atras));
-        imgHeadLeft.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_esquerda));
-        imgHeadRight.setOnTouchListener(new AssociateBodyPartTouchListener(R.drawable.cabeca_direita));
-*/
+
+        ImageDrawer.drawPoints(imgHeadFront, SpecificBodyPart.HEAD_FRONT, R.drawable.cabeca_frente);
+        ImageDrawer.drawPoints(imgHeadBack, SpecificBodyPart.HEAD_BACK, R.drawable.cabeca_atras);
+        ImageDrawer.drawPoints(imgHeadLeft, SpecificBodyPart.HEAD_LEFT, R.drawable.cabeca_esquerda);
+        ImageDrawer.drawPoints(imgHeadRight, SpecificBodyPart.HEAD_RIGHT, R.drawable.cabeca_direita);
+
         return view;
     }
 
@@ -94,18 +104,23 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.imgHeadFront:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_frente, R.drawable.cabeca_atras, R.drawable.cabeca_direita, R.drawable.cabeca_esquerda});
+
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.HEAD_FRONT.name(), SpecificBodyPart.HEAD_BACK.name(), SpecificBodyPart.HEAD_RIGHT.name(), SpecificBodyPart.HEAD_LEFT.name()});
                 break;
             case R.id.imgHeadBack:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_atras, R.drawable.cabeca_frente, R.drawable.cabeca_direita, R.drawable.cabeca_esquerda});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.HEAD_BACK.name(), SpecificBodyPart.HEAD_FRONT.name(), SpecificBodyPart.HEAD_RIGHT.name(), SpecificBodyPart.HEAD_LEFT.name()});
                 break;
             case R.id.imgHeadLeft:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_esquerda, R.drawable.cabeca_direita, R.drawable.cabeca_frente, R.drawable.cabeca_atras});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.HEAD_LEFT.name(), SpecificBodyPart.HEAD_RIGHT.name(), SpecificBodyPart.HEAD_FRONT.name(), SpecificBodyPart.HEAD_BACK.name()});
                 break;
             case R.id.imgHeadRight:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_direita, R.drawable.cabeca_esquerda, R.drawable.cabeca_frente, R.drawable.cabeca_atras});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.HEAD_RIGHT.name(), SpecificBodyPart.HEAD_LEFT.name(), SpecificBodyPart.HEAD_FRONT.name(), SpecificBodyPart.HEAD_BACK.name()});
                 break;
         }
-        getActivity().startActivity(i);
+        getActivity().startActivityForResult(i, SelectBodyPartActivity.REQUEST_CODE);
     }
 
     /**

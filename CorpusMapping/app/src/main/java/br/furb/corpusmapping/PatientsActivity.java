@@ -41,7 +41,7 @@ public class PatientsActivity extends ActionBarActivity implements AdapterView.O
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbarPatients);
         setSupportActionBar(mToolbar);
 
-        repository = new PatientRepository(this);
+        repository = PatientRepository.getInstance(this);
 
         listPatients.setOnItemClickListener(this);
         listPatients.setOnItemLongClickListener(this);

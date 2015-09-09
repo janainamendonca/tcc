@@ -9,12 +9,21 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
+import br.furb.corpusmapping.data.ImageRecord;
+import br.furb.corpusmapping.data.ImageRecordRepository;
+
 /**
  * Created by Janaina on 25/08/2015.
  */
 public class ImageDrawer {
 
-    public static Bitmap drawPoint(Bitmap bitmap, PointF point) {
+    public static Bitmap drawPoint(Bitmap bitmap, PointF... point) {
 
         Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
         Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -27,11 +36,27 @@ public class ImageDrawer {
         paintText.setStyle(Paint.Style.FILL);
         paintText.setFakeBoldText(true);
 
-        paintText.setShadowLayer(30f, 10f, 10f, Color.BLACK);
+       // paintText.setShadowLayer(30f, 10f, 10f, Color.BLACK);
 
-        canvas.drawText("@", point.x, point.y, paintText);
+        for (PointF p : point){
+            canvas.drawText("@", p.x, p.y, paintText);
+        }
 
         return mutableBitmap;
+    }
+
+    public static void drawPoints(ImageView view, SpecificBodyPart bodyPart, int resourceId){
+        Bitmap bitmap = BitmapFactory.decodeResource(view.getResources(), resourceId);
+        long patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
+        ImageRecordRepository imageRecordRepository = ImageRecordRepository.getInstance(view.getContext());
+        List<ImageRecord> imageRecords = imageRecordRepository.getByBodyPartId(patientId, bodyPart);
+
+        List<PointF> listPoints = new ArrayList<>();
+        for (ImageRecord i : imageRecords) {
+            listPoints.add(i.getPosition());
+        }
+        bitmap = ImageDrawer.drawPoint(bitmap, listPoints.toArray(new PointF[listPoints.size()]));
+        view.setImageBitmap(bitmap);
     }
 
 }

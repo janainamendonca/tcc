@@ -39,7 +39,7 @@ public class PatientFormActivity extends ActionBarActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_form);
-        repository = new PatientRepository(this);
+        repository = PatientRepository.getInstance(this);
         edtName = (EditText) findViewById(R.id.edtName);
         edtCpf = (EditText) findViewById(R.id.edtCpf);
         edtBirthDate = (EditText) findViewById(R.id.edtBirthDate);
@@ -113,14 +113,7 @@ public class PatientFormActivity extends ActionBarActivity implements View.OnCli
         patient.setCpf(edtCpf.getText().toString());
         patient.setGender(rbFemale.isSelected() ? Gender.FEMALE : Gender.MALE);
 
-
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date date = df.parse(edtBirthDate.getText().toString());
-            patient.setBirthDate(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        patient.setBirthDate(edtBirthDate.getText().toString());
         long result;
 
         repository.save(patient);

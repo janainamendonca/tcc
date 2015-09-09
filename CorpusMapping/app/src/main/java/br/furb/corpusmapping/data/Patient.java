@@ -1,5 +1,9 @@
 package br.furb.corpusmapping.data;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +17,7 @@ public class Patient implements Serializable {
     private String name;
     private String cpf;
     private Gender gender;
-    private Date birthDate;
+    private LocalDate birthDate;
     private long id;
 
     public Patient() {
@@ -50,30 +54,23 @@ public class Patient implements Serializable {
         this.gender = gender;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
     public String getBirthDateStr() {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        return df.format(birthDate);
+        return birthDate.toString("dd/MM/yyyy");
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
     public void setBirthDate(String birthDate) {
 
         if (birthDate != null) {
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            try {
-                Date date = df.parse(birthDate);
-                this.birthDate = date;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
+            LocalDate date = LocalDate.parse(birthDate, DateTimeFormat.forPattern("dd/MM/yyyy"));
+            this.birthDate = date;
         }
     }
 

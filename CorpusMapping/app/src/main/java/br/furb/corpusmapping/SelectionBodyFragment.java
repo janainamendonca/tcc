@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import br.furb.corpusmapping.util.ImageDrawer;
+
+import static br.furb.corpusmapping.ImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionBodyFragment extends Fragment implements View.OnClickListener {
@@ -46,6 +49,8 @@ public class SelectionBodyFragment extends Fragment implements View.OnClickListe
 
         imgFront.setOnClickListener(this);
         imgBack.setOnClickListener(this);
+        ImageDrawer.drawPoints(imgFront, SpecificBodyPart.BODY_FRONT, R.drawable.tronco_frente);
+        ImageDrawer.drawPoints(imgBack, SpecificBodyPart.BODY_BACK, R.drawable.tronco_costas);
         return view;
     }
 
@@ -72,13 +77,15 @@ public class SelectionBodyFragment extends Fragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.imgBodyFront:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.tronco_frente, R.drawable.tronco_costas});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.BODY_FRONT.name(), SpecificBodyPart.BODY_BACK.name()});
                 break;
             case R.id.imgBodyBack:
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.BODY_BACK.name(), SpecificBodyPart.BODY_FRONT.name()});
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.tronco_costas, R.drawable.tronco_frente});
                 break;
 
         }
-        getActivity().startActivity(i);
+        getActivity().startActivityForResult(i, SelectBodyPartActivity.REQUEST_CODE);
     }
 
     /**

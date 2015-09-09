@@ -21,12 +21,20 @@ public class PatientRepository {
     public static final String COLUMN_CPF = "cpf";
     public static final String COLUMN_GENDER = "gender";
     public static final String COLUMN_BIRTH_DATE = "birth_date";
+    private static PatientRepository instance;
     private final CorpusMappingSQLHelper helper;
 
-    public PatientRepository(Context context) {
-        helper = new CorpusMappingSQLHelper(context);
+    private PatientRepository(Context context) {
+        helper = CorpusMappingSQLHelper.getInstance(context);
     }
 
+    public static synchronized PatientRepository getInstance(Context context) {
+
+        if (instance == null) {
+            instance = new PatientRepository(context);
+        }
+        return instance;
+    }
 
     public void save(Patient patient) {
         if (patient.getId() <= 0) {

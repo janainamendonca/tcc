@@ -33,7 +33,7 @@ import br.furb.corpusmapping.data.PatientRepository;
  * create an instance of this fragment.
  */
 public class PatientsListFragment extends Fragment implements AdapterView.OnItemClickListener,
-        AdapterView.OnItemLongClickListener{
+        AdapterView.OnItemLongClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,7 +59,7 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
     public static PatientsListFragment newInstance() {
         PatientsListFragment fragment = new PatientsListFragment();
         Bundle args = new Bundle();
-       // args.putString(ARG_PARAM1, param1);
+        // args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -77,7 +77,7 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         setHasOptionsMenu(true);
-        repository = new PatientRepository(getActivity());
+        repository = PatientRepository.getInstance(getActivity());
     }
 
     @Override
@@ -147,14 +147,17 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
 
         listPatients.setItemChecked(position, true);
 
+        CorpusMappingApp.getInstance().setSelectedPatientId(selectedItem);
+
         //
         Intent intent = new Intent(getActivity(), PatientSelectedActivity.class);
         intent.putExtra(PatientSelectedActivity.PARAM_PATIENT_ID, selectedItem);
         startActivity(intent);
         //
 
-       // changePatient();
+        // changePatient();
     }
+
     private void changePatient() {
         Intent intent = new Intent(getActivity(), PatientFormActivity.class);
 

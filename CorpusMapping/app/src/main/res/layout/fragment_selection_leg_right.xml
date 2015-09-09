@@ -5,72 +5,78 @@
     android:background="@android:color/background_light"
     tools:context="br.furb.corpusmapping.SelectionLegRightFragment">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:showDividers="middle|beginning|end">
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingTop="16dp"
-            android:text="Perna Direita"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:orientation="vertical"
+            android:showDividers="middle|beginning|end">
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
-
-            <ImageView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgLegRightFront"
-                android:src="@drawable/perna_direita_frente"
-                />
+                android:layout_gravity="center"
+                android:paddingTop="16dp"
+                android:text="Perna Direita"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <ImageView
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp" />
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgLegRightBack"
-                android:src="@drawable/perna_direita_atras"
-                />
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgLegRightFront"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/perna_direita_frente" />
+
+                <ImageView
+                    android:id="@+id/imgLegRightBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/perna_direita_atras" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgFootRightTop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/pe_direito_cima" />
+
+                <ImageView
+                    android:id="@+id/imgFootRightDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/pe_direito_baixo" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgFootRightTop"
-                android:src="@drawable/pe_direito_cima"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgFootRightDown"
-                android:src="@drawable/pe_direito_baixo"
-                />
-        </LinearLayout>
-
-
-    </LinearLayout>
+    </GridLayout>
 </FrameLayout>

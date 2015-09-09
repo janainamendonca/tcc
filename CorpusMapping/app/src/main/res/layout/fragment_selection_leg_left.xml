@@ -5,72 +5,76 @@
     android:background="@android:color/background_light"
     tools:context="br.furb.corpusmapping.SelectionLegLefttFragment">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:showDividers="middle|beginning|end">
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="16dp"
-            android:text="Perna Esquerda"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <View
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp" />
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:showDividers="middle|beginning|end">
 
-            <ImageView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgLegLeftFront"
-                android:src="@drawable/perna_esquerda_frente"
-                />
+                android:layout_gravity="center"
+                android:paddingTop="16dp"
+                android:text="Perna Esquerda"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <ImageView
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp" />
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgLegLeftBack"
-                android:src="@drawable/perna_esquerda_atras"
-                />
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgLegLeftFront"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/perna_esquerda_frente" />
+
+                <ImageView
+                    android:id="@+id/imgLegLeftBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/perna_esquerda_atras" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgFootLeftTop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/pe_esquerdo_cima" />
+
+                <ImageView
+                    android:id="@+id/imgFootLeftDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/pe_esquerdo_baixo" />
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgFootLeftTop"
-                android:src="@drawable/pe_esquerdo_cima"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgFootLeftDown"
-                android:src="@drawable/pe_esquerdo_baixo"
-                />
-        </LinearLayout>
-
-
-    </LinearLayout>
+    </GridLayout>
 </FrameLayout>
