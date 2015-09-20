@@ -35,5 +35,7 @@
     <string name="groupName">Grupo</string>
     <string name="anottation">Anotações</string>
     <string name="annotations">Anotações</string>
+    <string name="title_activity_view_images">ViewImagesActivity</string>
+    <string name="nenhuma_imagem">Nenhuma imagem</string>
 
 </resources>

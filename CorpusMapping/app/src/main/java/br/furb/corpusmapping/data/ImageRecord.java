@@ -1,10 +1,13 @@
 package br.furb.corpusmapping.data;
 
-import android.graphics.PointF;
+import br.furb.corpusmapping.data.PointF;
+
+import android.os.Parcelable;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import br.furb.corpusmapping.ImageType;
@@ -13,7 +16,7 @@ import br.furb.corpusmapping.SpecificBodyPart;
 /**
  * Created by Janaina on 05/09/2015.
  */
-public class ImageRecord {
+public class ImageRecord implements Serializable {
 
     private long id;
     private SpecificBodyPart bodyPart;
@@ -45,6 +48,10 @@ public class ImageRecord {
     public void setImageDate(LocalDateTime
                                      imageDate) {
         this.imageDate = imageDate;
+    }
+
+    public String getImageDateAsString() {
+        return imageDate != null ? imageDate.toString("dd/MM/yyyy HH:mm") : "";
     }
 
     public PointF getPosition() {

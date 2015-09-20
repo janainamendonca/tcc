@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:padding="8dp"
+        android:text="20/08/2015 15:36"
+        android:id="@+id/txtDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingLeft="8dp"
+        android:paddingBottom="8dp"
+        android:text="Não houve evolução."
+        android:id="@+id/txtAnnotations" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="8dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

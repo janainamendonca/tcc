@@ -1,8 +1,7 @@
 package br.furb.corpusmapping;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,40 +12,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.TextView;
 
 import br.furb.corpusmapping.data.ImageRecord;
-import br.furb.corpusmapping.data.ImageRecordRepository;
-import br.furb.corpusmapping.util.BodyImagesUtil;
-import br.furb.corpusmapping.util.BoundingBox;
-import br.furb.corpusmapping.util.ImageDrawer;
+import br.furb.corpusmapping.util.ImageUtils;
 
 
 public class ImageSliderActivity extends FragmentActivity {
 
     public static final String PARAM_IMAGES = "images";
-    public static final String PARAM_BODY_PARTS = "bodyParts";
+    public static final String PARAM_SELECTED_IMAGE = "selected-image";
     ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     ViewPager viewPager;
     //public static final String[] IMAGE_NAME = {"eagle", "horse", "bonobo", "wolf", "owl", "bear",};
-    private int[] images;
-    private String[] bodyParts;
+    private ImageRecord[] images;
     private int numItems;
+    private int selectedImage;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_slider);
-        images = getIntent().getIntArrayExtra(PARAM_IMAGES);
-        bodyParts = getIntent().getStringArrayExtra(PARAM_BODY_PARTS);
+        setContentView(R.layout.activity_mole_image_slider);
+        images = (ImageRecord[]) getIntent().getSerializableExtra(PARAM_IMAGES);
+        selectedImage = getIntent().getIntExtra(PARAM_SELECTED_IMAGE, 0);
+
 
         numItems = images.length;
+
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
+
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(imageFragmentPagerAdapter);
+        viewPager.setCurrentItem(selectedImage);
+
+        /*
+        TextView txtMole = (TextView) findViewById(R.id.txtMole);
+        txtMole.setText(images[0].getMoleGroup().getGroupName());
+        ImageView imgCla = (ImageView) findViewById(R.id.imgClassification);
+        imgCla.setImageResource(R.drawable.ic_class_red); //TODO*/
 
     }
 
@@ -63,7 +67,7 @@ public class ImageSliderActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             SwipeFragment fragment = new SwipeFragment();
-            return SwipeFragment.newInstance(position, images, bodyParts);
+            return SwipeFragment.newInstance(position, images);
         }
     }
 
@@ -76,47 +80,34 @@ public class ImageSliderActivity extends FragmentActivity {
                                  Bundle savedInstanceState) {
             Bundle bundle = getArguments();
             int position = bundle.getInt("position");
-            int[] images = bundle.getIntArray(PARAM_IMAGES);
-            String[] parts = bundle.getStringArray(PARAM_BODY_PARTS);
-            SpecificBodyPart[] bodyParts = new SpecificBodyPart[parts.length];
+            ImageRecord[] images = (ImageRecord[]) bundle.getSerializable(PARAM_IMAGES);
 
-            for (int i = 0; i < parts.length; i++) {
-                bodyParts[i] = SpecificBodyPart.valueOf(parts[i]);
-            }
+            ImageRecord imageRecord = images[position];
 
-
-            View swipeView = inflater.inflate(R.layout.fragment_image_slider, container, false);
+            View swipeView = inflater.inflate(R.layout.fragment_detail_mole_image_slider, container, false);
             ImageView imageView = (ImageView) swipeView.findViewById(R.id.imageView);
 
-            int resource = images[position];
+            TextView txtDate = (TextView)swipeView.findViewById(R.id.txtDate);
+            TextView txtAnnotations = (TextView)swipeView.findViewById(R.id.txtAnnotations);
 
-            //imageView.setImageResource(resource);
+            txtDate.setText(imageRecord.getImageDateAsString());
+            txtAnnotations.setText(imageRecord.getAnnotations());
 
-            /**/
-            bitmap = BitmapFactory.decodeResource(swipeView.getResources(), resource);
-            List<ImageRecord> imageRecords = ImageRecordRepository.getInstance(getActivity()).getByBodyPartId(CorpusMappingApp.getInstance().getSelectedPatientId(), bodyParts[position]);
-
-            List<PointF> listPoints = new ArrayList<>();
-            for (ImageRecord i : imageRecords) {
-                listPoints.add(i.getPosition());
+            Uri imageUri = ImageUtils.getImageUri(imageRecord.getImagePath());
+            if (imageUri == null) {
+                imageView.setImageResource(R.drawable.ic_images25);
+            } else {
+                imageView.setImageBitmap(ImageUtils.decodeSampledBitmapFromResource(getActivity(), imageUri, 200, 200));
             }
-            bitmap = ImageDrawer.drawPoint(bitmap, listPoints.toArray(new PointF[listPoints.size()]));
-            imageView.setImageBitmap(bitmap);
-            /**/
 
-            AssociateBodyPartTouchListener listener = new AssociateBodyPartTouchListener(getActivity(), resource, bodyParts[position],bitmap, BodyImagesUtil.getBoundingBoxForImage(resource));
-            listener.setMoveEnabled(false);
-            listener.setZoomEnabled(false);
-            imageView.setOnTouchListener(listener);
             return swipeView;
         }
 
-        static SwipeFragment newInstance(int position, int[] images, String[] bodyParts) {
+        static SwipeFragment newInstance(int position, ImageRecord[] images) {
             SwipeFragment swipeFragment = new SwipeFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("position", position);
-            bundle.putIntArray(PARAM_IMAGES, images);
-            bundle.putStringArray(PARAM_BODY_PARTS, bodyParts);
+            bundle.putSerializable(PARAM_IMAGES, images);
             swipeFragment.setArguments(bundle);
             return swipeFragment;
         }

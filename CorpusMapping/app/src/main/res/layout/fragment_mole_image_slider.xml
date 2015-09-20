@@ -1,0 +1,94 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TableRow>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_gravity="left"
+            android:paddingLeft="8dp"
+            android:layout_span="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="20/08/2015 15:36"
+                android:id="@+id/txtDate1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Não houve evolução."
+                android:id="@+id/txtAnnotations1" />
+
+        </LinearLayout>
+
+    </TableRow>
+
+    <TableRow>
+        <ImageView
+            android:src="@drawable/ic_up"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </TableRow>
+
+    <TableRow>
+
+        <ImageView
+            android:id="@+id/leftImageView"
+            android:layout_width="185dp"
+            android:layout_height="185dp"
+            android:padding="5dp"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/rightImageView"
+            android:layout_width="185dp"
+            android:layout_height="185dp"
+            android:padding="5dp"
+            android:layout_gravity="center" />
+
+    </TableRow>
+
+    <TableRow>
+        <ImageView
+            android:src="@drawable/ic_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="center"/>
+    </TableRow>
+
+    <TableRow>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_span="2"
+            android:layout_gravity="right"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="20/07/2015 15:36"
+                android:id="@+id/txtDate2"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Pequeno aumento no tamanho."
+                android:id="@+id/txtAnnotations2"/>
+
+        </LinearLayout>
+
+    </TableRow>
+
+
+
+</TableLayout>

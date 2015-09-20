@@ -16,12 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import br.furb.corpusmapping.data.ImageRecordRepository;
+import br.furb.corpusmapping.data.MoleGroupRepository;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
+import br.furb.corpusmapping.util.ImageUtils;
 
 
 /**
@@ -44,6 +44,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     private TextView txtPatient;
     private Patient patient;
     private String imageShortPath;
+    private static final String TAG = DashboardFragment.class.getName();
 
     public static DashboardFragment newInstance(long patientId) {
         DashboardFragment fragment = new DashboardFragment();
@@ -78,7 +79,10 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         txtPatient.setText(patient.getName());
 
         Button button = (Button) view.findViewById(R.id.btnAddImage);
+        Button btnViewImages = (Button) view.findViewById(R.id.btnViewImages);
         button.setOnClickListener(this);
+        btnViewImages.setOnClickListener(this);
+
         return view;
     }
 
@@ -102,28 +106,31 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
 
-        if (!externalStorageAvailable()) {
-            Toast.makeText(this.getActivity(), "O cartão de memória não está disponível para salvar a imagem.", Toast.LENGTH_LONG);
-        } else {
-            File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "CorpusMapping");
-            root.mkdirs();
+        switch (v.getId()) {
+            case R.id.btnAddImage:
+                if (!externalStorageAvailable()) {
+                    Toast.makeText(this.getActivity(), "O cartão de memória não está disponível para salvar a imagem.", Toast.LENGTH_LONG);
+                } else {
+                    File sdImageFile = ImageUtils.getFileForNewImage(patient);
+                    Uri outputFileUri = Uri.fromFile(sdImageFile);
 
-            File patientDir = new File(root, patient.getId() + "_" +patient.getName());
-            patientDir.mkdirs();
+                    Log.d(TAG, "Uri: " + outputFileUri.getPath());
 
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String fileName = timeStamp + ".jpg";
-            File sdImageFile = new File(patientDir, fileName);
-            Uri outputFileUri = Uri.fromFile(sdImageFile);
+                    imageShortPath = ImageUtils.getImageShortPath(sdImageFile);
 
-            Log.d("C", "Uri: " + outputFileUri.getPath());
-
-            imageShortPath = patientDir.getName() + File.pathSeparator +fileName;
-
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-            startActivityForResult(intent, REQUEST_CODE_IMAGE);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    startActivityForResult(intent, REQUEST_CODE_IMAGE);
+                }
+                break;
+            case R.id.btnViewImages:
+                // TODO abrir activity
+                Intent intent = new Intent(getActivity(), ViewImagesActivity.class);
+                startActivity(intent);
+                break;
         }
+
+
     }
 
     private boolean externalStorageAvailable() {

@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <ImageView
+        android:id="@+id/imgMole"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_camera3"/>
+    <TextView
+        android:id="@+id/txtMole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/txtClassification"
+        android:layout_toRightOf="@+id/imgMole"
+        android:text="Braço esquerdo 1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/txtDateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtMole"
+        android:layout_below="@+id/txtMole"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="10/09/2015 14:15" />
+
+    <ImageView
+        android:id="@+id/imgClassification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_class_red"/>
+    <TextView
+        android:id="@+id/txtClassification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_alignBottom="@+id/txtDateTime"
+        android:layout_alignRight="@+id/imgClassification"
+        android:layout_alignEnd="@+id/imgClassification" />
+</RelativeLayout>

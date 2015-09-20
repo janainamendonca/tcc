@@ -1,11 +1,13 @@
 package br.furb.corpusmapping.data;
 
-import android.graphics.PointF;
+import br.furb.corpusmapping.data.PointF;
+
+import java.io.Serializable;
 
 /**
  * Created by Janaina on 05/09/2015.
  */
-public class MoleGroup {
+public class MoleGroup implements Serializable {
 
     private long id;
     private String groupName;

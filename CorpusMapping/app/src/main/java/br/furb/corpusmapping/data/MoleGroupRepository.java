@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.PointF;
+import br.furb.corpusmapping.data.PointF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +48,13 @@ public class MoleGroupRepository {
             update(moleGroup);
         }
     }
+
+    public void deleteAll() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int affectedRows = db.delete(TABLE_MOLE_GROUP, null, null);
+        db.close();
+    }
+
 
     public int delete(MoleGroup moleGroup) {
         SQLiteDatabase db = helper.getWritableDatabase();

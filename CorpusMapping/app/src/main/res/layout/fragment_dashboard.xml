@@ -13,19 +13,20 @@
 
 
         <TableRow>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Paciente:"/>
 
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text=""
+                android:layout_height="wrap_content"
+                android:text="Paciente:" />
+
+            <TextView
                 android:id="@+id/txtPatient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_span="2"
                 android:paddingLeft="8dp"
-                android:layout_span="2"/>
+                android:text="" />
             <!--
             <ImageButton
                 android:layout_width="wrap_content"
@@ -39,36 +40,49 @@
         </TableRow>
 
         <TableRow>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:paddingTop="8dp"
                 android:layout_span="3"
-                android:background="@android:color/darker_gray"/>
+                android:background="@android:color/darker_gray"
+                android:paddingTop="8dp" />
         </TableRow>
-    <!--
-        <TableRow
-            android:paddingTop="16dp">
+        <!--
+            <TableRow
+                android:paddingTop="16dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Capturar imagem"
+                    android:id="@+id/btnAddImage"
+                    android:drawableRight="@drawable/ic_camera3"
+                    />
+
+            </TableRow> -->
+
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Capturar imagem"
                 android:id="@+id/btnAddImage"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_camera3"
-                />
+                android:paddingTop="16dp"
+                android:text="Capturar imagem"
+                android:layout_gravity="center_horizontal" />
 
-        </TableRow> -->
 
         <Button
-            android:paddingTop="16dp"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnViewImages"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Capturar imagem"
-            android:id="@+id/btnAddImage"
-            android:drawableRight="@drawable/ic_camera3"
-            />
+            android:drawableRight="@drawable/ic_images25"
+            android:paddingTop="16dp"
+            android:text="Consultar imagens"
+            android:layout_gravity="center_horizontal" />
 
     </TableLayout>
+
 
 </FrameLayout>
