@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PointF;
+import br.furb.corpusmapping.data.PointF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -69,7 +69,7 @@ public class AssociateBodyPartTouchListener extends ImageBoundingBoxTouchListene
             edtAnnotation.setText(moleGroup.getAnnotations());
         } else {
             //sugerir um nome para o grupo
-            edtGroupName.setText(bodyPart.toString());
+            edtGroupName.setText(bodyPart.getBodyPartName());
         }
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

@@ -2,9 +2,6 @@ package br.furb.corpusmapping;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,18 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import br.furb.corpusmapping.data.ImageRecord;
-import br.furb.corpusmapping.data.ImageRecordRepository;
-import br.furb.corpusmapping.util.BoundingBox;
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_BODY_PARTS;
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionHeadFragment extends Fragment implements View.OnClickListener {
 
@@ -100,7 +90,7 @@ public class SelectionHeadFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(getActivity(), ImageSliderActivity.class);
+        Intent i = new Intent(getActivity(), BodyImageSliderActivity.class);
         switch (v.getId()) {
             case R.id.imgHeadFront:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.cabeca_frente, R.drawable.cabeca_atras, R.drawable.cabeca_direita, R.drawable.cabeca_esquerda});

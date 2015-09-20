@@ -12,8 +12,8 @@ import android.widget.ImageView;
 
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_BODY_PARTS;
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionArmRightFragment extends Fragment implements View.OnClickListener {
 
@@ -75,7 +75,7 @@ public class SelectionArmRightFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(getActivity(), ImageSliderActivity.class);
+        Intent i = new Intent(getActivity(), BodyImageSliderActivity.class);
         switch (v.getId()) {
             case R.id.imgArmRightDown:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.braco_direito_baixo, R.drawable.braco_direito_cima});

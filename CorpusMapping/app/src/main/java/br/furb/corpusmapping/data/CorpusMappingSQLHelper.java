@@ -36,7 +36,7 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
         if (newVersion == 2) {
             createTableMoleGroup(db);
             createTableImageRegister(db);
-        }else if(newVersion == 3){
+        } else if (newVersion == 3) {
             dropTables(db);
             createTablePatient(db);
             createTableMoleGroup(db);
@@ -45,9 +45,12 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
     }
 
     private void dropTables(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE PATIENT");
-        db.execSQL("DROP TABLE MOLE_GROUP");
-        db.execSQL("DROP TABLE IMAGE_RECORD");
+        try {
+            db.execSQL("DROP TABLE PATIENT");
+            db.execSQL("DROP TABLE MOLE_GROUP");
+            db.execSQL("DROP TABLE IMAGE_RECORD");
+        } catch (Exception e) {
+        }
     }
 
     private void createTablePatient(SQLiteDatabase db) {

@@ -1,7 +1,7 @@
 package br.furb.corpusmapping;
 
 import android.content.Intent;
-import android.graphics.PointF;
+import br.furb.corpusmapping.data.PointF;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
@@ -124,7 +124,7 @@ public class SaveImageActivity extends ActionBarActivity {
             if (resultCode == AssociateBodyPartTouchListener.RESULT_CODE_OK) {
                 String groupName = data.getStringExtra("groupName");
                 String annotation = data.getStringExtra("annotation");
-                PointF position = data.getParcelableExtra("position");
+                PointF position = (PointF) data.getSerializableExtra("position");
                 SpecificBodyPart bodyPart = SpecificBodyPart.valueOf(data.getStringExtra("bodyPart"));
 
                 ImageRecord imageRecord = new ImageRecord();

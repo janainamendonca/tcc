@@ -1,7 +1,7 @@
 package br.furb.corpusmapping;
 
 import android.graphics.Matrix;
-import android.graphics.PointF;
+import br.furb.corpusmapping.data.PointF;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;

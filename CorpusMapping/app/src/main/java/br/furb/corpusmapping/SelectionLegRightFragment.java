@@ -12,7 +12,8 @@ import android.widget.ImageView;
 
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionLegRightFragment extends Fragment implements View.OnClickListener {
 
@@ -82,19 +83,23 @@ public class SelectionLegRightFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(getActivity(), ImageSliderActivity.class);
+        Intent i = new Intent(getActivity(), BodyImageSliderActivity.class);
         switch (v.getId()) {
             case R.id.imgLegRightFront:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.perna_direita_frente, R.drawable.perna_direita_atras, R.drawable.pe_direito_cima, R.drawable.pe_direito_baixo});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_LEG_FRONT.name(), SpecificBodyPart.RIGHT_LEG_BACK.name(), SpecificBodyPart.RIGHT_FOOT_TOP.name(), SpecificBodyPart.RIGHT_FOOT_DOWN.name()});
                 break;
             case R.id.imgLegRightBack:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.perna_direita_atras, R.drawable.perna_direita_frente, R.drawable.pe_direito_cima, R.drawable.pe_direito_baixo});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_LEG_BACK.name(), SpecificBodyPart.RIGHT_LEG_FRONT.name(), SpecificBodyPart.RIGHT_FOOT_TOP.name(), SpecificBodyPart.RIGHT_FOOT_DOWN.name()});
                 break;
             case R.id.imgFootRightTop:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.pe_direito_cima, R.drawable.pe_direito_baixo, R.drawable.perna_direita_atras, R.drawable.perna_direita_frente});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_FOOT_TOP.name(), SpecificBodyPart.RIGHT_FOOT_DOWN.name(), SpecificBodyPart.RIGHT_LEG_BACK.name(), SpecificBodyPart.RIGHT_LEG_FRONT.name()});
                 break;
             case R.id.imgFootRightDown:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.pe_direito_baixo, R.drawable.pe_direito_cima, R.drawable.perna_direita_atras, R.drawable.perna_direita_frente});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_FOOT_DOWN.name(), SpecificBodyPart.RIGHT_FOOT_TOP.name(), SpecificBodyPart.RIGHT_LEG_BACK.name(), SpecificBodyPart.RIGHT_LEG_FRONT.name()});
                 break;
 
         }

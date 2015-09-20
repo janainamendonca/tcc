@@ -12,7 +12,8 @@ import android.widget.ImageView;
 
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.ImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionLegLeftFragment extends Fragment implements View.OnClickListener {
 
@@ -81,21 +82,25 @@ public class SelectionLegLeftFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        Intent i = new Intent(getActivity(), ImageSliderActivity.class);
+        Intent i = new Intent(getActivity(), BodyImageSliderActivity.class);
         switch (v.getId()) {
             case R.id.imgLegLeftFront:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.perna_esquerda_frente, R.drawable.perna_esquerda_atras, R.drawable.pe_esquerdo_cima, R.drawable.pe_esquerdo_baixo});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.LEFT_LEG_FRONT.name(), SpecificBodyPart.LEFT_LEG_BACK.name(), SpecificBodyPart.LEFT_FOOT_TOP.name(), SpecificBodyPart.LEFT_FOOT_DOWN.name()});
                 break;
             case R.id.imgLegLeftBack:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.perna_esquerda_atras, R.drawable.perna_esquerda_frente, R.drawable.pe_esquerdo_cima, R.drawable.pe_esquerdo_baixo});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.LEFT_LEG_BACK.name(), SpecificBodyPart.LEFT_LEG_FRONT.name(), SpecificBodyPart.LEFT_FOOT_TOP.name(), SpecificBodyPart.LEFT_FOOT_DOWN.name()});
                 break;
             case R.id.imgFootLeftTop:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.pe_esquerdo_cima, R.drawable.pe_esquerdo_baixo, R.drawable.perna_esquerda_atras, R.drawable.perna_esquerda_frente});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.LEFT_FOOT_TOP.name(), SpecificBodyPart.LEFT_FOOT_DOWN.name(), SpecificBodyPart.LEFT_LEG_BACK.name(), SpecificBodyPart.LEFT_LEG_FRONT.name()});
+
                 break;
             case R.id.imgFootLeftDown:
                 i.putExtra(PARAM_IMAGES, new int[]{R.drawable.pe_esquerdo_baixo, R.drawable.pe_esquerdo_cima, R.drawable.perna_esquerda_atras, R.drawable.perna_esquerda_frente});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.LEFT_FOOT_DOWN.name(), SpecificBodyPart.LEFT_FOOT_TOP.name(), SpecificBodyPart.LEFT_LEG_BACK.name(), SpecificBodyPart.LEFT_LEG_FRONT.name()});
                 break;
-
         }
         getActivity().startActivityForResult(i, SelectBodyPartActivity.REQUEST_CODE);
     }
