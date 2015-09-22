@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ public class MoleImageSliderActivity extends FragmentActivity {
     public static final String PARAM_IMAGES = "images";
     ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     ViewPager viewPager;
-    //public static final String[] IMAGE_NAME = {"eagle", "horse", "bonobo", "wolf", "owl", "bear",};
     private ImageRecord[] images;
     private int numItems;
 
@@ -37,7 +37,7 @@ public class MoleImageSliderActivity extends FragmentActivity {
 
         numItems = images.length;
 
-        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
+       imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -71,6 +71,9 @@ public class MoleImageSliderActivity extends FragmentActivity {
         ImageView imgCla = (ImageView) findViewById(R.id.imgClassification);
         imgCla.setImageResource(R.drawable.ic_class_red);
 
+        ImageView imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
+        imgBodyPart.setImageResource(images[0].getBodyPart().getResource());
+
     }
 
     private class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -85,7 +88,6 @@ public class MoleImageSliderActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            SwipeFragment fragment = new SwipeFragment();
             return SwipeFragment.newInstance(position, images);
         }
     }
@@ -102,31 +104,35 @@ public class MoleImageSliderActivity extends FragmentActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             Bundle bundle = getArguments();
-             position = bundle.getInt("position");
+            position = bundle.getInt("position");
             images = (ImageRecord[]) bundle.getSerializable(PARAM_IMAGES);
 
             ImageRecord image1 = images[position];
             ImageRecord image2;
 
-            if(position == images.length - 1){
+            if (position == images.length - 1 && images.length > 1) {
                 image2 = images[0];
-            }else{
+            } else {
                 image2 = (position + 1 < images.length ? images[position + 1] : null);
             }
 
 
             View swipeView = inflater.inflate(R.layout.fragment_mole_image_slider, container, false);
 
-            TextView txtDate1 = (TextView)swipeView.findViewById(R.id.txtDate1);
-            TextView txtDate2 = (TextView)swipeView.findViewById(R.id.txtDate2);
-            TextView txtAnnotations1 = (TextView)swipeView.findViewById(R.id.txtAnnotations1);
-            TextView txtAnnotations2 = (TextView)swipeView.findViewById(R.id.txtAnnotations2);
+            TextView txtDate1 = (TextView) swipeView.findViewById(R.id.txtDate1);
+            TextView txtDate2 = (TextView) swipeView.findViewById(R.id.txtDate2);
+            TextView txtAnnotations1 = (TextView) swipeView.findViewById(R.id.txtAnnotations1);
+            TextView txtAnnotations2 = (TextView) swipeView.findViewById(R.id.txtAnnotations2);
 
             txtDate1.setText(image1.getImageDateAsString());
             txtAnnotations1.setText(image1.getAnnotations());
-            txtDate2.setText(image2.getImageDateAsString());
-            txtAnnotations2.setText(image2.getAnnotations());
-
+            if (image2 != null) {
+                txtDate2.setText(image2.getImageDateAsString());
+                txtAnnotations2.setText(image2.getAnnotations());
+            }else{
+                txtDate2.setText("");
+                txtAnnotations2.setText("");
+            }
             ImageView leftImageView = (ImageView) swipeView.findViewById(R.id.leftImageView);
             ImageView rightImageView = (ImageView) swipeView.findViewById(R.id.rightImageView);
 
@@ -144,6 +150,8 @@ public class MoleImageSliderActivity extends FragmentActivity {
                 } else {
                     rightImageView.setImageBitmap(ImageUtils.decodeSampledBitmapFromResource(getActivity(), imageUri, 200, 200));
                 }
+            }else{
+                rightImageView.setImageResource(R.drawable.ic_images25);
             }
 
             leftImageView.setOnClickListener(this);
@@ -165,6 +173,7 @@ public class MoleImageSliderActivity extends FragmentActivity {
 
             Intent i = new Intent(getActivity(), ImageSliderActivity.class);
             i.putExtra(ImageSliderActivity.PARAM_IMAGES, images);
+            i.putExtra(ImageSliderActivity.PARAM_SELECTED_IMAGE, position);
             startActivity(i);
 
         }

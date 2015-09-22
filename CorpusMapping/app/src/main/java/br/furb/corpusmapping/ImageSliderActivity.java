@@ -46,11 +46,14 @@ public class ImageSliderActivity extends FragmentActivity {
         viewPager.setAdapter(imageFragmentPagerAdapter);
         viewPager.setCurrentItem(selectedImage);
 
-        /*
+
         TextView txtMole = (TextView) findViewById(R.id.txtMole);
         txtMole.setText(images[0].getMoleGroup().getGroupName());
         ImageView imgCla = (ImageView) findViewById(R.id.imgClassification);
-        imgCla.setImageResource(R.drawable.ic_class_red); //TODO*/
+        imgCla.setImageResource(R.drawable.ic_class_red);
+
+        ImageView imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
+        imgBodyPart.setImageResource(images[0].getBodyPart().getResource());
 
     }
 

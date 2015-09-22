@@ -28,6 +28,16 @@
             android:layout_alignParentTop="true"
             android:padding="8dp"
             android:src="@drawable/ic_class_red"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imgBodyPart"
+            android:src="@drawable/cabeca_frente"
+            android:layout_alignBottom="@+id/txtMole"
+            android:layout_toLeftOf="@+id/imgClassification"
+            android:layout_toStartOf="@+id/imgClassification" />
+
     </RelativeLayout>
 
 
