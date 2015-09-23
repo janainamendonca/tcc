@@ -1,5 +1,7 @@
 package br.furb.corpusmapping;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,22 +14,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import br.furb.corpusmapping.data.ImageRecord;
+import br.furb.corpusmapping.data.MoleClassification;
+import br.furb.corpusmapping.data.MoleGroup;
+import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.util.ImageUtils;
 
 
-public class ImageSliderActivity extends FragmentActivity {
+public class ImageSliderActivity extends FragmentActivity implements View.OnClickListener {
 
     public static final String PARAM_IMAGES = "images";
     public static final String PARAM_SELECTED_IMAGE = "selected-image";
     ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     ViewPager viewPager;
-    //public static final String[] IMAGE_NAME = {"eagle", "horse", "bonobo", "wolf", "owl", "bear",};
     private ImageRecord[] images;
     private int numItems;
     private int selectedImage;
+    private MoleGroup moleGroup;
+    private ImageView imgClassification;
 
 
     @Override
@@ -36,25 +43,76 @@ public class ImageSliderActivity extends FragmentActivity {
         setContentView(R.layout.activity_mole_image_slider);
         images = (ImageRecord[]) getIntent().getSerializableExtra(PARAM_IMAGES);
         selectedImage = getIntent().getIntExtra(PARAM_SELECTED_IMAGE, 0);
-
-
         numItems = images.length;
-
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(imageFragmentPagerAdapter);
         viewPager.setCurrentItem(selectedImage);
 
-
         TextView txtMole = (TextView) findViewById(R.id.txtMole);
-        txtMole.setText(images[0].getMoleGroup().getGroupName());
-        ImageView imgCla = (ImageView) findViewById(R.id.imgClassification);
-        imgCla.setImageResource(R.drawable.ic_class_red);
+        ImageRecord imageRecord = images[0];
+        moleGroup = imageRecord.getMoleGroup();
+        txtMole.setText(moleGroup.getGroupName());
+        imgClassification = (ImageView) findViewById(R.id.imgClassification);
+
+        if (moleGroup.getClassification() != null) {
+            imgClassification.setImageResource(moleGroup.getClassification().getResource());
+        }
 
         ImageView imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
-        imgBodyPart.setImageResource(images[0].getBodyPart().getResource());
+        SpecificBodyPart bodyPart = imageRecord.getBodyPart();
+        imgBodyPart.setImageResource(bodyPart.getResource());
+        ImageDrawer.drawPoint(imgBodyPart, bodyPart.getResource(), moleGroup.getPosition());
 
+        imgClassification.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.imgClassification) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Classificação da pinta:");
+            View view = this.getLayoutInflater().inflate(R.layout.dialog_mole_classification, null);
+            builder.setView(view);
+
+            final RadioButton rbNormal = (RadioButton) view.findViewById(R.id.rbNormal);
+            final RadioButton rbAttention = (RadioButton) view.findViewById(R.id.rbAttention);
+            final RadioButton rbDanger = (RadioButton) view.findViewById(R.id.rbDanger);
+            MoleClassification classification = moleGroup.getClassification();
+            if (classification != null) {
+                switch (classification) {
+                    case NORMAL:
+                        rbNormal.setChecked(true);
+                        break;
+                    case ATTENTION:
+                        rbAttention.setChecked(true);
+                        break;
+                    case DANGER:
+                        rbDanger.setChecked(true);
+                        break;
+                }
+            }
+
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                    if (rbNormal.isChecked()) {
+                        moleGroup.setClassification(MoleClassification.NORMAL);
+                    } else if (rbAttention.isChecked()) {
+                        moleGroup.setClassification(MoleClassification.ATTENTION);
+                    } else if (rbDanger.isChecked()) {
+                        moleGroup.setClassification(MoleClassification.DANGER);
+                    }
+
+                    imgClassification.setImageResource(moleGroup.getClassification().getResource());
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     private class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -90,8 +148,8 @@ public class ImageSliderActivity extends FragmentActivity {
             View swipeView = inflater.inflate(R.layout.fragment_detail_mole_image_slider, container, false);
             ImageView imageView = (ImageView) swipeView.findViewById(R.id.imageView);
 
-            TextView txtDate = (TextView)swipeView.findViewById(R.id.txtDate);
-            TextView txtAnnotations = (TextView)swipeView.findViewById(R.id.txtAnnotations);
+            TextView txtDate = (TextView) swipeView.findViewById(R.id.txtDate);
+            TextView txtAnnotations = (TextView) swipeView.findViewById(R.id.txtAnnotations);
 
             txtDate.setText(imageRecord.getImageDateAsString());
             txtAnnotations.setText(imageRecord.getAnnotations());
