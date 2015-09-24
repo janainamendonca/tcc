@@ -11,7 +11,9 @@ public enum MoleClassification {
 
     ATTENTION(R.drawable.ic_class_yellow, "Atenção"),
 
-    DANGER(R.drawable.ic_class_red, "Perigo");
+    DANGER(R.drawable.ic_class_red, "Perigo"),
+
+    NONE(R.drawable.ic_ic_class_gray, "Não classificado");
 
     private int resource;
     private String description;
