@@ -6,6 +6,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
+        android:padding="8dp"
         android:layout_height="wrap_content">
 
 
@@ -26,17 +27,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_class_red"/>
+            android:padding="8dp"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:id="@+id/imgBodyPart"
             android:src="@drawable/cabeca_frente"
             android:layout_alignBottom="@+id/txtMole"
             android:layout_toLeftOf="@+id/imgClassification"
+            android:paddingBottom="8dp"
             android:layout_toStartOf="@+id/imgClassification" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_alignBottom="@+id/imgBodyPart"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp" />
 
     </RelativeLayout>
 
