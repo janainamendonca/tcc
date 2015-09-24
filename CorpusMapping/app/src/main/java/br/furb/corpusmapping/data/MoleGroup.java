@@ -15,6 +15,7 @@ public class MoleGroup implements Serializable {
     private String description;
     private PointF position;
     private long patientId;
+    private MoleClassification classification;
 
     public MoleGroup() {
         this(null, null);
@@ -76,5 +77,13 @@ public class MoleGroup implements Serializable {
 
     public void setPatientId(long patientId) {
         this.patientId = patientId;
+    }
+
+    public void setClassification(MoleClassification classification) {
+        this.classification = classification;
+    }
+
+    public MoleClassification getClassification() {
+        return classification == null ? MoleClassification.NONE : classification;
     }
 }

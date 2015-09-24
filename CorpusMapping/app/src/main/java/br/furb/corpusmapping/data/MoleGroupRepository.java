@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import br.furb.corpusmapping.data.PointF;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class MoleGroupRepository {
     public static final String COLUMN_NAME = "group_name";
     public static final String COLUMN_ANNOTATIONS = "annotations";
     public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_CLASSIFICATION = "classification";
     public static final String COLUMN_POINT_X = "point_x";
     public static final String COLUMN_POINT_Y = "point_y";
     public static final String COLUMN_PATIENT_ID = "patient";
@@ -152,6 +154,9 @@ public class MoleGroupRepository {
         String description = cursor.getString(
                 cursor.getColumnIndex(
                         COLUMN_DESCRIPTION));
+        String classification = cursor.getString(
+                cursor.getColumnIndex(
+                        COLUMN_CLASSIFICATION));
 
         MoleGroup moleGroup = new MoleGroup(name, annotations, description);
         float x = cursor.getFloat(cursor.getColumnIndex(COLUMN_POINT_X));
@@ -159,6 +164,11 @@ public class MoleGroupRepository {
         moleGroup.setPosition(new PointF(x, y));
         moleGroup.setPatientId(cursor.getLong(cursor.getColumnIndex(COLUMN_PATIENT_ID)));
         moleGroup.setId(id);
+
+        if (classification != null) {
+            moleGroup.setClassification(MoleClassification.valueOf(classification));
+        }
+
         return moleGroup;
     }
 
@@ -201,6 +211,7 @@ public class MoleGroupRepository {
         cv.put(COLUMN_POINT_X, moleGroup.getPosition().x);
         cv.put(COLUMN_POINT_Y, moleGroup.getPosition().y);
         cv.put(COLUMN_PATIENT_ID, moleGroup.getPatientId());
+        cv.put(COLUMN_CLASSIFICATION, moleGroup.getClassification() != null ? moleGroup.getClassification().toString() : null);
         return cv;
     }
 

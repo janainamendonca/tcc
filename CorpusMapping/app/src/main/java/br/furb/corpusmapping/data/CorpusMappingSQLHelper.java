@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "dbCorpusMapping";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
 
     private static CorpusMappingSQLHelper instance;
 
@@ -41,6 +41,13 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
             createTablePatient(db);
             createTableMoleGroup(db);
             createTableImageRegister(db);
+        } else if (newVersion == 4) {
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("ALTER TABLE MOLE_GROUP");
+            sql.append(" ADD COLUMN classification TEXT;");
+
+            db.execSQL(sql.toString());
         }
     }
 
@@ -76,6 +83,7 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
         sql.append(" patient LONG, ");
         sql.append(" point_x REAL, ");
         sql.append(" point_y REAL, ");
+        sql.append(" classification TEXT, ");
         sql.append(" annotations TEXT); ");
 
         db.execSQL(sql.toString());
