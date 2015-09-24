@@ -98,7 +98,7 @@ public class BodyImageSliderActivity extends FragmentActivity {
 
             List<PointF> listPoints = new ArrayList<>();
             for (ImageRecord i : imageRecords) {
-                listPoints.add(i.getPosition());
+                listPoints.add(i.getMoleGroup().getPosition());
             }
             bitmap = ImageDrawer.drawPoint(bitmap, listPoints.toArray(new PointF[listPoints.size()]));
             imageView.setImageBitmap(bitmap);

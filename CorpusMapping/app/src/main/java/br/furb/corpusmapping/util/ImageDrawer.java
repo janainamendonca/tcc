@@ -23,6 +23,11 @@ import br.furb.corpusmapping.data.ImageRecordRepository;
  */
 public class ImageDrawer {
 
+    public static void drawPoint(ImageView view, int resourceId, PointF... point) {
+        Bitmap bitmap = BitmapFactory.decodeResource(view.getResources(), resourceId);
+        bitmap = drawPoint(bitmap, point);
+        view.setImageBitmap(bitmap);
+    }
     public static Bitmap drawPoint(Bitmap bitmap, PointF... point) {
 
         Bitmap workingBitmap = Bitmap.createBitmap(bitmap);
@@ -53,7 +58,7 @@ public class ImageDrawer {
 
         List<PointF> listPoints = new ArrayList<>();
         for (ImageRecord i : imageRecords) {
-            listPoints.add(i.getPosition());
+            listPoints.add(i.getMoleGroup().getPosition());
         }
         bitmap = ImageDrawer.drawPoint(bitmap, listPoints.toArray(new PointF[listPoints.size()]));
         view.setImageBitmap(bitmap);
