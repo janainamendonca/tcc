@@ -1,8 +1,6 @@
 package br.furb.corpusmapping;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,17 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import br.furb.corpusmapping.data.ImageRecord;
-import br.furb.corpusmapping.data.MoleClassification;
 import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.util.ImageUtils;
 
+import static br.furb.corpusmapping.util.MoleClassificationDialog.show;
 
-public class ImageSliderActivity extends FragmentActivity implements View.OnClickListener {
+
+public class MoleDetailedImageSliderActivity extends FragmentActivity implements View.OnClickListener {
 
     public static final String PARAM_IMAGES = "images";
     public static final String PARAM_SELECTED_IMAGE = "selected-image";
@@ -32,7 +30,6 @@ public class ImageSliderActivity extends FragmentActivity implements View.OnClic
     ViewPager viewPager;
     private ImageRecord[] images;
     private int numItems;
-    private int selectedImage;
     private MoleGroup moleGroup;
     private ImageView imgClassification;
 
@@ -42,7 +39,7 @@ public class ImageSliderActivity extends FragmentActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mole_image_slider);
         images = (ImageRecord[]) getIntent().getSerializableExtra(PARAM_IMAGES);
-        selectedImage = getIntent().getIntExtra(PARAM_SELECTED_IMAGE, 0);
+        int selectedImage = getIntent().getIntExtra(PARAM_SELECTED_IMAGE, 0);
         numItems = images.length;
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
 
@@ -71,47 +68,13 @@ public class ImageSliderActivity extends FragmentActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.imgClassification) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            show(this, moleGroup, new DialogInterface.OnClickListener() {
 
-            builder.setTitle("Classificação da pinta:");
-            View view = this.getLayoutInflater().inflate(R.layout.dialog_mole_classification, null);
-            builder.setView(view);
-
-            final RadioButton rbNormal = (RadioButton) view.findViewById(R.id.rbNormal);
-            final RadioButton rbAttention = (RadioButton) view.findViewById(R.id.rbAttention);
-            final RadioButton rbDanger = (RadioButton) view.findViewById(R.id.rbDanger);
-            MoleClassification classification = moleGroup.getClassification();
-            if (classification != null) {
-                switch (classification) {
-                    case NORMAL:
-                        rbNormal.setChecked(true);
-                        break;
-                    case ATTENTION:
-                        rbAttention.setChecked(true);
-                        break;
-                    case DANGER:
-                        rbDanger.setChecked(true);
-                        break;
-                }
-            }
-
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-
-                    if (rbNormal.isChecked()) {
-                        moleGroup.setClassification(MoleClassification.NORMAL);
-                    } else if (rbAttention.isChecked()) {
-                        moleGroup.setClassification(MoleClassification.ATTENTION);
-                    } else if (rbDanger.isChecked()) {
-                        moleGroup.setClassification(MoleClassification.DANGER);
-                    }
-
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
                     imgClassification.setImageResource(moleGroup.getClassification().getResource());
                 }
             });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
     }
 
@@ -127,14 +90,11 @@ public class ImageSliderActivity extends FragmentActivity implements View.OnClic
 
         @Override
         public Fragment getItem(int position) {
-            SwipeFragment fragment = new SwipeFragment();
             return SwipeFragment.newInstance(position, images);
         }
     }
 
     public static class SwipeFragment extends Fragment {
-
-        private Bitmap bitmap;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,9 @@ import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.data.MoleGroupRepository;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.util.ImageUtils;
+import br.furb.corpusmapping.util.MoleClassificationDialog;
+
+import static br.furb.corpusmapping.util.MoleClassificationDialog.show;
 
 
 public class MoleImageSliderActivity extends FragmentActivity implements View.OnClickListener {
@@ -96,47 +98,13 @@ public class MoleImageSliderActivity extends FragmentActivity implements View.On
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.imgClassification) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            show(this, moleGroup, new DialogInterface.OnClickListener() {
 
-            builder.setTitle("Classificação da pinta:");
-            View view = this.getLayoutInflater().inflate(R.layout.dialog_mole_classification, null);
-            builder.setView(view);
-
-            final RadioButton rbNormal = (RadioButton) view.findViewById(R.id.rbNormal);
-            final RadioButton rbAttention = (RadioButton) view.findViewById(R.id.rbAttention);
-            final RadioButton rbDanger = (RadioButton) view.findViewById(R.id.rbDanger);
-            MoleClassification classification = moleGroup.getClassification();
-            if (classification != null) {
-                switch (classification) {
-                    case NORMAL:
-                        rbNormal.setChecked(true);
-                        break;
-                    case ATTENTION:
-                        rbAttention.setChecked(true);
-                        break;
-                    case DANGER:
-                        rbDanger.setChecked(true);
-                        break;
-                }
-            }
-
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-
-                    if (rbNormal.isChecked()) {
-                        moleGroup.setClassification(MoleClassification.NORMAL);
-                    } else if (rbAttention.isChecked()) {
-                        moleGroup.setClassification(MoleClassification.ATTENTION);
-                    } else if (rbDanger.isChecked()) {
-                        moleGroup.setClassification(MoleClassification.DANGER);
-                    }
-                    MoleGroupRepository.getInstance(MoleImageSliderActivity.this).save(moleGroup);
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
                     imgClassification.setImageResource(moleGroup.getClassification().getResource());
                 }
             });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
     }
 
@@ -234,9 +202,9 @@ public class MoleImageSliderActivity extends FragmentActivity implements View.On
         @Override
         public void onClick(View v) {
 
-            Intent i = new Intent(getActivity(), ImageSliderActivity.class);
-            i.putExtra(ImageSliderActivity.PARAM_IMAGES, images);
-            i.putExtra(ImageSliderActivity.PARAM_SELECTED_IMAGE, position);
+            Intent i = new Intent(getActivity(), MoleDetailedImageSliderActivity.class);
+            i.putExtra(MoleDetailedImageSliderActivity.PARAM_IMAGES, images);
+            i.putExtra(MoleDetailedImageSliderActivity.PARAM_SELECTED_IMAGE, position);
             startActivity(i);
 
         }
