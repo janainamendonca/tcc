@@ -1,14 +1,8 @@
 package br.furb.corpusmapping.data;
 
-import br.furb.corpusmapping.data.PointF;
-
-import android.os.Parcelable;
-
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import br.furb.corpusmapping.ImageType;
 import br.furb.corpusmapping.SpecificBodyPart;

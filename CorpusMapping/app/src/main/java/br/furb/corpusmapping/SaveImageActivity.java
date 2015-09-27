@@ -1,9 +1,7 @@
 package br.furb.corpusmapping;
 
 import android.content.Intent;
-import br.furb.corpusmapping.data.PointF;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,13 +10,13 @@ import android.widget.ImageView;
 
 import org.joda.time.LocalDateTime;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.data.MoleGroupRepository;
+import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BoundingBox;
 
 public class SaveImageActivity extends ActionBarActivity {
@@ -135,8 +133,8 @@ public class SaveImageActivity extends ActionBarActivity {
                 imageRecord.setBodyPart(bodyPart);
                 imageRecord.setAnnotations(annotation);
 
-                ImageRecord found = imageRecordRepository.getByBodyPartAndPosition(patientId, bodyPart, position);
-                MoleGroup moleGroup = found != null ? found.getMoleGroup() : null;
+                List<ImageRecord> found = imageRecordRepository.getByBodyPartAndPosition(patientId, bodyPart, position);
+                MoleGroup moleGroup = found.isEmpty() ? null : found.get(0).getMoleGroup();
 
                 if (moleGroup == null) {
                     moleGroup = new MoleGroup();

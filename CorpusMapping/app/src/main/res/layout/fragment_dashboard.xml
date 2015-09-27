@@ -82,6 +82,15 @@
             android:text="Consultar imagens"
             android:layout_gravity="center_horizontal" />
 
+        <Button
+            android:id="@+id/btnViewDiagram"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_images25"
+            android:paddingTop="16dp"
+            android:text="Consultar diagrama"
+            android:layout_gravity="center_horizontal" />
+
     </TableLayout>
 
 

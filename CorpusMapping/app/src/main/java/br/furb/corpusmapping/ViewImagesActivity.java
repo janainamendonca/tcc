@@ -3,10 +3,10 @@ package br.furb.corpusmapping;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,14 @@ public class ViewImagesActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_images);
+        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         listView = (ListView)findViewById(R.id.listImages);
 
         moleImages = ImageRecordRepository.getInstance(this).getLastMolesByPatientId(CorpusMappingApp.getInstance().getSelectedPatientId());
 
-        List<ImageRecord> records = new ArrayList<>();
+        List<ImageRecord> records = new ArrayList<ImageRecord>();
 
         for(List<ImageRecord> l : moleImages.values()){
             if(!l.isEmpty()){

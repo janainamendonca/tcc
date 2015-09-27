@@ -4,11 +4,13 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,7 +24,7 @@ import br.furb.corpusmapping.util.ImageUtils;
 import static br.furb.corpusmapping.util.MoleClassificationDialog.show;
 
 
-public class MoleDetailedImageSliderActivity extends FragmentActivity implements View.OnClickListener {
+public class MoleDetailedImageSliderActivity extends ActionBarActivity implements View.OnClickListener {
 
     public static final String PARAM_IMAGES = "images";
     public static final String PARAM_SELECTED_IMAGE = "selected-image";
@@ -42,6 +44,9 @@ public class MoleDetailedImageSliderActivity extends FragmentActivity implements
         int selectedImage = getIntent().getIntExtra(PARAM_SELECTED_IMAGE, 0);
         numItems = images.length;
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(imageFragmentPagerAdapter);
@@ -63,6 +68,13 @@ public class MoleDetailedImageSliderActivity extends FragmentActivity implements
         ImageDrawer.drawPoint(imgBodyPart, bodyPart.getResource(), moleGroup.getPosition());
 
         imgClassification.setOnClickListener(this);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_view_images, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

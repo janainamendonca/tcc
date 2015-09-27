@@ -6,16 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import br.furb.corpusmapping.data.PointF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.util.List;
+
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleGroup;
-import br.furb.corpusmapping.data.MoleGroupRepository;
+import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BoundingBox;
 import br.furb.corpusmapping.util.ImageDrawer;
 
@@ -44,8 +45,8 @@ public class AssociateBodyPartTouchListener extends ImageBoundingBoxTouchListene
         if (bitmap == null) {
             bitmap = BitmapFactory.decodeResource(view.getResources(), resourceId);
         }
-        ImageRecord imageRecord = ImageRecordRepository.getInstance(activity).getByBodyPartAndPosition(CorpusMappingApp.getInstance().getSelectedPatientId(), bodyPart, touchPoint);
-        MoleGroup moleGroup = imageRecord != null ? imageRecord.getMoleGroup() : null;
+        List<ImageRecord> imageRecord = ImageRecordRepository.getInstance(activity).getByBodyPartAndPosition(CorpusMappingApp.getInstance().getSelectedPatientId(), bodyPart, touchPoint);
+        MoleGroup moleGroup = imageRecord.isEmpty() ? null : imageRecord.get(0).getMoleGroup();
 
         if (moleGroup == null) {
             Bitmap newBitmap = ImageDrawer.drawPoint(bitmap, touchPoint);

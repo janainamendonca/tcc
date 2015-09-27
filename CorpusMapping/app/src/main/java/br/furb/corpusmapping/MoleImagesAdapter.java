@@ -1,10 +1,6 @@
 package br.furb.corpusmapping;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import br.furb.corpusmapping.data.ImageRecord;
@@ -61,7 +55,7 @@ public class MoleImagesAdapter extends BaseAdapter {
             holder.imgMole = (ImageView) convertView.findViewById(R.id.imgMole);
             holder.txtMole = (TextView) convertView.findViewById(R.id.txtMole);
             holder.txtDateTime = (TextView) convertView.findViewById(R.id.txtDateTime);
-            holder.txtClassification = (TextView) convertView.findViewById(R.id.txtClassification);
+            holder.imgClassification = (ImageView) convertView.findViewById(R.id.imgClassification);
             convertView.setTag(holder);
         } else {
             Log.d("NGVL", "View existente => position: " + position);
@@ -76,6 +70,7 @@ public class MoleImagesAdapter extends BaseAdapter {
         }
         holder.txtMole.setText(image.getMoleGroup().getGroupName());
         holder.txtDateTime.setText(image.getImageDate().toString("dd/MM/yyyy HH:mm"));
+        holder.imgClassification.setImageResource(image.getMoleGroup().getClassification().getResource());
 
         // 4 passo
         return convertView;
@@ -83,6 +78,7 @@ public class MoleImagesAdapter extends BaseAdapter {
 
     static class ViewHolder {
         ImageView imgMole;
+        ImageView imgClassification;
         TextView txtMole;
         TextView txtDateTime;
         TextView txtClassification;
