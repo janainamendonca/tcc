@@ -17,9 +17,12 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import br.furb.corpusmapping.capture.SaveImageActivity;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
 import br.furb.corpusmapping.util.ImageUtils;
+import br.furb.corpusmapping.view.ViewBodyDiagramActivity;
+import br.furb.corpusmapping.view.ViewImagesActivity;
 
 
 /**

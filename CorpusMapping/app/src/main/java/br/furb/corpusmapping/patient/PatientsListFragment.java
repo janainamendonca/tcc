@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.patient;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
 

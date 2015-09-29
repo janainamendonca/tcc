@@ -25,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PatientsActivity"
+            android:name=".patient.PatientsActivity"
             android:label="@string/title_activity_patients_activity" />
         <activity
-            android:name=".PatientSelectedActivity"
+            android:name=".patient.PatientSelectedActivity"
             android:label="@string/title_activity_patient_form"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -36,68 +36,68 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".PatientFormActivity"
+            android:name=".patient.PatientFormActivity"
             android:label="@string/title_activity_patient_form"
-            android:parentActivityName=".PatientsActivity">
+            android:parentActivityName=".patient.PatientsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PatientsActivity" />
+                android:value=".patient.PatientsActivity" />
         </activity>
         <activity
-            android:name=".SaveImageActivity"
+            android:name=".capture.SaveImageActivity"
             android:label="@string/title_activity_save_image"
-            android:parentActivityName=".PatientSelectedActivity">
+            android:parentActivityName=".patient.PatientSelectedActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.PatientSelectedActivity" />
+                android:value=".patient.PatientSelectedActivity" />
         </activity>
         <activity
-            android:name=".SelectBodyPartActivity"
+            android:name=".capture.SelectBodyPartActivity"
             android:label="@string/title_activity_select_body_part"
-            android:parentActivityName=".SaveImageActivity">
+            android:parentActivityName=".capture.SaveImageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.SaveImageActivity" />
+                android:value=".capture.SaveImageActivity" />
         </activity>
         <activity
-            android:name=".BodyImageSliderActivity"
+            android:name=".capture.BodyImageSliderActivity"
             android:label="@string/title_activity_image_slider"
-            android:parentActivityName=".SaveImageActivity">
+            android:parentActivityName=".capture.SaveImageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.SaveImageActivity" />
+                android:value=".capture.SaveImageActivity" />
         </activity>
         <activity
-            android:name=".ViewImagesActivity"
+            android:name=".view.ViewImagesActivity"
             android:label="@string/title_activity_view_images"
-            android:parentActivityName=".PatientSelectedActivity">
+            android:parentActivityName=".patient.PatientSelectedActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.PatientSelectedActivity" />
+                android:value=".patient.PatientSelectedActivity" />
         </activity>
         <activity
-            android:name=".MoleImageSliderActivity"
+            android:name=".view.MoleImageSliderActivity"
             android:label="@string/title_activity_image_slider"
-            android:parentActivityName=".ViewImagesActivity">
+            android:parentActivityName=".view.ViewImagesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.ViewImagesActivity" />
+                android:value=".view.ViewImagesActivity" />
         </activity>
         <activity
-            android:name=".MoleDetailedImageSliderActivity"
+            android:name=".view.MoleDetailedImageSliderActivity"
             android:label="Detalhes"
-            android:parentActivityName=".MoleImageSliderActivity">
+            android:parentActivityName=".view.MoleImageSliderActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.MoleImageSliderActivity" />
+                android:value=".view.MoleImageSliderActivity" />
         </activity>
         <activity
-            android:name=".ViewBodyDiagramActivity"
+            android:name=".view.ViewBodyDiagramActivity"
             android:label="@string/title_activity_view_body_diagram"
-            android:parentActivityName=".PatientSelectedActivity">
+            android:parentActivityName=".patient.PatientSelectedActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.PatientSelectedActivity" />
+                android:value=".patient.PatientSelectedActivity" />
         </activity>
     </application>
 

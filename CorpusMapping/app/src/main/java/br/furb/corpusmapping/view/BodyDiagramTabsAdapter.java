@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Locale;
+
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.view.ViewArmMolesFragment;
+import br.furb.corpusmapping.view.ViewBodyMolesFragment;
+import br.furb.corpusmapping.view.ViewHeadMolesFragment;
+import br.furb.corpusmapping.view.ViewLegMolesFragment;
 
 /**
  * Created by Janaina on 26/09/2015.

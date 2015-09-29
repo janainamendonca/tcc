@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 

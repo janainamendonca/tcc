@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.capture;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +13,10 @@ import android.widget.ImageView;
 
 import java.util.List;
 
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
+import br.furb.corpusmapping.common.ImageBoundingBoxTouchListener;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleGroup;

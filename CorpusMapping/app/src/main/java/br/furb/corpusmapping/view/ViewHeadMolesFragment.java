@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,17 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.List;
-
-import br.furb.corpusmapping.data.ImageRecord;
-import br.furb.corpusmapping.data.ImageRecordRepository;
-import br.furb.corpusmapping.data.MoleGroupRepository;
-import br.furb.corpusmapping.data.PointF;
-import br.furb.corpusmapping.util.BodyImagesUtil;
+import br.furb.corpusmapping.capture.BodyImageSliderActivity;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 import static br.furb.corpusmapping.SpecificBodyPart.HEAD_BACK;
 import static br.furb.corpusmapping.SpecificBodyPart.HEAD_FRONT;
 import static br.furb.corpusmapping.SpecificBodyPart.HEAD_LEFT;

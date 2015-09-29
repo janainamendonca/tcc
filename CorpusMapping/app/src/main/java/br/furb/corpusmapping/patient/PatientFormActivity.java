@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.patient;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.Gender;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;

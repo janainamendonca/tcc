@@ -1,10 +1,11 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.tablayout.SlidingTabLayout;
 
 

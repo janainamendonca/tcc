@@ -1,6 +1,7 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,33 +9,37 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.joda.time.LocalDateTime;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.ImageType;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
+import br.furb.corpusmapping.data.MoleClassification;
 import br.furb.corpusmapping.data.MoleGroup;
+import br.furb.corpusmapping.data.MoleGroupRepository;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
-import br.furb.corpusmapping.data.PointF;
+import br.furb.corpusmapping.util.BodyPartDialog;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.util.ImageUtils;
 
@@ -50,7 +55,9 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
     private int numItems;
     private MoleGroup moleGroup;
     private ImageView imgClassification;
+    private ImageView imgBodyPart;
     private String imageShortPath;
+    private SpecificBodyPart bodyPart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,13 +110,13 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
             imgClassification.setImageResource(moleGroup.getClassification().getResource());
         }
 
-        ImageView imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
-        SpecificBodyPart bodyPart = imageRecord.getBodyPart();
+        imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
+        bodyPart = imageRecord.getBodyPart();
         imgBodyPart.setImageResource(bodyPart.getResource());
         ImageDrawer.drawPoint(imgBodyPart, bodyPart.getResource(), moleGroup.getPosition());
 
         imgClassification.setOnClickListener(this);
-
+        imgBodyPart.setOnClickListener(this);
     }
 
     @Override
@@ -122,6 +129,8 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
                     imgClassification.setImageResource(moleGroup.getClassification().getResource());
                 }
             });
+        } else if (v.getId() == R.id.imgBodyPart) {
+            BodyPartDialog.show(this, bodyPart, moleGroup);
         }
     }
 

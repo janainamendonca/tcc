@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.patient;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
 

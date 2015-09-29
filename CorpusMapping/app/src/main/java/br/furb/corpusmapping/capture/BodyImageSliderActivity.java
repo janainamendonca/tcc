@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.capture;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,11 +16,15 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BodyImagesUtil;
 import br.furb.corpusmapping.util.ImageDrawer;
+import br.furb.corpusmapping.view.ViewMolesTouchListener;
 
 
 public class BodyImageSliderActivity extends FragmentActivity {

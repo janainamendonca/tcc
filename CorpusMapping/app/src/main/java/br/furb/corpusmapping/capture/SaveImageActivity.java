@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.capture;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
+import br.furb.corpusmapping.BodyPart;
+import br.furb.corpusmapping.common.ImageBoundingBoxTouchListener;
+import br.furb.corpusmapping.ImageType;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleGroup;

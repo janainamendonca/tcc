@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.common;
 
 import android.graphics.Matrix;
 import android.util.FloatMath;
@@ -50,6 +50,7 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
         ImageView view = (ImageView) v;
         // define o tipo de escala da imagem como Matriz
         view.setScaleType(ImageView.ScaleType.MATRIX);
+
         float scale;
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -90,6 +91,9 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
                         if (view.getLeft() >= -392) {
                             matrix.postTranslate(event.getX() - startPoint.x, event.getY() - startPoint.y);
                         }
+
+                        // Aplica a transformação
+                        view.setImageMatrix(matrix);
                     }
                 } else if (mode == ZOOM) { //
 
@@ -103,15 +107,15 @@ public class ImageBoundingBoxTouchListener implements View.OnTouchListener {
                             Log.d(TAG, "scale=" + scale);
                             matrix.postScale(scale, scale, mid.x, mid.y);
                         }
+
+                        // Aplica a transformação
+                        view.setImageMatrix(matrix);
                     }
                 }
                 break;
         }
 
-        if (isMoveEnabled() || isZoomEnabled()) {
-            // Aplica a transformação
-            view.setImageMatrix(matrix);
-        }
+
         return true;
     }
 

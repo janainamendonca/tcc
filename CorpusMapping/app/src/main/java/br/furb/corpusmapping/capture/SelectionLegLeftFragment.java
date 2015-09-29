@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.capture;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
 public class SelectionLegLeftFragment extends Fragment implements View.OnClickListener {
 

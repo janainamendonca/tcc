@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.util.ImageUtils;
 

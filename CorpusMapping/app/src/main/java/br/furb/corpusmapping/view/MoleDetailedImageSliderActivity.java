@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -16,8 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.MoleGroup;
+import br.furb.corpusmapping.util.BodyPartDialog;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.util.ImageUtils;
 
@@ -34,6 +37,7 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
     private int numItems;
     private MoleGroup moleGroup;
     private ImageView imgClassification;
+    private SpecificBodyPart bodyPart;
 
 
     @Override
@@ -63,11 +67,13 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
         }
 
         ImageView imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
-        SpecificBodyPart bodyPart = imageRecord.getBodyPart();
+        bodyPart = imageRecord.getBodyPart();
         imgBodyPart.setImageResource(bodyPart.getResource());
         ImageDrawer.drawPoint(imgBodyPart, bodyPart.getResource(), moleGroup.getPosition());
 
         imgClassification.setOnClickListener(this);
+        imgBodyPart.setOnClickListener(this);
+
     }
 
 
@@ -87,6 +93,8 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
                     imgClassification.setImageResource(moleGroup.getClassification().getResource());
                 }
             });
+        } else if (v.getId() == R.id.imgBodyPart) {
+            BodyPartDialog.show(this, bodyPart, moleGroup);
         }
     }
 
@@ -132,6 +140,9 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
             } else {
                 imageView.setImageBitmap(ImageUtils.decodeSampledBitmapFromResource(getActivity(), imageUri, 200, 200));
             }
+
+            // ImageBoundingBoxTouchListener touchListener = new ImageBoundingBoxTouchListener();
+            //  imageView.setOnTouchListener(touchListener);
 
             return swipeView;
         }

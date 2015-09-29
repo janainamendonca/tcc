@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +10,15 @@ import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
+import br.furb.corpusmapping.capture.BodyImageSliderActivity;
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
+import br.furb.corpusmapping.capture.SelectBodyPartActivity;
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
 public class ViewArmMolesFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
