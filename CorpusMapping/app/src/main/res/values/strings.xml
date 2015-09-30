@@ -36,5 +36,6 @@
     <string name="nenhuma_imagem">Nenhuma imagem</string>
     <string name="title_activity_view_body_diagram">Diagrama corporal com as pintas</string>
     <string name="action_take_picture">Nova imagem da pinta</string>
+    <string name="action_edit">Editar</string>
 
 </resources>

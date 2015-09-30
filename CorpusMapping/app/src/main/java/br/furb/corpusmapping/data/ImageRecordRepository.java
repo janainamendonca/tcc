@@ -263,6 +263,10 @@ public class ImageRecordRepository {
     }
 
     private int update(ImageRecord imageRecord) {
+        if (imageRecord.getMoleGroup() != null) {
+            moleGroupRepository.save(imageRecord.getMoleGroup());
+            imageRecord.setMoleGroupId(imageRecord.getMoleGroup().getId());
+        }
         SQLiteDatabase db = helper.getWritableDatabase();
         try {
             ContentValues cv = buildContentValues(imageRecord);

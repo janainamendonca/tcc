@@ -4,12 +4,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -17,12 +25,15 @@ import br.furb.corpusmapping.CorpusMappingApp;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.common.ImageBoundingBoxTouchListener;
+import br.furb.corpusmapping.common.SpinnerClassificationAdapter;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
+import br.furb.corpusmapping.data.MoleClassification;
 import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BoundingBox;
 import br.furb.corpusmapping.util.ImageDrawer;
+import br.furb.corpusmapping.util.ImageUtils;
 
 /**
  * Created by Janaina on 25/08/2015.
@@ -68,13 +79,19 @@ public class AssociateBodyPartTouchListener extends ImageBoundingBoxTouchListene
         final EditText edtGroupName = (EditText) view1.findViewById(R.id.edtGroupName);
         final EditText edtAnnotation = (EditText) view1.findViewById(R.id.edtAnnotation);
 
+        final Spinner spinnerClassification = (Spinner) view1.findViewById(R.id.spinnerClassification);
+
+        spinnerClassification.setAdapter(new SpinnerClassificationAdapter(activity));
+
 
         if (moleGroup != null) {
             edtGroupName.setText(moleGroup.getGroupName());
             edtAnnotation.setText(moleGroup.getAnnotations());
+            spinnerClassification.setSelection(moleGroup.getClassification().ordinal());
         } else {
             //sugerir um nome para o grupo
             edtGroupName.setText(bodyPart.getBodyPartName());
+            spinnerClassification.setSelection(MoleClassification.NONE.ordinal());
         }
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -84,6 +101,7 @@ public class AssociateBodyPartTouchListener extends ImageBoundingBoxTouchListene
                 data.putExtra("annotation", edtAnnotation.getText().toString());
                 data.putExtra("position", touchPoint);
                 data.putExtra("bodyPart", bodyPart.toString());
+                data.putExtra("classification", MoleClassification.values()[spinnerClassification.getSelectedItemPosition()].name());
                 activity.setResult(RESULT_CODE_OK, data);
                 activity.finish();
             }

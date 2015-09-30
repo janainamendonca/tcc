@@ -19,6 +19,7 @@ import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
+import br.furb.corpusmapping.data.MoleClassification;
 import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.data.MoleGroupRepository;
 import br.furb.corpusmapping.data.PointF;
@@ -129,6 +130,7 @@ public class SaveImageActivity extends ActionBarActivity {
                 String annotation = data.getStringExtra("annotation");
                 PointF position = (PointF) data.getSerializableExtra("position");
                 SpecificBodyPart bodyPart = SpecificBodyPart.valueOf(data.getStringExtra("bodyPart"));
+                MoleClassification classification = MoleClassification.valueOf(data.getStringExtra("classification"));
 
                 ImageRecord imageRecord = new ImageRecord();
                 imageRecord.setImageDate(LocalDateTime.now());
@@ -147,6 +149,7 @@ public class SaveImageActivity extends ActionBarActivity {
                     moleGroup.setPatientId(patientId);
                 }
                 moleGroup.setGroupName(groupName);
+                moleGroup.setClassification(classification);
 
                 imageRecord.setMoleGroup(moleGroup);
 

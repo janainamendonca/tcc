@@ -8,4 +8,10 @@
         android:orderInCategory="100"
         app:showAsAction="always|withText"
         android:title="@string/action_take_picture" />
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="100"
+        app:showAsAction="always|withText"
+        android:title="@string/action_edit" />
 </menu>

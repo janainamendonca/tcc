@@ -19,8 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.joda.time.LocalDateTime;
@@ -32,6 +34,7 @@ import br.furb.corpusmapping.CorpusMappingApp;
 import br.furb.corpusmapping.ImageType;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.SpecificBodyPart;
+import br.furb.corpusmapping.common.SpinnerClassificationAdapter;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleClassification;
@@ -75,6 +78,7 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
 
         viewPager = (ViewPager) findViewById(R.id.pager);
 
+        /*
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             boolean alteradoListener = false;
@@ -96,7 +100,7 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
 
             public void onPageScrollStateChanged(int state) {
             }
-        });
+        });*/
 
         viewPager.setAdapter(imageFragmentPagerAdapter);
 
@@ -176,8 +180,42 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             startActivityForResult(intent, REQUEST_CODE_IMAGE);
+        } else if (item.getItemId() == R.id.action_edit) {
+            editMoleGroup();
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editMoleGroup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_mole_group, null);
+        builder.setView(view);
+
+        final EditText edtGroupName = (EditText) view.findViewById(R.id.edtGroupName);
+
+        final Spinner spinnerClassification = (Spinner) view.findViewById(R.id.spinnerClassification);
+
+        spinnerClassification.setAdapter(new SpinnerClassificationAdapter(this));
+
+        final ImageRecord imageRecord = images[viewPager.getCurrentItem()];
+
+        edtGroupName.setText(moleGroup.getGroupName());
+        spinnerClassification.setSelection(moleGroup.getClassification().ordinal());
+
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                moleGroup.setGroupName(edtGroupName.getText().toString());
+                moleGroup.setClassification(MoleClassification.values()[spinnerClassification.getSelectedItemPosition()]);
+                MoleGroupRepository.getInstance(MoleImageSliderActivity.this).save(moleGroup);
+                //TODO propagar a alteração para atualizar os componentes da tela
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
@@ -186,29 +224,42 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK
                 && requestCode == REQUEST_CODE_IMAGE) {
-            MoleGroup moleGroup = images[0].getMoleGroup();
+            final MoleGroup moleGroup = images[0].getMoleGroup();
 
-            String annotation = "colocar depois";
+            final ImageRecord imageRecord = new ImageRecord();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            View view = inflater.inflate(R.layout.dialog_annotations, null);
+            builder.setView(view);
+            final EditText edtAnnotation = (EditText) view.findViewById(R.id.edtAnnotation);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    imageRecord.setAnnotations(edtAnnotation.getText().toString());
 
-            ImageRecord imageRecord = new ImageRecord();
-            imageRecord.setImageDate(LocalDateTime.now());
-            imageRecord.setPosition(moleGroup.getPosition());
-            imageRecord.setImagePath(imageShortPath);
-            imageRecord.setImageType(ImageType.LOCAL);
-            imageRecord.setBodyPart(images[0].getBodyPart());
-            imageRecord.setAnnotations(annotation);
+                    imageRecord.setImageDate(LocalDateTime.now());
+                    imageRecord.setPosition(moleGroup.getPosition());
+                    imageRecord.setImagePath(imageShortPath);
+                    imageRecord.setImageType(ImageType.LOCAL);
+                    imageRecord.setBodyPart(images[0].getBodyPart());
 
-            moleGroup.setGroupName(moleGroup.getGroupName());
-            imageRecord.setMoleGroup(moleGroup);
-            long patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
-            imageRecord.setPatientId(patientId);
-            ImageRecordRepository.getInstance(this).save(imageRecord);
+                    moleGroup.setGroupName(moleGroup.getGroupName());
+                    imageRecord.setMoleGroup(moleGroup);
+                    long patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
+                    imageRecord.setPatientId(patientId);
+                    ImageRecordRepository.getInstance(MoleImageSliderActivity.this).save(imageRecord);
 
-            images = Arrays.copyOf(images, images.length + 1);
-            images[images.length - 1] = imageRecord;
-            numItems = images.length;
-            //imageFragmentPagerAdapter.notifyDataSetChanged();
-            viewPager.setAdapter(imageFragmentPagerAdapter);
+                    images = Arrays.copyOf(images, images.length + 1);
+                    images[images.length - 1] = imageRecord;
+                    numItems = images.length;
+                    //imageFragmentPagerAdapter.notifyDataSetChanged(); TODO verificar como atualizar a viewPager
+                    viewPager.setAdapter(imageFragmentPagerAdapter);
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+
         }
     }
 
