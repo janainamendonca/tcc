@@ -4,18 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import br.furb.corpusmapping.data.PointF;
 
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +118,7 @@ public class ImageRecordRepository {
 
     }
 
-    public ImageRecord getByBodyPartAndPosition(long patientId, SpecificBodyPart bodyPart, PointF position) {
+    public List<ImageRecord> getByBodyPartAndPosition(long patientId, SpecificBodyPart bodyPart, PointF position) {
         SQLiteDatabase db = helper.getReadableDatabase();
 
         try {
@@ -133,13 +127,21 @@ public class ImageRecordRepository {
             Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(patientId), bodyPart.name(),//
                     String.valueOf(position.x + CLICK_MARGIN), String.valueOf(position.x - CLICK_MARGIN), String.valueOf(position.y + CLICK_MARGIN), String.valueOf(position.y - CLICK_MARGIN)});
 
-            ImageRecord imageRecord = null;
-
-            if (cursor.moveToFirst()) {
-                imageRecord = createImageRecord(cursor);
+            List<ImageRecord> imageRecords = new ArrayList<ImageRecord>();
+            while (cursor.moveToNext()) {
+                ImageRecord imageRecord = createImageRecord(cursor);
+                imageRecords.add(imageRecord);
             }
             cursor.close();
-            return imageRecord;
+
+            Collections.sort(imageRecords, new Comparator<ImageRecord>() {
+                @Override
+                public int compare(ImageRecord lhs, ImageRecord rhs) {
+                    return rhs.getImageDate().compareTo(lhs.getImageDate());
+                }
+            });
+
+            return imageRecords;
         } finally {
             db.close();
         }
@@ -152,7 +154,7 @@ public class ImageRecordRepository {
 
         try {
 
-            String sql = "SELECT * FROM " + TABLE_IMAGE_RECORD + " WHERE patient = ? ";
+            String sql = "SELECT * FROM " + TABLE_IMAGE_RECORD + " WHERE patient = ? order by " + COLUMN_BODY_PART;
 
             Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(patient_id)});
 
@@ -162,7 +164,7 @@ public class ImageRecordRepository {
             while (cursor.moveToNext()) {
                 ImageRecord imageRecord = createImageRecord(cursor);
 
-                if(!map.containsKey(imageRecord.getMoleGroupId())){
+                if (!map.containsKey(imageRecord.getMoleGroupId())) {
                     map.put(imageRecord.getMoleGroupId(), new ArrayList<ImageRecord>());
                 }
 
@@ -170,7 +172,7 @@ public class ImageRecordRepository {
             }
             cursor.close();
 
-            for (List<ImageRecord> records: map.values() ){
+            for (List<ImageRecord> records : map.values()) {
 
                 Collections.sort(records, new Comparator<ImageRecord>() {
                     @Override
@@ -261,6 +263,10 @@ public class ImageRecordRepository {
     }
 
     private int update(ImageRecord imageRecord) {
+        if (imageRecord.getMoleGroup() != null) {
+            moleGroupRepository.save(imageRecord.getMoleGroup());
+            imageRecord.setMoleGroupId(imageRecord.getMoleGroup().getId());
+        }
         SQLiteDatabase db = helper.getWritableDatabase();
         try {
             ContentValues cv = buildContentValues(imageRecord);

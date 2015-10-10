@@ -17,11 +17,12 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import br.furb.corpusmapping.data.ImageRecordRepository;
-import br.furb.corpusmapping.data.MoleGroupRepository;
+import br.furb.corpusmapping.capture.SaveImageActivity;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
 import br.furb.corpusmapping.util.ImageUtils;
+import br.furb.corpusmapping.view.ViewBodyDiagramActivity;
+import br.furb.corpusmapping.view.ViewImagesActivity;
 
 
 /**
@@ -75,13 +76,16 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         txtPatient = (TextView) view.findViewById(R.id.txtPatient);
-
+        patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
+        patient = repository.getById(patientId);
         txtPatient.setText(patient.getName());
 
         Button button = (Button) view.findViewById(R.id.btnAddImage);
         Button btnViewImages = (Button) view.findViewById(R.id.btnViewImages);
+        Button btnViewDiagram = (Button) view.findViewById(R.id.btnViewDiagram);
         button.setOnClickListener(this);
         btnViewImages.setOnClickListener(this);
+        btnViewDiagram.setOnClickListener(this);
 
         return view;
     }
@@ -126,6 +130,11 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             case R.id.btnViewImages:
                 // TODO abrir activity
                 Intent intent = new Intent(getActivity(), ViewImagesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btnViewDiagram:
+                // TODO abrir activity
+                intent = new Intent(getActivity(), ViewBodyDiagramActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -1,7 +1,5 @@
 package br.furb.corpusmapping.data;
 
-import br.furb.corpusmapping.data.PointF;
-
 import java.io.Serializable;
 
 /**

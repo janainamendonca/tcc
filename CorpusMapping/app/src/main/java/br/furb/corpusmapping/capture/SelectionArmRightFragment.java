@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.capture;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,26 +10,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.util.ImageDrawer;
 
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_BODY_PARTS;
-import static br.furb.corpusmapping.BodyImageSliderActivity.PARAM_IMAGES;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
+import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
-public class SelectionBodyFragment extends Fragment implements View.OnClickListener {
+public class SelectionArmRightFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    private ImageView imgBack;
-    private ImageView imgFront;
+    private ImageView imgArmTop;
+    private ImageView imgArmDown;
 
-    public static SelectionBodyFragment newInstance() {
-        SelectionBodyFragment fragment = new SelectionBodyFragment();
+    public static SelectionArmRightFragment newInstance() {
+        SelectionArmRightFragment fragment = new SelectionArmRightFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public SelectionBodyFragment() {
+    public SelectionArmRightFragment() {
     }
 
     @Override
@@ -42,15 +44,17 @@ public class SelectionBodyFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_selection_body, container, false);
+        View view = inflater.inflate(R.layout.fragment_selection_arm_right, container, false);
 
-        imgFront = (ImageView) view.findViewById(R.id.imgBodyFront);
-        imgBack = (ImageView) view.findViewById(R.id.imgBodyBack);
+        imgArmDown = (ImageView) view.findViewById(R.id.imgArmRightDown);
+        imgArmTop = (ImageView) view.findViewById(R.id.imgArmRightTop);
 
-        imgFront.setOnClickListener(this);
-        imgBack.setOnClickListener(this);
-        ImageDrawer.drawPoints(imgFront, SpecificBodyPart.BODY_FRONT, R.drawable.tronco_frente);
-        ImageDrawer.drawPoints(imgBack, SpecificBodyPart.BODY_BACK, R.drawable.tronco_costas);
+        imgArmDown.setOnClickListener(this);
+        imgArmTop.setOnClickListener(this);
+
+        ImageDrawer.drawPoints(imgArmDown, SpecificBodyPart.RIGHT_ARM_DOWN, R.drawable.braco_direito_baixo);
+        ImageDrawer.drawPoints(imgArmTop, SpecificBodyPart.RIGHT_ARM_TOP, R.drawable.braco_direito_cima);
+
         return view;
     }
 
@@ -75,13 +79,14 @@ public class SelectionBodyFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         Intent i = new Intent(getActivity(), BodyImageSliderActivity.class);
         switch (v.getId()) {
-            case R.id.imgBodyFront:
-                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.tronco_frente, R.drawable.tronco_costas});
-                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.BODY_FRONT.name(), SpecificBodyPart.BODY_BACK.name()});
+            case R.id.imgArmRightDown:
+                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.braco_direito_baixo, R.drawable.braco_direito_cima});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_ARM_DOWN.name(), SpecificBodyPart.RIGHT_ARM_TOP.name()});
+
                 break;
-            case R.id.imgBodyBack:
-                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.BODY_BACK.name(), SpecificBodyPart.BODY_FRONT.name()});
-                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.tronco_costas, R.drawable.tronco_frente});
+            case R.id.imgArmRightTop:
+                i.putExtra(PARAM_IMAGES, new int[]{R.drawable.braco_direito_cima, R.drawable.braco_direito_baixo});
+                i.putExtra(PARAM_BODY_PARTS, new String[]{SpecificBodyPart.RIGHT_ARM_TOP.name(), SpecificBodyPart.RIGHT_ARM_DOWN.name()});
                 break;
 
         }

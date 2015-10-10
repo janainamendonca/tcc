@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ListView;
 
+import br.furb.corpusmapping.patient.PatientsListFragment;
+
 
 public class MainActivity extends ActionBarActivity  {
 

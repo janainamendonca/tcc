@@ -20,24 +20,6 @@
         android:layout_marginBottom="4dp"
         android:hint="@string/groupName" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Anotações"
-        android:id="@+id/textView3" />
-
-    <EditText
-        android:id="@+id/edtAnnotation"
-        android:inputType="text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif"
-        android:hint="@string/annotations"/>
 
     <TextView
         android:layout_width="wrap_content"

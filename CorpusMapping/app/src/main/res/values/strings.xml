@@ -23,19 +23,19 @@
     <string name="gender">Sexo</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_edit_patient">Editar</string>
-    <string name="title_activity_save_image">SaveImageActivity</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_select_body_part">SelectBodyPartActivity</string>
-    <string name="title_activity_image_slider">ImageSliderActivity</string>
+    <string name="title_activity_save_image">Salvar imagem</string>
+    <string name="title_activity_select_body_part">Selecionar parte do corpo</string>
+    <string name="title_activity_image_slider">Imagens da pinta</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="groupName">Grupo</string>
     <string name="anottation">Anotações</string>
     <string name="annotations">Anotações</string>
-    <string name="title_activity_view_images">ViewImagesActivity</string>
+    <string name="title_activity_view_images">Imagens das pintas</string>
     <string name="nenhuma_imagem">Nenhuma imagem</string>
+    <string name="title_activity_view_body_diagram">Diagrama corporal com as pintas</string>
+    <string name="action_take_picture">Nova imagem da pinta</string>
+    <string name="action_edit">Editar</string>
 
 </resources>

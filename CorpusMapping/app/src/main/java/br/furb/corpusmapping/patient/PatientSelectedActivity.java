@@ -1,4 +1,4 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.patient;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import br.furb.corpusmapping.DashboardFragment;
+import br.furb.corpusmapping.R;
 
 
 public class PatientSelectedActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {

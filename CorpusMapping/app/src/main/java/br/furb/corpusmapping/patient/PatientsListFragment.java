@@ -1,13 +1,10 @@
-package br.furb.corpusmapping;
+package br.furb.corpusmapping.patient;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.view.ActionMode;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +17,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import br.furb.corpusmapping.CorpusMappingApp;
+import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
 
