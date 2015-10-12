@@ -34,12 +34,17 @@ public class PatientRepository {
         return instance;
     }
 
-    public void save(Patient patient) {
+    public void save(Patient patient, SQLiteDatabase db) {
         if (patient.getId() <= 0) {
-            insert(patient);
+            insert(patient, db);
         } else {
-            update(patient);
+            update(patient, db);
         }
+    }
+
+
+    public void save(Patient patient) {
+        save(patient, null);
     }
 
     public int delete(Patient patient) {
@@ -50,6 +55,12 @@ public class PatientRepository {
                 new String[]{String.valueOf(patient.getId())});
         db.close();
         return affectedRows;
+    }
+
+    public void deleteAll() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int affectedRows = db.delete(TABLE_PATIENT, null, null);
+        db.close();
     }
 
     public List<Patient> getAll() {
@@ -111,8 +122,13 @@ public class PatientRepository {
         return p;
     }
 
-    private long insert(Patient patient) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    private long insert(Patient patient, SQLiteDatabase db) {
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, patient.getName());
@@ -124,12 +140,17 @@ public class PatientRepository {
         if (id != -1) {
             patient.setId(id);
         }
-        db.close();
+        if (needClose) db.close();
         return id;
     }
 
-    private int update(Patient patient) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    private int update(Patient patient, SQLiteDatabase db) {
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, patient.getName());
@@ -139,7 +160,7 @@ public class PatientRepository {
 
         int affectedRows = db.update(TABLE_PATIENT, cv, COLUMN_ID + " = ?", new String[]{String.valueOf(patient
                 .getId())});
-        db.close();
+        if (needClose) db.close();
         return affectedRows;
     }
 

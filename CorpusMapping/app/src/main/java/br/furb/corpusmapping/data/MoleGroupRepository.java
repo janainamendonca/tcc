@@ -41,12 +41,16 @@ public class MoleGroupRepository {
     }
 
 
-    public void save(MoleGroup moleGroup) {
+    public void save(MoleGroup moleGroup, SQLiteDatabase db) {
         if (moleGroup.getId() <= 0) {
-            insert(moleGroup);
+            insert(moleGroup, db);
         } else {
-            update(moleGroup);
+            update(moleGroup, db);
         }
+    }
+
+    public void save(MoleGroup moleGroup) {
+        save(moleGroup, null);
     }
 
     public void deleteAll() {
@@ -170,8 +174,14 @@ public class MoleGroupRepository {
         return moleGroup;
     }
 
-    private long insert(MoleGroup moleGroup) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    private long insert(MoleGroup moleGroup, SQLiteDatabase db) {
+
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
 
         try {
             ContentValues cv = buildContentValues(moleGroup);
@@ -182,12 +192,17 @@ public class MoleGroupRepository {
             }
             return id;
         } finally {
-            db.close();
+            if (needClose) db.close();
         }
     }
 
-    private int update(MoleGroup moleGroup) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    private int update(MoleGroup moleGroup, SQLiteDatabase db) {
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
         try {
             ContentValues cv = buildContentValues(moleGroup);
 
@@ -196,7 +211,7 @@ public class MoleGroupRepository {
             return affectedRows;
 
         } finally {
-            db.close();
+            if (needClose) db.close();
         }
     }
 

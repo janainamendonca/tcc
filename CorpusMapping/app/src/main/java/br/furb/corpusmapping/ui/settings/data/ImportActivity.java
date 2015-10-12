@@ -160,7 +160,7 @@ public class ImportActivity extends BaseActivity {
         googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
         final IntentSender intentSender = Drive.DriveApi
                 .newOpenFileActivityBuilder()
-                .setMimeType(new String[]{"application/json"})
+                .setMimeType(new String[]{"application/zip"})
                 .build(googleApiClient);
 
         try {

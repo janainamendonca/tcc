@@ -29,7 +29,8 @@ public class ImageUtils {
 
         for (File f : files) {
             // faz isso porque pode ser que o nome do paciente tenha sido alterado no cadastro dele
-            if (f.getName().startsWith(patient.getId() + "_")) {
+            // TODO não posso me basear no id, pois na importação do backup de dados o id irá mudar
+            if (f.getName().startsWith(patient.getId() + "_") ||f.getName().endsWith( "_" + patient.getName())  ) {
                 patientDir = f;
             }
         }

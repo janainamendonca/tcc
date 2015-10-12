@@ -12,6 +12,7 @@ import com.google.gson.JsonSerializer;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -19,8 +20,7 @@ import java.lang.reflect.Type;
 
 public class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
-    final DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-
+    final DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {

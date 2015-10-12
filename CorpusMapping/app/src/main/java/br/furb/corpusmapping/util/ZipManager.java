@@ -50,6 +50,7 @@ public class ZipManager {
             ZipEntry entry = new ZipEntry("CorpusMapping.json");
             out.putNextEntry(entry);
             out.write(json.getBytes("UTF-8"));
+            //out.write(json.getBytes());
 
             out.close();
         } catch (Exception e) {

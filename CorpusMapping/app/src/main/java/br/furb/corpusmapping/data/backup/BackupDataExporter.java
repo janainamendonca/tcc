@@ -58,7 +58,7 @@ public class BackupDataExporter extends DataExporter {
 
         for (ImageRecord record : imageRecords) {
             if (record.getImagePath() != null) {
-                images.add(record.getImagePath());
+               images.add(record.getImagePath());
             }
         }
         Log.d(this.getClass().getSimpleName(), "Sending to zip files");

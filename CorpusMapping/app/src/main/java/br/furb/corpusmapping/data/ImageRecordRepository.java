@@ -51,11 +51,19 @@ public class ImageRecordRepository {
         return instance;
     }
 
+    public void save(ImageRecord imageRecord, SQLiteDatabase db) {
+        if (imageRecord.getId() <= 0) {
+            insert(imageRecord, db);
+        } else {
+            update(imageRecord, db);
+        }
+    }
+
     public void save(ImageRecord imageRecord) {
         if (imageRecord.getId() <= 0) {
-            insert(imageRecord);
+            insert(imageRecord, null);
         } else {
-            update(imageRecord);
+            update(imageRecord, null);
         }
     }
 
@@ -241,15 +249,18 @@ public class ImageRecordRepository {
         return imageRecord;
     }
 
-    private long insert(ImageRecord imageRecord) {
+    private long insert(ImageRecord imageRecord, SQLiteDatabase db) {
         if (imageRecord.getMoleGroup() != null) {
-            moleGroupRepository.save(imageRecord.getMoleGroup());
+            moleGroupRepository.save(imageRecord.getMoleGroup(), db);
             imageRecord.setMoleGroupId(imageRecord.getMoleGroup().getId());
         }
-        SQLiteDatabase db = helper.getWritableDatabase();
+        boolean needClose = false;
+        if (db == null) {
+            db = helper.getWritableDatabase();
+            needClose = true;
+        }
+
         try {
-
-
             ContentValues cv = buildContentValues(imageRecord);
 
             long id = db.insert(TABLE_IMAGE_RECORD, null, cv);
@@ -258,16 +269,23 @@ public class ImageRecordRepository {
             }
             return id;
         } finally {
-            db.close();
+            if (needClose) {
+                db.close();
+            }
         }
     }
 
-    private int update(ImageRecord imageRecord) {
+    private int update(ImageRecord imageRecord, SQLiteDatabase db) {
         if (imageRecord.getMoleGroup() != null) {
             moleGroupRepository.save(imageRecord.getMoleGroup());
             imageRecord.setMoleGroupId(imageRecord.getMoleGroup().getId());
         }
-        SQLiteDatabase db = helper.getWritableDatabase();
+
+        boolean needClose = false;
+        if (db == null) {
+            db = helper.getWritableDatabase();
+            needClose = true;
+        }
         try {
             ContentValues cv = buildContentValues(imageRecord);
 
@@ -275,7 +293,9 @@ public class ImageRecordRepository {
                     .getId())});
             return affectedRows;
         } finally {
-            db.close();
+            if (needClose) {
+                db.close();
+            }
         }
     }
 
