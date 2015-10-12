@@ -74,7 +74,7 @@ public class ExportActivity extends BaseActivity {
         exportType = (ExportType) getIntent().getSerializableExtra(EXTRA_EXPORT_TYPE);
         destination = (Destination) getIntent().getSerializableExtra(EXTRA_DESTINATION);
         generalPrefs = new GeneralPrefs(this);
-        connection = new GoogleApiConnection(getEventBus());
+        connection = GoogleApiConnection.getInstance();
         localExecutor = LocalExecutor.getExecutor();
 
         // Restore state
@@ -215,12 +215,12 @@ public class ExportActivity extends BaseActivity {
 
             @Override
             public String getExtension() {
-                return ".json";
+                return ".zip";
             }
 
             @Override
             public String getMimeType(Destination destination) {
-                return "application/json";
+                return "application/zip";
             }
         }
 

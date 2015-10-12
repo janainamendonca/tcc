@@ -67,7 +67,7 @@ public class ImportActivity extends BaseActivity {
         setContentView(R.layout.activity_import);
 
         generalPrefs = new GeneralPrefs(this);
-        connection = new GoogleApiConnection(getEventBus());
+        connection = GoogleApiConnection.getInstance();
         localExecutor = LocalExecutor.getExecutor();
 
         // Get extras

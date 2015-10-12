@@ -11,10 +11,18 @@ import br.furb.corpusmapping.util.EventBus;
 public class GoogleApiConnection {
     private final EventBus eventBus;
     private final Map<String, GoogleApiClient> googleApiClients = new HashMap<>();
+    private static GoogleApiConnection instance;
 
-    public GoogleApiConnection(EventBus eventBus) {
+    private GoogleApiConnection(EventBus eventBus) {
         this.eventBus = eventBus;
       //  eventBus.register(this);
+    }
+
+    public static GoogleApiConnection getInstance(){
+        if(instance == null){
+            instance =new GoogleApiConnection(EventBus.getInstance());
+        }
+        return instance;
     }
 
     @Produce
