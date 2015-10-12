@@ -3,20 +3,31 @@
     android:name=".CorpusMappingApp"
     package="br.furb.corpusmapping"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="br.furb.corpusmapping.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="br.furb.corpusmapping.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +41,7 @@
         <activity
             android:name=".patient.PatientSelectedActivity"
             android:label="@string/title_activity_patient_form"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -38,7 +49,7 @@
         <activity
             android:name=".patient.PatientFormActivity"
             android:label="@string/title_activity_patient_form"
-            android:parentActivityName=".patient.PatientsActivity">
+            android:parentActivityName=".patient.PatientsActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".patient.PatientsActivity" />
@@ -46,7 +57,7 @@
         <activity
             android:name=".capture.SaveImageActivity"
             android:label="@string/title_activity_save_image"
-            android:parentActivityName=".patient.PatientSelectedActivity">
+            android:parentActivityName=".patient.PatientSelectedActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".patient.PatientSelectedActivity" />
@@ -54,7 +65,7 @@
         <activity
             android:name=".capture.SelectBodyPartActivity"
             android:label="@string/title_activity_select_body_part"
-            android:parentActivityName=".capture.SaveImageActivity">
+            android:parentActivityName=".capture.SaveImageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".capture.SaveImageActivity" />
@@ -62,7 +73,7 @@
         <activity
             android:name=".capture.BodyImageSliderActivity"
             android:label="@string/title_activity_image_slider"
-            android:parentActivityName=".capture.SaveImageActivity">
+            android:parentActivityName=".capture.SaveImageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".capture.SaveImageActivity" />
@@ -70,7 +81,7 @@
         <activity
             android:name=".view.ViewImagesActivity"
             android:label="@string/title_activity_view_images"
-            android:parentActivityName=".patient.PatientSelectedActivity">
+            android:parentActivityName=".patient.PatientSelectedActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".patient.PatientSelectedActivity" />
@@ -78,7 +89,7 @@
         <activity
             android:name=".view.MoleImageSliderActivity"
             android:label="@string/title_activity_image_slider"
-            android:parentActivityName=".view.ViewImagesActivity">
+            android:parentActivityName=".view.ViewImagesActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ViewImagesActivity" />
@@ -86,7 +97,7 @@
         <activity
             android:name=".view.MoleDetailedImageSliderActivity"
             android:label="Detalhes"
-            android:parentActivityName=".view.MoleImageSliderActivity">
+            android:parentActivityName=".view.MoleImageSliderActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MoleImageSliderActivity" />
@@ -94,10 +105,40 @@
         <activity
             android:name=".view.ViewBodyDiagramActivity"
             android:label="@string/title_activity_view_body_diagram"
-            android:parentActivityName=".patient.PatientSelectedActivity">
+            android:parentActivityName=".patient.PatientSelectedActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".patient.PatientSelectedActivity" />
+        </activity>
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".ui.settings.data.DataActivity"
+            android:label="@string/title_activity_data"
+            android:parentActivityName=".ui.settings.SettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.furb.corpusmapping.ui.settings.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.settings.data.ExportActivity"
+            android:label="@string/title_activity_data"
+            android:parentActivityName=".ui.settings.data.DataActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.furb.corpusmapping.ui.settings.data.DataActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.settings.data.ImportActivity"
+            android:label="@string/title_activity_data"
+            android:parentActivityName=".ui.settings.data.DataActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.furb.corpusmapping.ui.settings.data.DataActivity" />
         </activity>
     </application>
 

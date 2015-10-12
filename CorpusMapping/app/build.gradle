@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "br.furb.corpusmapping"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -23,4 +23,21 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'joda-time:joda-time:2.7'
+    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
+    compile 'com.github.castorflex.smoothprogressbar:library:1.0.0'
+    compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.0'
+    compile 'com.android.support:cardview-v7:21.+'
+
+    compile 'com.android.support:support-v4:21.+'
+    compile 'com.android.support:support-v13:20.+'
+    compile 'com.android.support:recyclerview-v7:21.+'
+    compile 'com.android.support:cardview-v7:21.+'
+    compile 'com.android.support:appcompat-v7:21.+'
+    compile 'com.google.android.gms:play-services-base:6.5.+'
+    compile 'com.google.android.gms:play-services-drive:6.5.+'
+    compile 'com.google.android.gms:play-services-plus:6.5.+'
+    compile 'com.google.code.gson:gson:2.+'
+
+    compile 'com.squareup:otto:1.3.5'
+
 }

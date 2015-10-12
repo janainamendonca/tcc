@@ -7,6 +7,7 @@
         <item>Mapeamento corporal</item>
         <item>Ver imagens</item>
         <item>Dados do paciente</item>
+        <item>Configurações</item>
 
     </string-array>
 
@@ -37,5 +38,15 @@
     <string name="title_activity_view_body_diagram">Diagrama corporal com as pintas</string>
     <string name="action_take_picture">Nova imagem da pinta</string>
     <string name="action_edit">Editar</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="data">Dados</string>
+    <string name="about">Sobre</string>
+    <string name="title_activity_data">DataActivity</string>
+    <string name="create_backup">Criar backup</string>
+    <string name="clear_and_restore">Limpar e restaurar</string>
+    <string name="import_backup">Importar backup</string>
+    <string name="done">Concluído</string>
 
 </resources>
