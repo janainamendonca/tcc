@@ -36,38 +36,48 @@ public class BackupDataExporter extends DataExporter {
 
     private final Context context;
 
-    public BackupDataExporter(OutputStream outputStream, Context context) {
+    private final boolean json;
+
+    public BackupDataExporter(OutputStream outputStream, Context context, boolean json) {
         super(outputStream);
         this.context = context;
+        this.json = json;
     }
 
     @Override
     public void exportData(OutputStream outputStream) throws Exception {
-        GsonBuilder builder = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
-        Gson gson = builder.create();
-        JsonObject root = new JsonObject();
+        if (json) {
 
-        addPatients(gson, root);
-        addMoleGroups(gson, root);
-        List<ImageRecord> imageRecords = addImageRecords(gson, root);
+            GsonBuilder builder = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+            Gson gson = builder.create();
+            JsonObject root = new JsonObject();
 
-        // obter as imagens
-        List<String> images = new ArrayList<>();
+            addPatients(gson, root);
+            addMoleGroups(gson, root);
+            addImageRecords(gson, root);
 
-        for (ImageRecord record : imageRecords) {
-            if (record.getImagePath() != null) {
-               images.add(record.getImagePath());
+            outputStream.write(root.toString().getBytes(CHARSET_NAME));
+            outputStream.flush();
+            outputStream.close();
+        } else {
+            ImageRecordRepository repository = ImageRecordRepository.getInstance(context);
+            List<ImageRecord> imageRecords = repository.getAll();
+            // obter as imagens
+            List<String> images = new ArrayList<>();
+
+            for (ImageRecord record : imageRecords) {
+                if (record.getImagePath() != null) {
+                    //if(images.size() < 3){
+                    images.add(record.getImagePath());
+                    // }
+                }
             }
+            Log.d(this.getClass().getSimpleName(), "Sending to zip files");
+            ZipManager.zip(context, images, outputStream);
+            Log.d(this.getClass().getSimpleName(), "Files were zipped");
         }
-        Log.d(this.getClass().getSimpleName(), "Sending to zip files");
-        ZipManager.zip(context, images, root.toString(), outputStream);
-        Log.d(this.getClass().getSimpleName(), "Files were zipped");
-
-        // outputStream.write(root.toString().getBytes(CHARSET_NAME));
-        // outputStream.flush();
-        //  outputStream.close();
     }
 
     private void addPatients(Gson gson, JsonObject root) {

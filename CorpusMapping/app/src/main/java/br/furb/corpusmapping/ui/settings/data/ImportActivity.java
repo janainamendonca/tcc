@@ -160,7 +160,7 @@ public class ImportActivity extends BaseActivity {
         googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
         final IntentSender intentSender = Drive.DriveApi
                 .newOpenFileActivityBuilder()
-                .setMimeType(new String[]{"application/zip"})
+                .setMimeType(new String[]{"application/vnd.google-apps.folder"})
                 .build(googleApiClient);
 
         try {
@@ -182,7 +182,7 @@ public class ImportActivity extends BaseActivity {
         } catch (FileNotFoundException e) {
             throw new ImportError("Data import failed.", e);
         }
-        final DataImporter dataImporter = importType.getDataImporter(inputStream, this);
+        final DataImporter dataImporter = importType.getDataImporter(inputStream, this, false);
         importData(new DataImporterRunnable(getEventBus(), dataImporter));
     }
 
@@ -193,26 +193,26 @@ public class ImportActivity extends BaseActivity {
     public static enum ImportType {
         Backup {
             @Override
-            public DataImporter getDataImporter(InputStream inputStream, Context context) {
-                return new BackupDataImporter(inputStream, context, false);
+            public DataImporter getDataImporter(InputStream inputStream, Context context, boolean json) {
+                return new BackupDataImporter(inputStream, context, false, json);
             }
         },
 
         MergeBackup {
             @Override
-            public DataImporter getDataImporter(InputStream inputStream, Context context) {
-                return new BackupDataImporter(inputStream, context, true);
+            public DataImporter getDataImporter(InputStream inputStream, Context context, boolean json) {
+                return new BackupDataImporter(inputStream, context, true, json);
             }
         },
 
         CSV {
             @Override
-            public DataImporter getDataImporter(InputStream inputStream, Context context) {
+            public DataImporter getDataImporter(InputStream inputStream, Context context, boolean json) {
                 throw new IllegalStateException("CSV import is not supported.");
             }
         };
 
-        public abstract DataImporter getDataImporter(InputStream inputStream, Context context);
+        public abstract DataImporter getDataImporter(InputStream inputStream, Context context, boolean json);
     }
 
     public static enum Source {

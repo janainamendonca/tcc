@@ -19,7 +19,7 @@ public class DataImporterRunnable implements Runnable {
             eventBus.post(dataImporter);
         } catch (Exception e) {
             e.printStackTrace();
-            final ImportError error = new ImportError("Data import has failed. " + e.getMessage(), e);
+            final ImportError error = new ImportError("A importação dos dados falhou. " + e.getMessage(), e);
            // Crashlytics.logException(error);
             eventBus.post(error);
         } finally {

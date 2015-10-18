@@ -14,7 +14,7 @@ import java.util.List;
 public class PatientRepository {
 
     public static final String TABLE_PATIENT = "patient";
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CPF = "cpf";
     public static final String COLUMN_GENDER = "gender";
@@ -84,7 +84,14 @@ public class PatientRepository {
     public Patient getById(long id) {
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        String sql = "SELECT * FROM " + TABLE_PATIENT + " WHERE _id = ?";
+        Patient patient = getById(id, db);
+        db.close();
+
+        return patient;
+    }
+
+    public Patient getById(long id, SQLiteDatabase db) {
+        String sql = "SELECT * FROM " + TABLE_PATIENT + " WHERE id = ?";
 
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
         List<Patient> patients = new ArrayList<Patient>();
@@ -95,8 +102,6 @@ public class PatientRepository {
             patient = createPatient(cursor);
         }
         cursor.close();
-        db.close();
-
         return patient;
     }
 
@@ -129,17 +134,38 @@ public class PatientRepository {
             needClose = true;
             db = helper.getWritableDatabase();
         }
-        ContentValues cv = new ContentValues();
+        try {
+            String query = "select max(id) from " + TABLE_PATIENT;
+            Cursor cursor = db.rawQuery(query, null);
+            long lastId = 0;
+            if (cursor.moveToFirst()) {
+                lastId = cursor.getLong(0);
+            }
+            cursor.close();
 
+            long id = lastId + 1;
+            return insert(patient, db, id);
+        } finally {
+            if (needClose) db.close();
+        }
+    }
+
+    public long insert(Patient patient, SQLiteDatabase db, long id) {
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ID, id);
         cv.put(COLUMN_NAME, patient.getName());
         cv.put(COLUMN_CPF, patient.getCpf());
         cv.put(COLUMN_GENDER, patient.getGender().name());
         cv.put(COLUMN_BIRTH_DATE, patient.getBirthDateStr());
-
-        long id = db.insert(TABLE_PATIENT, null, cv);
-        if (id != -1) {
-            patient.setId(id);
-        }
+        patient.setId(id);
+        db.insert(TABLE_PATIENT, null, cv);
         if (needClose) db.close();
         return id;
     }

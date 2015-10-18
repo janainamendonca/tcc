@@ -16,7 +16,7 @@ public class MoleGroupRepository {
     private static MoleGroupRepository instance;
 
     public static final String TABLE_MOLE_GROUP = "MOLE_GROUP";
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "group_name";
     public static final String COLUMN_ANNOTATIONS = "annotations";
     public static final String COLUMN_DESCRIPTION = "description";
@@ -102,23 +102,27 @@ public class MoleGroupRepository {
         SQLiteDatabase db = helper.getReadableDatabase();
 
         try {
-
-            String sql = "SELECT * FROM " + TABLE_MOLE_GROUP + " WHERE _id = ?";
-
-            Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
-            List<MoleGroup> moleGroups = new ArrayList<MoleGroup>();
-
-            MoleGroup moleGroup = null;
-
-            if (cursor.moveToFirst()) {
-                moleGroup = createMoleGroup(cursor);
-            }
-            cursor.close();
-
+            MoleGroup moleGroup = getById(id, db);
             return moleGroup;
         } finally {
             db.close();
         }
+    }
+
+    public MoleGroup getById(long id, SQLiteDatabase db) {
+        String sql = "SELECT * FROM " + TABLE_MOLE_GROUP + " WHERE id = ?";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
+        List<MoleGroup> moleGroups = new ArrayList<MoleGroup>();
+
+        MoleGroup moleGroup = null;
+
+        if (cursor.moveToFirst()) {
+            moleGroup = createMoleGroup(cursor);
+        }
+        cursor.close();
+
+        return moleGroup;
     }
 
     public MoleGroup getByPosition(long patient_id, PointF position) {
@@ -184,12 +188,37 @@ public class MoleGroupRepository {
         }
 
         try {
-            ContentValues cv = buildContentValues(moleGroup);
-
-            long id = db.insert(TABLE_MOLE_GROUP, null, cv);
-            if (id != -1) {
-                moleGroup.setId(id);
+            String query = "select max(id) from " + TABLE_MOLE_GROUP;
+            Cursor cursor = db.rawQuery(query, null);
+            long lastId = 0;
+            if (cursor.moveToFirst()) {
+                lastId = cursor.getLong(0);
             }
+            cursor.close();
+
+            long id = lastId + 1;
+            return insert(moleGroup, db, id);
+        } finally {
+            if (needClose) db.close();
+        }
+
+    }
+
+    public long insert(MoleGroup moleGroup, SQLiteDatabase db, long id) {
+
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
+
+        try {
+
+            ContentValues cv = buildContentValues(moleGroup);
+            cv.put(COLUMN_ID, id);
+            moleGroup.setId(id);
+            db.insert(TABLE_MOLE_GROUP, null, cv);
             return id;
         } finally {
             if (needClose) db.close();

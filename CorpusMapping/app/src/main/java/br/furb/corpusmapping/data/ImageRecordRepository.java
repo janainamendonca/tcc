@@ -23,7 +23,7 @@ import br.furb.corpusmapping.SpecificBodyPart;
 public class ImageRecordRepository {
 
     public static final String TABLE_IMAGE_RECORD = "IMAGE_RECORD";
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_BODY_PART = "body_part";
     public static final String COLUMN_IMAGE_DATE = "image_date";
     public static final String COLUMN_POINT_X = "point_x";
@@ -94,7 +94,7 @@ public class ImageRecordRepository {
             Cursor cursor = db.rawQuery(sql, null);
             List<ImageRecord> imageRecords = new ArrayList<ImageRecord>();
             while (cursor.moveToNext()) {
-                ImageRecord imageRecord = createImageRecord(cursor);
+                ImageRecord imageRecord = createImageRecord(cursor, db);
                 imageRecords.add(imageRecord);
             }
             cursor.close();
@@ -109,20 +109,27 @@ public class ImageRecordRepository {
         SQLiteDatabase db = helper.getReadableDatabase();
 
         try {
-            String sql = "SELECT * FROM " + TABLE_IMAGE_RECORD + " WHERE _id = ?";
-
-            Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
-
-            ImageRecord imageRecord = null;
-
-            if (cursor.moveToFirst()) {
-                imageRecord = createImageRecord(cursor);
-            }
-            cursor.close();
+            ImageRecord imageRecord = getById(id, db);
             return imageRecord;
         } finally {
             db.close();
         }
+
+    }
+
+    public ImageRecord getById(long id, SQLiteDatabase db) {
+
+        String sql = "SELECT * FROM " + TABLE_IMAGE_RECORD + " WHERE id = ?";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
+
+        ImageRecord imageRecord = null;
+
+        if (cursor.moveToFirst()) {
+            imageRecord = createImageRecord(cursor, db);
+        }
+        cursor.close();
+        return imageRecord;
 
     }
 
@@ -137,7 +144,7 @@ public class ImageRecordRepository {
 
             List<ImageRecord> imageRecords = new ArrayList<ImageRecord>();
             while (cursor.moveToNext()) {
-                ImageRecord imageRecord = createImageRecord(cursor);
+                ImageRecord imageRecord = createImageRecord(cursor, db);
                 imageRecords.add(imageRecord);
             }
             cursor.close();
@@ -170,7 +177,7 @@ public class ImageRecordRepository {
             Map<Long, List<ImageRecord>> map = new HashMap<>();
 
             while (cursor.moveToNext()) {
-                ImageRecord imageRecord = createImageRecord(cursor);
+                ImageRecord imageRecord = createImageRecord(cursor, db);
 
                 if (!map.containsKey(imageRecord.getMoleGroupId())) {
                     map.put(imageRecord.getMoleGroupId(), new ArrayList<ImageRecord>());
@@ -212,7 +219,7 @@ public class ImageRecordRepository {
             List<ImageRecord> imageRecords = new ArrayList<ImageRecord>();
 
             while (cursor.moveToNext()) {
-                ImageRecord imageRecord = createImageRecord(cursor);
+                ImageRecord imageRecord = createImageRecord(cursor, db);
                 imageRecords.add(imageRecord);
             }
             cursor.close();
@@ -224,7 +231,7 @@ public class ImageRecordRepository {
         }
     }
 
-    private ImageRecord createImageRecord(Cursor cursor) {
+    private ImageRecord createImageRecord(Cursor cursor, SQLiteDatabase db) {
         long id = cursor.getLong(
                 cursor.getColumnIndex(
                         COLUMN_ID));
@@ -243,7 +250,7 @@ public class ImageRecordRepository {
 
         long moleGroupId = cursor.getLong(cursor.getColumnIndex(COLUMN_MOLE_GROUP));
 
-        imageRecord.setMoleGroup(moleGroupRepository.getById(moleGroupId));
+        imageRecord.setMoleGroup(moleGroupRepository.getById(moleGroupId, db));
         imageRecord.setMoleGroupId(moleGroupId);
 
         return imageRecord;
@@ -261,12 +268,40 @@ public class ImageRecordRepository {
         }
 
         try {
-            ContentValues cv = buildContentValues(imageRecord);
 
-            long id = db.insert(TABLE_IMAGE_RECORD, null, cv);
-            if (id != -1) {
-                imageRecord.setId(id);
+            String query = "select max(id) from " + TABLE_IMAGE_RECORD;
+            Cursor cursor = db.rawQuery(query, null);
+            long lastId = 0;
+            if (cursor.moveToFirst()) {
+                lastId = cursor.getLong(0);
             }
+            cursor.close();
+
+            long id = lastId + 1;
+            return insert(imageRecord, db, id);
+        } finally {
+            if (needClose) {
+                db.close();
+            }
+        }
+    }
+
+    public long insert(ImageRecord imageRecord, SQLiteDatabase db, long id) {
+        if (imageRecord.getMoleGroup() != null) {
+            moleGroupRepository.save(imageRecord.getMoleGroup(), db);
+            imageRecord.setMoleGroupId(imageRecord.getMoleGroup().getId());
+        }
+        boolean needClose = false;
+        if (db == null) {
+            db = helper.getWritableDatabase();
+            needClose = true;
+        }
+
+        try {
+            ContentValues cv = buildContentValues(imageRecord);
+            cv.put(COLUMN_ID, id);
+            imageRecord.setId(id);
+            db.insert(TABLE_IMAGE_RECORD, null, cv);
             return id;
         } finally {
             if (needClose) {
@@ -277,7 +312,7 @@ public class ImageRecordRepository {
 
     private int update(ImageRecord imageRecord, SQLiteDatabase db) {
         if (imageRecord.getMoleGroup() != null) {
-            moleGroupRepository.save(imageRecord.getMoleGroup());
+            moleGroupRepository.save(imageRecord.getMoleGroup(), db);
             imageRecord.setMoleGroupId(imageRecord.getMoleGroup().getId());
         }
 

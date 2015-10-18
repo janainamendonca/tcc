@@ -26,6 +26,7 @@ import br.furb.corpusmapping.data.backup.BackupDataExporter;
 import br.furb.corpusmapping.data.backup.DataExporter;
 import br.furb.corpusmapping.data.backup.DataExporterRunnable;
 import br.furb.corpusmapping.data.backup.DriveDataExporterRunnable;
+import br.furb.corpusmapping.data.backup.ExportCallback;
 import br.furb.corpusmapping.ui.common.BaseActivity;
 import br.furb.corpusmapping.ui.playservices.GoogleApiConnection;
 import br.furb.corpusmapping.ui.playservices.GoogleApiFragment;
@@ -102,7 +103,7 @@ public class ExportActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (resultCode != RESULT_OK) {
             finish();
             return;
@@ -119,7 +120,12 @@ public class ExportActivity extends BaseActivity {
                 final DriveId driveId = data.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
                 // TODO Maybe store this driveId to open Google Drive in this folder next time.
                 googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
-                onDriveDirectorySelected(driveId);
+                onDriveDirectorySelected(driveId, new ExportCallback() {
+                    @Override
+                    public void onExportFinished() {
+
+                    }
+                });
                 break;
         }
 
@@ -127,8 +133,8 @@ public class ExportActivity extends BaseActivity {
         if (googleApi_F != null) {
             googleApi_F.handleOnActivityResult(requestCode, resultCode);
         }
-
         super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override
@@ -176,8 +182,8 @@ public class ExportActivity extends BaseActivity {
         }
     }
 
-    private void onDriveDirectorySelected(DriveId driveId) {
-        exportData(new DriveDataExporterRunnable(googleApiClient, driveId, exportType, destination, this, getEventBus(), getFileTitle()));
+    private void onDriveDirectorySelected(DriveId driveId, ExportCallback callback) {
+        exportData(new DriveDataExporterRunnable(googleApiClient, driveId, exportType, destination, this, getEventBus(), getFileTitle(), callback));
     }
 
     private void onLocalDirectorySelected(File directory) {
@@ -189,7 +195,7 @@ public class ExportActivity extends BaseActivity {
         } catch (FileNotFoundException e) {
             throw new ExportError("Data export has failed.", e);
         }
-        final DataExporter dataExporter = exportType.getDataExporter(outputStream, this);
+        final DataExporter dataExporter = exportType.getDataExporter(outputStream, this, false);
         exportData(new DataExporterRunnable(getEventBus(), dataExporter));
     }
 
@@ -209,18 +215,18 @@ public class ExportActivity extends BaseActivity {
     public static enum ExportType {
         Backup {
             @Override
-            public DataExporter getDataExporter(OutputStream outputStream, Context context) {
-                return new BackupDataExporter(outputStream, context);
+            public DataExporter getDataExporter(OutputStream outputStream, Context context, boolean json) {
+                return new BackupDataExporter(outputStream, context, json);
             }
 
             @Override
             public String getExtension() {
-                return ".zip";
+                return "";
             }
 
             @Override
             public String getMimeType(Destination destination) {
-                return "application/zip";
+                return "application/vnd.google-apps.folder";
             }
         }
 
@@ -238,7 +244,7 @@ public class ExportActivity extends BaseActivity {
             }
         }*/;
 
-        public abstract DataExporter getDataExporter(OutputStream outputStream, Context context);
+        public abstract DataExporter getDataExporter(OutputStream outputStream, Context context, boolean json);
 
         public abstract String getExtension();
 

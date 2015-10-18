@@ -23,7 +23,7 @@ public class ZipManager {
 
     private static final int BUFFER = 80000;
 
-    public static void zip(Context context, List<String> _files, String json, OutputStream dest) {
+    public static void zip(Context context, List<String> _files, OutputStream dest) {
         try {
             BufferedInputStream origin = null;
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
@@ -33,7 +33,8 @@ public class ZipManager {
             for (int i = 0; i < _files.size(); i++) {
                 Log.v("Compress", "Adding: " + _files.get(i));
 
-                InputStream stream = context.getContentResolver().openInputStream(ImageUtils.getImageUri( _files.get(i)));
+                Uri imageUri = ImageUtils.getImageUri(_files.get(i));
+                InputStream stream = context.getContentResolver().openInputStream(imageUri);
 
                 origin = new BufferedInputStream(stream, BUFFER);
 
@@ -46,12 +47,6 @@ public class ZipManager {
                 }
                 origin.close();
             }
-
-            ZipEntry entry = new ZipEntry("CorpusMapping.json");
-            out.putNextEntry(entry);
-            out.write(json.getBytes("UTF-8"));
-            //out.write(json.getBytes());
-
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
