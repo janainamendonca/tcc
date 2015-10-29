@@ -20,32 +20,24 @@ import java.io.File;
 import br.furb.corpusmapping.capture.SaveImageActivity;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
+import br.furb.corpusmapping.ui.camera.CameraActivity;
 import br.furb.corpusmapping.util.ImageUtils;
 import br.furb.corpusmapping.view.ViewBodyDiagramActivity;
 import br.furb.corpusmapping.view.ViewImagesActivity;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DashboardFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DashboardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DashboardFragment extends Fragment implements View.OnClickListener {
-
-    private OnFragmentInteractionListener mListener;
 
     public static final String PARAM_PATIENT_ID = "patientId";
     private static final int REQUEST_CODE_IMAGE = 1;
-
+    private static final String TAG = DashboardFragment.class.getName();
     private long patientId;
     private PatientRepository repository;
     private TextView txtPatient;
     private Patient patient;
     private String imageShortPath;
-    private static final String TAG = DashboardFragment.class.getName();
+
+    public DashboardFragment() {
+    }
 
     public static DashboardFragment newInstance(long patientId) {
         DashboardFragment fragment = new DashboardFragment();
@@ -53,9 +45,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         args.putLong(PARAM_PATIENT_ID, patientId);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public DashboardFragment() {
     }
 
     @Override
@@ -73,7 +62,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         txtPatient = (TextView) view.findViewById(R.id.txtPatient);
         patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
@@ -88,23 +76,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         btnViewDiagram.setOnClickListener(this);
 
         return view;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -122,24 +93,25 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
                     imageShortPath = ImageUtils.getImageShortPath(sdImageFile);
 
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                    //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+
+                    Intent intent = new Intent(getActivity(), CameraActivity.class);
+                    intent.putExtra(CameraActivity.IMAGE_PATH, sdImageFile.getAbsolutePath());
+                    intent.putExtra(CameraActivity.IMAGE_URI, outputFileUri);
+
                     startActivityForResult(intent, REQUEST_CODE_IMAGE);
                 }
                 break;
             case R.id.btnViewImages:
-                // TODO abrir activity
                 Intent intent = new Intent(getActivity(), ViewImagesActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btnViewDiagram:
-                // TODO abrir activity
                 intent = new Intent(getActivity(), ViewBodyDiagramActivity.class);
                 startActivity(intent);
                 break;
         }
-
-
     }
 
     private boolean externalStorageAvailable() {
@@ -158,11 +130,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             intent.putExtra(SaveImageActivity.PATIENT_ID, patientId);
             startActivity(intent);
         }
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
 
 }
