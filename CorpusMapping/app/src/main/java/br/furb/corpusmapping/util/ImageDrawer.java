@@ -39,8 +39,6 @@ public class ImageDrawer {
         paintText.setStyle(Paint.Style.FILL);
         paintText.setFakeBoldText(true);
 
-       // paintText.setShadowLayer(30f, 10f, 10f, Color.BLACK);
-
         for (PointF p : point){
             canvas.drawText("@", p.x, p.y, paintText);
         }

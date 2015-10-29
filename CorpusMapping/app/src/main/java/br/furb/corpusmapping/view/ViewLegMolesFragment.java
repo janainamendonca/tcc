@@ -19,6 +19,9 @@ import br.furb.corpusmapping.util.ImageDrawer;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
+/**
+ * Fragment para visualização das pintas das pernas e pés. Permite escolher entre o lado direito e esquerdo
+ */
 public class ViewLegMolesFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ImageView imgLegLeftFront;
@@ -68,6 +71,7 @@ public class ViewLegMolesFragment extends Fragment implements View.OnClickListen
         imgFootLeftTop.setOnClickListener(this);
         imgFootLeftDown.setOnClickListener(this);
 
+        // desenha as pintas associadas à perna e pé do lado esquerdo
         ImageDrawer.drawPoints(imgLegLeftFront, SpecificBodyPart.LEFT_LEG_FRONT, R.drawable.perna_esquerda_frente);
         ImageDrawer.drawPoints(imgLegLeftBack, SpecificBodyPart.LEFT_LEG_BACK, R.drawable.perna_esquerda_atras);
         ImageDrawer.drawPoints(imgFootLeftDown, SpecificBodyPart.LEFT_FOOT_DOWN, R.drawable.pe_esquerdo_baixo);
@@ -84,10 +88,11 @@ public class ViewLegMolesFragment extends Fragment implements View.OnClickListen
         imgFootRightTop.setOnClickListener(this);
         imgFootRightDown.setOnClickListener(this);
 
-        ImageDrawer.drawPoints(imgLegRightFront, SpecificBodyPart.RIGHT_LEG_FRONT, R.drawable.perna_esquerda_frente);
-        ImageDrawer.drawPoints(imgLegRightBack, SpecificBodyPart.RIGHT_LEG_BACK, R.drawable.perna_esquerda_atras);
-        ImageDrawer.drawPoints(imgFootRightDown, SpecificBodyPart.RIGHT_FOOT_DOWN, R.drawable.pe_esquerdo_baixo);
-        ImageDrawer.drawPoints(imgFootRightTop, SpecificBodyPart.RIGHT_FOOT_TOP, R.drawable.pe_esquerdo_cima);
+        // desenha as pintas associadas à perna e pé do lado direito
+        ImageDrawer.drawPoints(imgLegRightFront, SpecificBodyPart.RIGHT_LEG_FRONT, R.drawable.perna_direita_frente);
+        ImageDrawer.drawPoints(imgLegRightBack, SpecificBodyPart.RIGHT_LEG_BACK, R.drawable.perna_direita_atras);
+        ImageDrawer.drawPoints(imgFootRightDown, SpecificBodyPart.RIGHT_FOOT_DOWN, R.drawable.pe_direito_baixo);
+        ImageDrawer.drawPoints(imgFootRightTop, SpecificBodyPart.RIGHT_FOOT_TOP, R.drawable.pe_direito_cima);
 
         rbRight = (RadioButton) view.findViewById(R.id.rbRight);
         rbLeft = (RadioButton) view.findViewById(R.id.rbLeft);

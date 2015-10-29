@@ -20,12 +20,24 @@ import br.furb.corpusmapping.data.Patient;
  */
 public class ImageUtils {
 
+    /**
+     * Retorna o diretório das imagens do paciente informado.
+     * Se o diretório ainda não existir, ele será criado.
+     * @param patient o paciente que se deseja obter o diretório
+     * @return File apontando para o diretório das imagens do paciente.
+     */
     public static File getPatientImagesDir(Patient patient) {
         File patientDir = getPatientImagesDir(patient.getId(), patient.getName());
         patientDir.mkdirs();
         return patientDir;
     }
 
+    /**
+     * Retorna o diretório das imagens do paciente informado. Pode ser que o diretório exista ou não.
+     * @param id id do paciente
+     * @param name nome do paciente
+     * @return
+     */
     public static File getPatientImagesDir(long id, String name){
         File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "CorpusMapping");
         root.mkdirs();

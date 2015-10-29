@@ -20,6 +20,9 @@ import br.furb.corpusmapping.util.ImageDrawer;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
+/**
+ * Fragment para visualização das pintas dos braços e mãos
+ */
 public class ViewArmMolesFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ImageView imgArmLeftTop;
@@ -56,35 +59,33 @@ public class ViewArmMolesFragment extends Fragment implements View.OnClickListen
 
         imgArmLeftDown = (ImageView) view.findViewById(R.id.imgArmLeftDown);
         imgArmLeftTop = (ImageView) view.findViewById(R.id.imgArmLeftTop);
-
-        imgArmLeftDown.setOnClickListener(this);
-        imgArmLeftTop.setOnClickListener(this);
-
-        ImageDrawer.drawPoints(imgArmLeftDown, SpecificBodyPart.LEFT_ARM_DOWN, R.drawable.braco_esquerdo_baixo);
-        ImageDrawer.drawPoints(imgArmLeftTop, SpecificBodyPart.LEFT_ARM_TOP, R.drawable.braco_esquerdo_cima);
-
         imgArmRightDown = (ImageView) view.findViewById(R.id.imgArmRightDown);
         imgArmRightTop = (ImageView) view.findViewById(R.id.imgArmRightTop);
 
+        imgArmLeftDown.setOnClickListener(this);
+        imgArmLeftTop.setOnClickListener(this);
         imgArmRightDown.setOnClickListener(this);
         imgArmRightTop.setOnClickListener(this);
 
-        ImageDrawer.drawPoints(imgArmRightDown, SpecificBodyPart.RIGHT_ARM_DOWN, R.drawable.braco_direito_baixo);
-        ImageDrawer.drawPoints(imgArmRightTop, SpecificBodyPart.RIGHT_ARM_TOP, R.drawable.braco_direito_cima);
-
+        // manda desenhar as pintas nas partes do corpo.
+        drawMoles();
 
         rbRight = (RadioButton) view.findViewById(R.id.rbRight);
         rbLeft = (RadioButton) view.findViewById(R.id.rbLeft);
-
         pnLeft = (GridLayout) view.findViewById(R.id.pnLeft);
         pnRight = (GridLayout) view.findViewById(R.id.pnRight);
-
         rbLeft.setChecked(true);
-
         rbLeft.setOnCheckedChangeListener(this);
         rbRight.setOnCheckedChangeListener(this);
 
         return view;
+    }
+
+    private void drawMoles() {
+        ImageDrawer.drawPoints(imgArmLeftDown, SpecificBodyPart.LEFT_ARM_DOWN, R.drawable.braco_esquerdo_baixo);
+        ImageDrawer.drawPoints(imgArmLeftTop, SpecificBodyPart.LEFT_ARM_TOP, R.drawable.braco_esquerdo_cima);
+        ImageDrawer.drawPoints(imgArmRightDown, SpecificBodyPart.RIGHT_ARM_DOWN, R.drawable.braco_direito_baixo);
+        ImageDrawer.drawPoints(imgArmRightTop, SpecificBodyPart.RIGHT_ARM_TOP, R.drawable.braco_direito_cima);
     }
 
     @Override

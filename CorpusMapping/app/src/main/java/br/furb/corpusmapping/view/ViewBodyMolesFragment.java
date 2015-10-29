@@ -16,6 +16,9 @@ import br.furb.corpusmapping.util.ImageDrawer;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
+/**
+ * Fragment para visualização das pintas do tronco
+ */
 public class ViewBodyMolesFragment extends Fragment implements View.OnClickListener {
 
     private ImageView imgBack;
@@ -48,6 +51,8 @@ public class ViewBodyMolesFragment extends Fragment implements View.OnClickListe
 
         imgFront.setOnClickListener(this);
         imgBack.setOnClickListener(this);
+
+        // desenha as pintas associadas a esta região do corpo
         ImageDrawer.drawPoints(imgFront, SpecificBodyPart.BODY_FRONT, R.drawable.tronco_frente);
         ImageDrawer.drawPoints(imgBack, SpecificBodyPart.BODY_BACK, R.drawable.tronco_costas);
         return view;

@@ -17,6 +17,9 @@ import br.furb.corpusmapping.util.ImageDrawer;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_BODY_PARTS;
 import static br.furb.corpusmapping.capture.BodyImageSliderActivity.PARAM_IMAGES;
 
+/**
+ * Fragment apresentado para o usuário selecionar a região (ponto) da perna esquerda onde deseja associar a imagem capturada.
+ */
 public class SelectionLegLeftFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;

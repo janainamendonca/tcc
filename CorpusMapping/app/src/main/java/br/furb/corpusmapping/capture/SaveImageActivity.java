@@ -25,6 +25,9 @@ import br.furb.corpusmapping.data.MoleGroupRepository;
 import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BoundingBox;
 
+/**
+ * Activity que apresenta as regiões do corpo para o usuário escolher com qual parte do corpo ele quer associar a imagem que foi capturada.
+ */
 public class SaveImageActivity extends ActionBarActivity {
 
     public static final String IMAGE_SHORT_PATH = "imageShortPath";
@@ -71,7 +74,6 @@ public class SaveImageActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

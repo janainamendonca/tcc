@@ -20,7 +20,6 @@ import br.furb.corpusmapping.DashboardFragment;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.ui.settings.SettingsActivity;
 
-
 public class PatientSelectedActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private DrawerLayout mDrawerLayout;
@@ -47,15 +46,6 @@ public class PatientSelectedActivity extends ActionBarActivity implements Adapte
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment)
                 .commit();
-
-
-        /*
-        Fragment fragment = PatientsListFragment.newInstance();
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();*/
     }
 
     private void configureDrawerMenu() {
