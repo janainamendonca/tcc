@@ -122,7 +122,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.furb.corpusmapping.ui.settings.SettingsActivity" />
         </activity>
-
         <activity
             android:name=".ui.settings.data.ExportActivity"
             android:label="@string/title_activity_data"
@@ -131,7 +130,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.furb.corpusmapping.ui.settings.data.DataActivity" />
         </activity>
-
         <activity
             android:name=".ui.settings.data.ImportActivity"
             android:label="@string/title_activity_data"
@@ -139,6 +137,12 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.furb.corpusmapping.ui.settings.data.DataActivity" />
+        </activity>
+        <activity android:name=".ui.camera.CameraActivity" />
+        <activity android:name=".ui.camera.ViewPhotoActivity" />
+        <activity
+            android:name=".GabaritoActivity"
+            android:label="@string/title_activity_gabarito" >
         </activity>
     </application>
 

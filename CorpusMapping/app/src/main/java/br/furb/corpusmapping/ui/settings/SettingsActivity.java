@@ -14,6 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.furb.corpusmapping.GabaritoActivity;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.adapters.SettingsAdapter;
 import br.furb.corpusmapping.ui.common.NavigationScreen;
@@ -25,7 +26,7 @@ public class SettingsActivity extends ActionBarActivity implements AdapterView.O
     private boolean isResumed = false;
     private boolean requestLock = false;
 
-    public static Intent makeIntent(Context context){
+    public static Intent makeIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
     }
 
@@ -33,7 +34,7 @@ public class SettingsActivity extends ActionBarActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Get views
         final ListView list_V = (ListView) findViewById(R.id.listView);
@@ -44,24 +45,28 @@ public class SettingsActivity extends ActionBarActivity implements AdapterView.O
         list_V.setOnItemClickListener(this);
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         isResumed = true;
     }
 
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.clear();
         return true;
     }
 
-    @Override protected void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
         isResumed = false;
     }
@@ -70,11 +75,14 @@ public class SettingsActivity extends ActionBarActivity implements AdapterView.O
         return NavigationScreen.Settings;
     }
 
-    @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-         if (id == SettingsAdapter.ID_DATA) {
-           DataActivity.start(this);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (id == SettingsAdapter.ID_DATA) {
+            DataActivity.start(this);
         } else if (id == SettingsAdapter.ID_ABOUT) {
-          // TODO  AboutActivity.start(this);
+            // TODO  AboutActivity.start(this);
+        } else if (id == SettingsAdapter.ID_GABARITO) {
+            GabaritoActivity.start(this);
         }
     }
 
