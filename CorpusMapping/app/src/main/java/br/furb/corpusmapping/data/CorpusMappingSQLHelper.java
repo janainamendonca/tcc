@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "dbCorpusMapping";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 6;
 
     private static CorpusMappingSQLHelper instance;
 
@@ -48,7 +48,25 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
             sql.append(" ADD COLUMN classification TEXT;");
 
             db.execSQL(sql.toString());
+        }else if(newVersion == 5){
+            createTableIds(db);
+        }else if(newVersion == 6){
+            dropTables(db);
+
+            createTablePatient(db);
+            createTableMoleGroup(db);
+            createTableImageRegister(db);
         }
+    }
+
+    private void createTableIds(SQLiteDatabase db) {
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("CREATE TABLE id_mapping ( ");
+        sql.append(" old_id INTEGER, ");
+        sql.append(" new_id INTEGER);");
+
+        db.execSQL(sql.toString());
     }
 
     private void dropTables(SQLiteDatabase db) {
@@ -64,7 +82,7 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
         StringBuilder sql = new StringBuilder();
 
         sql.append("CREATE TABLE PATIENT ( ");
-        sql.append(" _id INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        sql.append(" id INTEGER PRIMARY KEY, ");
         sql.append(" name TEXT, ");
         sql.append(" cpf TEXT, ");
         sql.append(" gender TEXT, ");
@@ -77,7 +95,7 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
         StringBuilder sql = new StringBuilder();
 
         sql.append("CREATE TABLE MOLE_GROUP ( ");
-        sql.append(" _id INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        sql.append(" id INTEGER PRIMARY KEY, ");
         sql.append(" group_name TEXT, ");
         sql.append(" description TEXT, ");
         sql.append(" patient LONG, ");
@@ -94,7 +112,7 @@ public class CorpusMappingSQLHelper extends SQLiteOpenHelper {
         StringBuilder sql = new StringBuilder();
 
         sql.append("CREATE TABLE IMAGE_RECORD ( ");
-        sql.append(" _id INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        sql.append(" id INTEGER PRIMARY KEY, ");
         sql.append(" body_part TEXT, ");
         sql.append(" image_date TEXT, ");
         sql.append(" point_x REAL, ");

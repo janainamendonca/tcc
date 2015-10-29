@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 import br.furb.corpusmapping.DashboardFragment;
 import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.ui.settings.SettingsActivity;
 
 
 public class PatientSelectedActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
@@ -144,18 +145,22 @@ public class PatientSelectedActivity extends ActionBarActivity implements Adapte
 
     private void showItem(int position) {
         String selecionado = mDrawerList.getItemAtPosition(position).toString();
-        Fragment fragment = PatientsListFragment.newInstance();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
+        if (selecionado.equals("Configurações")) {
+            startActivity(SettingsActivity.makeIntent(this));
+        } else {
 
-        //startActivity(new Intent(this, PatientsActivity.class));
+            Fragment fragment = PatientsListFragment.newInstance();
 
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+            //startActivity(new Intent(this, PatientsActivity.class));
+
+        }
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
-
     }
 
     private void updateTitle(boolean drawerIsOpen) {

@@ -6,7 +6,95 @@
         <item name="android:windowActionModeOverlay">true</item>
      </style>
 
+    <!-- ScrollView -->
+    <!-- ======================================================================================= -->
 
+    <style name="ScrollView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:fillViewport">true</item>
+    </style>
+
+    <!-- List -->
+    <!-- =========================================================================================================== -->
+
+    <style name="AdapterView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:drawSelectorOnTop">true</item>
+    </style>
+
+    <style name="AdapterView.NoDivider">
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:dividerPadding">0dp</item>
+    </style>
+
+    <style name="AdapterView.NoDivider.NoSelector">
+        <item name="android:listSelector">#0000</item>
+    </style>
+
+    <style name="AdapterItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/keyline</item>
+        <item name="android:paddingRight">@dimen/keyline</item>
+        <item name="android:paddingTop">@dimen/space_normal</item>
+        <item name="android:paddingBottom">@dimen/space_normal</item>
+        <item name="android:minHeight">?actionBarSize</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+    <!-- Text -->
+    <!-- ======================================================================================= -->
+    <style name="Text.Subhead" parent="TextAppearance.AppCompat.Subhead">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="Text.Caption" parent="TextAppearance.AppCompat.Caption">
+        <item name="fontPath">fonts/Roboto-Regular.ttf</item>
+    </style>
+
+    <style name="Text.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="fontPath">fonts/Roboto-Medium.ttf</item>
+    </style>
+
+    <!-- Button -->
+    <!-- =========================================================================================================== -->
+
+    <style name="Button" />
+
+    <style name="Button.Flat">
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+    <style name="Button.Flat.ButtonBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="Button.Flat.Borderless">
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <!-- Dividers -->
+    <!-- ======================================================================================= -->
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.67dp</item>
+        <item name="android:background">?android:dividerHorizontal</item>
+    </style>
+
+    <style name="Divider.Thick">
+        <item name="android:layout_height">1.34dp</item>
+    </style>
 
 </resources>
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class PatientRepository {
 
     public static final String TABLE_PATIENT = "patient";
-    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_CPF = "cpf";
     public static final String COLUMN_GENDER = "gender";
@@ -34,12 +34,17 @@ public class PatientRepository {
         return instance;
     }
 
-    public void save(Patient patient) {
+    public void save(Patient patient, SQLiteDatabase db) {
         if (patient.getId() <= 0) {
-            insert(patient);
+            insert(patient, db);
         } else {
-            update(patient);
+            update(patient, db);
         }
+    }
+
+
+    public void save(Patient patient) {
+        save(patient, null);
     }
 
     public int delete(Patient patient) {
@@ -50,6 +55,12 @@ public class PatientRepository {
                 new String[]{String.valueOf(patient.getId())});
         db.close();
         return affectedRows;
+    }
+
+    public void deleteAll() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int affectedRows = db.delete(TABLE_PATIENT, null, null);
+        db.close();
     }
 
     public List<Patient> getAll() {
@@ -73,7 +84,14 @@ public class PatientRepository {
     public Patient getById(long id) {
         SQLiteDatabase db = helper.getReadableDatabase();
 
-        String sql = "SELECT * FROM " + TABLE_PATIENT + " WHERE _id = ?";
+        Patient patient = getById(id, db);
+        db.close();
+
+        return patient;
+    }
+
+    public Patient getById(long id, SQLiteDatabase db) {
+        String sql = "SELECT * FROM " + TABLE_PATIENT + " WHERE id = ?";
 
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(id)});
         List<Patient> patients = new ArrayList<Patient>();
@@ -84,8 +102,6 @@ public class PatientRepository {
             patient = createPatient(cursor);
         }
         cursor.close();
-        db.close();
-
         return patient;
     }
 
@@ -111,25 +127,56 @@ public class PatientRepository {
         return p;
     }
 
-    private long insert(Patient patient) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
+    private long insert(Patient patient, SQLiteDatabase db) {
+        boolean needClose = false;
 
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
+        try {
+            String query = "select max(id) from " + TABLE_PATIENT;
+            Cursor cursor = db.rawQuery(query, null);
+            long lastId = 0;
+            if (cursor.moveToFirst()) {
+                lastId = cursor.getLong(0);
+            }
+            cursor.close();
+
+            long id = lastId + 1;
+            return insert(patient, db, id);
+        } finally {
+            if (needClose) db.close();
+        }
+    }
+
+    public long insert(Patient patient, SQLiteDatabase db, long id) {
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
+
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_ID, id);
         cv.put(COLUMN_NAME, patient.getName());
         cv.put(COLUMN_CPF, patient.getCpf());
         cv.put(COLUMN_GENDER, patient.getGender().name());
         cv.put(COLUMN_BIRTH_DATE, patient.getBirthDateStr());
-
-        long id = db.insert(TABLE_PATIENT, null, cv);
-        if (id != -1) {
-            patient.setId(id);
-        }
-        db.close();
+        patient.setId(id);
+        db.insert(TABLE_PATIENT, null, cv);
+        if (needClose) db.close();
         return id;
     }
 
-    private int update(Patient patient) {
-        SQLiteDatabase db = helper.getWritableDatabase();
+    private int update(Patient patient, SQLiteDatabase db) {
+        boolean needClose = false;
+
+        if (db == null) {
+            needClose = true;
+            db = helper.getWritableDatabase();
+        }
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_NAME, patient.getName());
@@ -139,7 +186,7 @@ public class PatientRepository {
 
         int affectedRows = db.update(TABLE_PATIENT, cv, COLUMN_ID + " = ?", new String[]{String.valueOf(patient
                 .getId())});
-        db.close();
+        if (needClose) db.close();
         return affectedRows;
     }
 

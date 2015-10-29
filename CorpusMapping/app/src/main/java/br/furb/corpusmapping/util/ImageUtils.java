@@ -21,6 +21,12 @@ import br.furb.corpusmapping.data.Patient;
 public class ImageUtils {
 
     public static File getPatientImagesDir(Patient patient) {
+        File patientDir = getPatientImagesDir(patient.getId(), patient.getName());
+        patientDir.mkdirs();
+        return patientDir;
+    }
+
+    public static File getPatientImagesDir(long id, String name){
         File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "CorpusMapping");
         root.mkdirs();
 
@@ -29,16 +35,14 @@ public class ImageUtils {
 
         for (File f : files) {
             // faz isso porque pode ser que o nome do paciente tenha sido alterado no cadastro dele
-            if (f.getName().startsWith(patient.getId() + "_")) {
+            if (f.getName().startsWith(id + "_")) {
                 patientDir = f;
             }
         }
 
         if (patientDir == null) {
-            patientDir = new File(root, patient.getId() + "_" + patient.getName());
+            patientDir = new File(root, id + "_" + name);
         }
-
-        patientDir.mkdirs();
 
         return patientDir;
     }
