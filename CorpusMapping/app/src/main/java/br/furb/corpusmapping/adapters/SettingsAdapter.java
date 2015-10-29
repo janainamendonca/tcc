@@ -16,6 +16,7 @@ import br.furb.corpusmapping.R;
 public class SettingsAdapter extends BaseAdapter {
     public static final int ID_DATA = 1;
     public static final int ID_ABOUT = 2;
+    public static final int ID_GABARITO = 3;
 
     private final Context context;
     private final List<SettingsItem> settingsItems;
@@ -25,6 +26,7 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems = new ArrayList<>();
         settingsItems.add(new SettingsItem(ID_DATA, ViewType.SettingsItem, context.getString(R.string.data)));
         settingsItems.add(new SettingsSubtitleItem(ID_ABOUT, ViewType.SettingsSubtitleItem, context.getString(R.string.about), BuildConfig.VERSION_NAME));
+        settingsItems.add(new SettingsItem(ID_GABARITO, ViewType.SettingsItem, context.getString(R.string.gabarito)));
     }
 
     @Override public int getCount() {

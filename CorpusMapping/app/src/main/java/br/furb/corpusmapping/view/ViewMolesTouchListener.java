@@ -16,7 +16,8 @@ import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BoundingBox;
 
 /**
- * Created by Janaina on 25/08/2015.
+ * Listener para quando uma pinta é selecionada na imagem da parte do corpo.
+ * Apresenta uma activity com todas as imagens associadas a pinta selecionada.
  */
 public class ViewMolesTouchListener extends ImageBoundingBoxTouchListener {
 
@@ -37,7 +38,6 @@ public class ViewMolesTouchListener extends ImageBoundingBoxTouchListener {
         List<ImageRecord> imageRecords = ImageRecordRepository.getInstance(activity).getByBodyPartAndPosition(patientId, bodyPart, touchPoint);
 
         if (!imageRecords.isEmpty()) {
-
             Intent i = new Intent(activity, MoleImageSliderActivity.class);
             i.putExtra(MoleImageSliderActivity.PARAM_IMAGES, imageRecords.toArray(new ImageRecord[imageRecords.size()]));
             activity.startActivity(i);

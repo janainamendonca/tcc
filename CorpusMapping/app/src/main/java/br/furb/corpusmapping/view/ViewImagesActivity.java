@@ -17,7 +17,10 @@ import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 
-
+/**
+ * Activity para visualização das última imagem de cada pinta.
+ * As imagens são apresentadas em forma de uma lista (uma imagem abaixo da outra).
+ */
 public class ViewImagesActivity extends ActionBarActivity {
     Map<Long, List<ImageRecord>> moleImages;
     MoleImagesAdapter adapter;
@@ -47,9 +50,6 @@ public class ViewImagesActivity extends ActionBarActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-               /* ImageRecord moleImage = (ImageRecord)adapterView.getItemAtPosition(position);
-                Toast.makeText(ViewImagesActivity.this,
-                        moleImage.getMoleGroup().getGroupName(), Toast.LENGTH_SHORT).show();*/
                 Intent intent = new Intent(ViewImagesActivity.this, MoleImageSliderActivity.class);
                 List<ImageRecord> imageRecords = moleImages.get(id);
                 intent.putExtra(MoleImageSliderActivity.PARAM_IMAGES, imageRecords.toArray(new ImageRecord[imageRecords.size()]));
@@ -57,7 +57,6 @@ public class ViewImagesActivity extends ActionBarActivity {
             }
         });
 
-        // EmptyView só funciona com ListActivity...
         listView.setEmptyView(findViewById(android.R.id.empty));
     }
 }

@@ -4,20 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -25,7 +18,7 @@ import br.furb.corpusmapping.CorpusMappingApp;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.SpecificBodyPart;
 import br.furb.corpusmapping.common.ImageBoundingBoxTouchListener;
-import br.furb.corpusmapping.common.SpinnerClassificationAdapter;
+import br.furb.corpusmapping.adapters.SpinnerClassificationAdapter;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleClassification;
@@ -33,7 +26,6 @@ import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.data.PointF;
 import br.furb.corpusmapping.util.BoundingBox;
 import br.furb.corpusmapping.util.ImageDrawer;
-import br.furb.corpusmapping.util.ImageUtils;
 
 /**
  * Created by Janaina on 25/08/2015.

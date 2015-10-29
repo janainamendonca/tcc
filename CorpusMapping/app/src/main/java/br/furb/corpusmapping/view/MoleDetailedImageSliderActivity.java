@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -33,13 +32,14 @@ import br.furb.corpusmapping.CorpusMappingApp;
 import br.furb.corpusmapping.ImageType;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.SpecificBodyPart;
-import br.furb.corpusmapping.common.SpinnerClassificationAdapter;
+import br.furb.corpusmapping.adapters.SpinnerClassificationAdapter;
 import br.furb.corpusmapping.data.ImageRecord;
 import br.furb.corpusmapping.data.ImageRecordRepository;
 import br.furb.corpusmapping.data.MoleClassification;
 import br.furb.corpusmapping.data.MoleGroup;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
+import br.furb.corpusmapping.ui.camera.CameraActivity;
 import br.furb.corpusmapping.util.BodyPartDialog;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.util.ImageUtils;
@@ -131,8 +131,14 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
 
             imageShortPath = ImageUtils.getImageShortPath(sdImageFile);
 
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            startActivityForResult(intent, REQUEST_CODE_IMAGE);*/
+
+            Intent intent = new Intent(this, CameraActivity.class);
+            intent.putExtra(CameraActivity.IMAGE_PATH, sdImageFile.getAbsolutePath());
+            intent.putExtra(CameraActivity.IMAGE_URI, outputFileUri);
+
             startActivityForResult(intent, REQUEST_CODE_IMAGE);
         } else if (item.getItemId() == R.id.action_edit) {
             editImageRecord();

@@ -20,6 +20,9 @@ import static br.furb.corpusmapping.SpecificBodyPart.HEAD_FRONT;
 import static br.furb.corpusmapping.SpecificBodyPart.HEAD_LEFT;
 import static br.furb.corpusmapping.SpecificBodyPart.HEAD_RIGHT;
 
+/**
+ * Fragment para visualização das pintas da cabeça e pescoço
+ */
 public class ViewHeadMolesFragment extends Fragment implements View.OnClickListener {
 
     private ImageView imgHeadFront;
@@ -59,26 +62,11 @@ public class ViewHeadMolesFragment extends Fragment implements View.OnClickListe
         imgHeadLeft.setOnClickListener(this);
         imgHeadRight.setOnClickListener(this);
 
+        // desenha as pintas associadas a cabeça
         ImageDrawer.drawPoints(imgHeadFront, HEAD_FRONT, R.drawable.cabeca_frente);
         ImageDrawer.drawPoints(imgHeadBack, HEAD_BACK, R.drawable.cabeca_atras);
         ImageDrawer.drawPoints(imgHeadLeft, HEAD_LEFT, R.drawable.cabeca_esquerda);
         ImageDrawer.drawPoints(imgHeadRight, HEAD_RIGHT, R.drawable.cabeca_direita);
-
-        /*imgHeadFront.setOnTouchListener(new ImageBoundingBoxTouchListener(BodyImagesUtil.getHeadFrontBBox()) {
-            @Override
-            public void onClickInnerBoundingBox(ImageView view, PointF touchPoint, int boundingBoxId) {
-                super.onClickInnerBoundingBox(view, touchPoint, boundingBoxId);
-                long patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
-                List<ImageRecord> imageRecords = ImageRecordRepository.getInstance(getActivity()).getByBodyPartAndPosition(patientId, HEAD_FRONT, touchPoint);
-
-                if (!imageRecords.isEmpty()) {
-
-                    Intent i = new Intent(getActivity(), MoleImageSliderActivity.class);
-                    i.putExtra(MoleImageSliderActivity.PARAM_IMAGES, imageRecords.toArray(new ImageRecord[imageRecords.size()]));
-                    startActivity(i);
-                }
-            }
-        });*/
 
         return view;
     }

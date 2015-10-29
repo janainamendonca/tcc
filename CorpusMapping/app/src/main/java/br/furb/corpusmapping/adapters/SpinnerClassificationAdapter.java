@@ -1,4 +1,4 @@
-package br.furb.corpusmapping.common;
+package br.furb.corpusmapping.adapters;
 
 import android.app.Activity;
 import android.view.ActionMode;

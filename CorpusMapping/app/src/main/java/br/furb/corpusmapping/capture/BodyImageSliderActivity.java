@@ -26,7 +26,6 @@ import br.furb.corpusmapping.util.BodyImagesUtil;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.view.ViewMolesTouchListener;
 
-
 public class BodyImageSliderActivity extends FragmentActivity {
 
     public static final String PARAM_IMAGES = "images";
