@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import br.furb.corpusmapping.DashboardFragment;
+import br.furb.corpusmapping.GabaritoActivity;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.ui.settings.SettingsActivity;
 
@@ -100,7 +101,7 @@ public class PatientSelectedActivity extends ActionBarActivity implements Adapte
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+       // menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
      /*   MenuItem item = menu.findItem(R.id.action_edit_patient);
         if(item!= null) {
             item.setVisible(!drawerOpen);
@@ -138,6 +139,8 @@ public class PatientSelectedActivity extends ActionBarActivity implements Adapte
 
         if (selecionado.equals("Configurações")) {
             startActivity(SettingsActivity.makeIntent(this));
+        } else if(selecionado.equals("Gabarito")){
+            GabaritoActivity.start(this);
         } else {
 
             Fragment fragment = PatientsListFragment.newInstance();

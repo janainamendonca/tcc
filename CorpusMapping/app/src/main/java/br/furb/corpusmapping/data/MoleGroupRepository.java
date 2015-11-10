@@ -59,6 +59,15 @@ public class MoleGroupRepository {
         db.close();
     }
 
+    public int deleteByPatient(long patientId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int affectedRows = db.delete(
+                TABLE_MOLE_GROUP,
+                COLUMN_PATIENT_ID + " = ?",
+                new String[]{String.valueOf(patientId)});
+        db.close();
+        return affectedRows;
+    }
 
     public int delete(MoleGroup moleGroup) {
         SQLiteDatabase db = helper.getWritableDatabase();

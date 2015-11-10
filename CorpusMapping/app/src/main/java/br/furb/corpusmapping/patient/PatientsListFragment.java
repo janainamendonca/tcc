@@ -1,5 +1,7 @@
 package br.furb.corpusmapping.patient;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,13 +14,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.List;
 
 import br.furb.corpusmapping.CorpusMappingApp;
 import br.furb.corpusmapping.R;
+import br.furb.corpusmapping.data.ImageRecord;
+import br.furb.corpusmapping.data.ImageRecordRepository;
+import br.furb.corpusmapping.data.MoleGroupRepository;
 import br.furb.corpusmapping.data.Patient;
 import br.furb.corpusmapping.data.PatientRepository;
+import br.furb.corpusmapping.util.ImageUtils;
 
 public class PatientsListFragment extends Fragment implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
@@ -45,6 +53,10 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
     @Override
     public void onStart() {
         super.onStart();
+        updatePatients();
+    }
+
+    private void updatePatients() {
         List<Patient> patients = repository.getAll();
 
         ArrayAdapter<Patient> adapter = new ArrayAdapter<Patient>(
@@ -111,8 +123,49 @@ public class PatientsListFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return false;
+    public boolean onItemLongClick(AdapterView<?> parent, View view,final int position, long id) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Deseja excluir o paciente e todos os seus dados?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Patient patient = (Patient) listPatients
+                        .getAdapter().getItem(position);
+                removePatient(patient);
+                Toast.makeText(getActivity(), "Paciente excluído com sucesso!", Toast.LENGTH_SHORT);
+                updatePatients();
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+        return true;
+    }
+
+    private void removePatient(Patient patient) {
+        PatientRepository patientRepository = PatientRepository.getInstance(getActivity());
+        patientRepository.delete(patient);
+        long patientId = patient.getId();
+
+        ImageRecordRepository imageRecordRepository = ImageRecordRepository.getInstance(getActivity());
+        List<ImageRecord> imageRecords = imageRecordRepository.getByPatientId(patientId);
+        imageRecordRepository.deleteByPatient(patientId);
+        MoleGroupRepository.getInstance(getActivity()).deleteByPatient(patientId);
+
+        for(ImageRecord imageRecord: imageRecords){
+            File imageFile = ImageUtils.getImageFile(imageRecord.getImagePath());
+            imageFile.delete();
+        }
+
+        File patientImagesDir = ImageUtils.getPatientImagesDir(patientId, patient.getName());
+        patientImagesDir.delete();
     }
 
 }

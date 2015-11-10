@@ -83,6 +83,16 @@ public class ImageRecordRepository {
         return affectedRows;
     }
 
+    public int deleteByPatient(long patientId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int affectedRows = db.delete(
+                TABLE_IMAGE_RECORD,
+                COLUMN_PATIENT + " = ?",
+                new String[]{String.valueOf(patientId)});
+        db.close();
+        return affectedRows;
+    }
+
     public List<ImageRecord> getAll() {
         SQLiteDatabase db = helper.getReadableDatabase();
 
@@ -205,6 +215,62 @@ public class ImageRecordRepository {
         }
     }
 
+    public List<ImageRecord> getLastMolesByGroupId(long group_id) {
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        try {
+
+            String sql = "SELECT * FROM " + TABLE_IMAGE_RECORD + " WHERE mole_group = ?";
+
+            Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(group_id)});
+
+
+            List<ImageRecord> list = new ArrayList<>();
+
+            while (cursor.moveToNext()) {
+                ImageRecord imageRecord = createImageRecord(cursor, db);
+                list.add(imageRecord);
+            }
+            cursor.close();
+
+
+            Collections.sort(list, new Comparator<ImageRecord>() {
+                @Override
+                public int compare(ImageRecord lhs, ImageRecord rhs) {
+                    return rhs.getImageDate().compareTo(lhs.getImageDate());
+                }
+            });
+
+            return list;
+
+        } finally {
+            db.close();
+        }
+    }
+
+    public List<ImageRecord> getByPatientId(long patientId) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        try {
+
+            String sql = "SELECT * FROM " + TABLE_IMAGE_RECORD + " WHERE " + COLUMN_PATIENT+" = ?";
+
+            Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(patientId)});
+
+
+            List<ImageRecord> list = new ArrayList<>();
+
+            while (cursor.moveToNext()) {
+                ImageRecord imageRecord = createImageRecord(cursor, db);
+                list.add(imageRecord);
+            }
+            cursor.close();
+            return list;
+
+        } finally {
+            db.close();
+        }
+    }
 
     public List<ImageRecord> getByBodyPartId(long patient_id, SpecificBodyPart bodyPart) {
 
