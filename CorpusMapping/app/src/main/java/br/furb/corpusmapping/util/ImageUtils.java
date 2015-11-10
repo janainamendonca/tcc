@@ -79,6 +79,14 @@ public class ImageUtils {
     }
 
     public static Uri getImageUri(String imageShortPath) {
+        File f = getImageFile(imageShortPath);
+        if (f != null && f.exists()) {
+            return Uri.fromFile(f);
+        }
+        return null;
+    }
+
+    public static File getImageFile(String imageShortPath) {
         if (imageShortPath != null) {
             if (imageShortPath.contains(":")) {
                 imageShortPath = imageShortPath.replace(":", "/");
@@ -87,9 +95,7 @@ public class ImageUtils {
             Log.d("I", imageShortPath);
             File f = new File(getAppRootDir(), imageShortPath);
             Log.d("I", f.getAbsolutePath());
-            if (f.exists()) {
-                return Uri.fromFile(f);
-            }
+            return f;
         }
         return null;
     }

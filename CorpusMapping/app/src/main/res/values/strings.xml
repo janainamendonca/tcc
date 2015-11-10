@@ -51,5 +51,6 @@
     <string name="import_backup">Importar backup</string>
     <string name="done">Concluído</string>
     <string name="title_activity_gabarito">Gabarito</string>
+    <string name="action_remove">Excluir</string>
 
 </resources>

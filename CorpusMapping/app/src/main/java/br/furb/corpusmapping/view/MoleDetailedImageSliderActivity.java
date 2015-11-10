@@ -6,10 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -59,6 +58,8 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
     private ImageView imgClassification;
     private SpecificBodyPart bodyPart;
     private String imageShortPath;
+    private TextView txtMole;
+    private ImageView imgBodyPart;
 
 
     @Override
@@ -77,20 +78,9 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
         viewPager.setAdapter(imageFragmentPagerAdapter);
         viewPager.setCurrentItem(selectedImage);
 
-        TextView txtMole = (TextView) findViewById(R.id.txtMole);
-        ImageRecord imageRecord = images[0];
-        moleGroup = imageRecord.getMoleGroup();
-        txtMole.setText(moleGroup.getGroupName());
+        imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
+        txtMole = (TextView) findViewById(R.id.txtMole);
         imgClassification = (ImageView) findViewById(R.id.imgClassification);
-
-        if (moleGroup.getClassification() != null) {
-            imgClassification.setImageResource(moleGroup.getClassification().getResource());
-        }
-
-        ImageView imgBodyPart = (ImageView) findViewById(R.id.imgBodyPart);
-        bodyPart = imageRecord.getBodyPart();
-        imgBodyPart.setImageResource(bodyPart.getResource());
-        ImageDrawer.drawPoint(imgBodyPart, bodyPart.getResource(), moleGroup.getPosition());
 
         imgClassification.setOnClickListener(this);
         imgBodyPart.setOnClickListener(this);
@@ -99,8 +89,28 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        ImageRecord imageRecord = images[0];
+        moleGroup = imageRecord.getMoleGroup();
+        updateValues();
+
+        bodyPart = imageRecord.getBodyPart();
+        imgBodyPart.setImageResource(bodyPart.getResource());
+        ImageDrawer.drawPoint(imgBodyPart, bodyPart.getResource(), moleGroup.getPosition());
+    }
+
+    private void updateValues() {
+        txtMole.setText(moleGroup.getGroupName());
+
+        if (moleGroup.getClassification() != null) {
+            imgClassification.setImageResource(moleGroup.getClassification().getResource());
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_view_images, menu);
+        getMenuInflater().inflate(R.menu.menu_view_images_detailed, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -123,27 +133,76 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.action_take_picture) {
-            long patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
-            Patient patient = PatientRepository.getInstance(this).getById(patientId);
+            takePicture();
+        } else if (item.getItemId() == R.id.action_edit) {
+            editImageRecord();
+        } else if (item.getItemId() == R.id.action_remove) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Deseja excluir a imagem?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    removeImageRecord();
+                }
+            });
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-            File sdImageFile = ImageUtils.getFileForNewImage(patient);
-            Uri outputFileUri = Uri.fromFile(sdImageFile);
+    private void removeImageRecord() {
+        ImageRecord imageRecord = getImageRecord();
+        // Remove o registro da tabela.
+        ImageRecordRepository.getInstance(this).delete(imageRecord);
 
-            imageShortPath = ImageUtils.getImageShortPath(sdImageFile);
+        // Remove o arquivo da imagem do cartão de memória
+        File file = ImageUtils.getImageFile(imageRecord.getImagePath());
+        file.delete();
+
+        // atualiza a view pager
+        numItems = numItems - 1;
+        int currentItem = viewPager.getCurrentItem();
+        images[currentItem] = null;
+
+        ImageRecord[] newImages = new ImageRecord[numItems];
+        for (int i = 0, j = 0; i <= numItems; i++) {
+            if (images[i] != null) {
+                newImages[j] = images[i];
+                j++;
+            }
+        }
+        images = newImages;
+        imageFragmentPagerAdapter.notifyDataSetChanged();
+        Intent data = new Intent();
+        data.putExtra(PARAM_IMAGES, images);
+        setResult(RESULT_OK, data);
+    }
+
+    private void takePicture() {
+        long patientId = CorpusMappingApp.getInstance().getSelectedPatientId();
+        Patient patient = PatientRepository.getInstance(this).getById(patientId);
+
+        File sdImageFile = ImageUtils.getFileForNewImage(patient);
+        Uri outputFileUri = Uri.fromFile(sdImageFile);
+
+        imageShortPath = ImageUtils.getImageShortPath(sdImageFile);
 
             /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
             startActivityForResult(intent, REQUEST_CODE_IMAGE);*/
 
-            Intent intent = new Intent(this, CameraActivity.class);
-            intent.putExtra(CameraActivity.IMAGE_PATH, sdImageFile.getAbsolutePath());
-            intent.putExtra(CameraActivity.IMAGE_URI, outputFileUri);
+        Intent intent = new Intent(this, CameraActivity.class);
+        intent.putExtra(CameraActivity.IMAGE_PATH, sdImageFile.getAbsolutePath());
+        intent.putExtra(CameraActivity.IMAGE_URI, outputFileUri);
 
-            startActivityForResult(intent, REQUEST_CODE_IMAGE);
-        } else if (item.getItemId() == R.id.action_edit) {
-            editImageRecord();
-        }
-        return super.onOptionsItemSelected(item);
+        startActivityForResult(intent, REQUEST_CODE_IMAGE);
     }
 
     private void editImageRecord() {
@@ -160,7 +219,7 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
 
         spinnerClassification.setAdapter(new SpinnerClassificationAdapter(this));
 
-        final ImageRecord imageRecord = images[viewPager.getCurrentItem()];
+        final ImageRecord imageRecord = getImageRecord();
 
         edtGroupName.setText(moleGroup.getGroupName());
         edtAnnotation.setText(imageRecord.getAnnotations());
@@ -173,12 +232,17 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
                 imageRecord.getMoleGroup().setClassification(MoleClassification.values()[spinnerClassification.getSelectedItemPosition()]);
 
                 ImageRecordRepository.getInstance(MoleDetailedImageSliderActivity.this).save(imageRecord);
-                //TODO propagar a alteração para atualizar os componentes da tela
+                imageFragmentPagerAdapter.notifyDataSetChanged();
+                updateValues();
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private ImageRecord getImageRecord() {
+        return images[viewPager.getCurrentItem()];
     }
 
 
@@ -213,8 +277,10 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
                     images = Arrays.copyOf(images, images.length + 1);
                     images[images.length - 1] = imageRecord;
                     numItems = images.length;
-                    //imageFragmentPagerAdapter.notifyDataSetChanged(); TODO verificar como atualizar a viewPager
-                    viewPager.setAdapter(imageFragmentPagerAdapter);
+                    imageFragmentPagerAdapter.notifyDataSetChanged();
+                    Intent data = new Intent();
+                    data.putExtra(PARAM_IMAGES, images);
+                    setResult(RESULT_OK, data);
                 }
             });
 
@@ -224,7 +290,7 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
     }
 
 
-    private class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
+    private class ImageFragmentPagerAdapter extends FragmentStatePagerAdapter {
         public ImageFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -237,6 +303,11 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
         @Override
         public Fragment getItem(int position) {
             return SwipeFragment.newInstance(position, images);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
     }
 

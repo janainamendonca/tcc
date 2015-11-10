@@ -30,17 +30,24 @@ public class ViewImagesActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_images);
-        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        listView = (ListView)findViewById(R.id.listImages);
+        listView = (ListView) findViewById(R.id.listImages);
 
+
+        listView.setEmptyView(findViewById(android.R.id.empty));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         moleImages = ImageRecordRepository.getInstance(this).getLastMolesByPatientId(CorpusMappingApp.getInstance().getSelectedPatientId());
 
         List<ImageRecord> records = new ArrayList<ImageRecord>();
 
-        for(List<ImageRecord> l : moleImages.values()){
-            if(!l.isEmpty()){
+        for (List<ImageRecord> l : moleImages.values()) {
+            if (!l.isEmpty()) {
                 records.add(l.get(0));
             }
         }
@@ -56,7 +63,5 @@ public class ViewImagesActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
-
-        listView.setEmptyView(findViewById(android.R.id.empty));
     }
 }
