@@ -6,6 +6,31 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="br.furb.corpusmapping.GabaritoActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:textStyle="bold"
+            android:text="Orientações:"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="1. Coloque um pedaço de papel sobre o quadrado preto;"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="2. Desenhe o contorno do quadrado no papel;"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="3. Preencha o quadrado desenhado com uma cor escura."/>
+
+        </LinearLayout>
+
     <RelativeLayout
         android:layout_width="48dp"
         android:layout_height="48dp"

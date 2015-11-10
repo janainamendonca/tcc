@@ -26,7 +26,7 @@ public class SettingsAdapter extends BaseAdapter {
         settingsItems = new ArrayList<>();
         settingsItems.add(new SettingsItem(ID_DATA, ViewType.SettingsItem, context.getString(R.string.data)));
         settingsItems.add(new SettingsSubtitleItem(ID_ABOUT, ViewType.SettingsSubtitleItem, context.getString(R.string.about), BuildConfig.VERSION_NAME));
-        settingsItems.add(new SettingsItem(ID_GABARITO, ViewType.SettingsItem, context.getString(R.string.gabarito)));
+       // settingsItems.add(new SettingsItem(ID_GABARITO, ViewType.SettingsItem, context.getString(R.string.gabarito)));
     }
 
     @Override public int getCount() {
