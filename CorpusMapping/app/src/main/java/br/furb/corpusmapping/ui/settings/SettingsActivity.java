@@ -6,19 +6,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import br.furb.corpusmapping.GabaritoActivity;
+import br.furb.corpusmapping.ui.template.TemplateActivity;
 import br.furb.corpusmapping.R;
-import br.furb.corpusmapping.adapters.SettingsAdapter;
-import br.furb.corpusmapping.ui.common.NavigationScreen;
-import br.furb.corpusmapping.ui.settings.data.DataActivity;
+import br.furb.corpusmapping.ui.data.DataActivity;
 
 public class SettingsActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
@@ -71,10 +65,6 @@ public class SettingsActivity extends ActionBarActivity implements AdapterView.O
         isResumed = false;
     }
 
-    protected NavigationScreen getNavigationScreen() {
-        return NavigationScreen.Settings;
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (id == SettingsAdapter.ID_DATA) {
@@ -82,7 +72,7 @@ public class SettingsActivity extends ActionBarActivity implements AdapterView.O
         } else if (id == SettingsAdapter.ID_ABOUT) {
             // TODO  AboutActivity.start(this);
         } else if (id == SettingsAdapter.ID_GABARITO) {
-            GabaritoActivity.start(this);
+            TemplateActivity.start(this);
         }
     }
 

@@ -23,22 +23,20 @@ public class ZipManager {
 
     private static final int BUFFER = 80000;
 
-    public static void zip(Context context, List<String> _files, OutputStream dest) {
+    public static void zip(Context context, List<String> files, OutputStream dest) {
         try {
             BufferedInputStream origin = null;
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
                     dest));
             byte data[] = new byte[BUFFER];
 
-            for (int i = 0; i < _files.size(); i++) {
-                Log.v("Compress", "Adding: " + _files.get(i));
-
-                Uri imageUri = ImageUtils.getImageUri(_files.get(i));
+            for (int i = 0; i < files.size(); i++) {
+                Uri imageUri = ImageUtils.getImageUri(files.get(i));
                 InputStream stream = context.getContentResolver().openInputStream(imageUri);
 
                 origin = new BufferedInputStream(stream, BUFFER);
 
-                ZipEntry entry = new ZipEntry(_files.get(i));
+                ZipEntry entry = new ZipEntry(files.get(i));
                 out.putNextEntry(entry);
                 int count;
 

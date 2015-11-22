@@ -4,11 +4,11 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="options">
-        <item>Mapeamento corporal</item>
+        <item>Consultar mapeamento corporal</item>
         <item>Ver imagens</item>
         <item>Dados do paciente</item>
-        <item>Configurações</item>
         <item>Gabarito</item>
+        <item>Dados (Backup)</item>
 
     </string-array>
 
@@ -28,7 +28,7 @@
     <string name="action_edit_patient">Editar</string>
     <string name="title_activity_save_image">Salvar imagem</string>
     <string name="title_activity_select_body_part">Selecionar parte do corpo</string>
-    <string name="title_activity_image_slider">Imagens da pinta</string>
+    <string name="title_activity_image_slider">Histórico da pinta</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancelar</string>
     <string name="groupName">Grupo</string>

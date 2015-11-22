@@ -1,36 +1,28 @@
 package br.furb.corpusmapping.data.backup;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.furb.corpusmapping.data.ImageRecord;
-import br.furb.corpusmapping.data.ImageRecordRepository;
-import br.furb.corpusmapping.data.MoleGroup;
-import br.furb.corpusmapping.data.MoleGroupRepository;
-import br.furb.corpusmapping.data.Patient;
-import br.furb.corpusmapping.data.PatientRepository;
-import br.furb.corpusmapping.util.ImageUtils;
+import br.furb.corpusmapping.data.model.ImageRecord;
+import br.furb.corpusmapping.data.database.ImageRecordRepository;
+import br.furb.corpusmapping.data.model.MoleGroup;
+import br.furb.corpusmapping.data.database.MoleGroupRepository;
+import br.furb.corpusmapping.data.model.Patient;
+import br.furb.corpusmapping.data.database.PatientRepository;
 import br.furb.corpusmapping.util.ZipManager;
 
 public class BackupDataExporter extends DataExporter {
-    public static final int VERSION = 9;
 
     private static final String CHARSET_NAME = "UTF-8";
 
@@ -64,19 +56,16 @@ public class BackupDataExporter extends DataExporter {
         } else {
             ImageRecordRepository repository = ImageRecordRepository.getInstance(context);
             List<ImageRecord> imageRecords = repository.getAll();
-            // obter as imagens
+            // obtem as imagens
             List<String> images = new ArrayList<>();
 
             for (ImageRecord record : imageRecords) {
                 if (record.getImagePath() != null) {
-                    //if(images.size() < 3){
                     images.add(record.getImagePath());
-                    // }
                 }
             }
-            Log.d(this.getClass().getSimpleName(), "Sending to zip files");
+            // manda compactar as imagens em um arquivo zip
             ZipManager.zip(context, images, outputStream);
-            Log.d(this.getClass().getSimpleName(), "Files were zipped");
         }
     }
 

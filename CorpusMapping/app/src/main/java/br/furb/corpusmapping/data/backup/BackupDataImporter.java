@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -24,13 +23,13 @@ import java.io.InputStreamReader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import br.furb.corpusmapping.data.CorpusMappingSQLHelper;
-import br.furb.corpusmapping.data.ImageRecord;
-import br.furb.corpusmapping.data.ImageRecordRepository;
-import br.furb.corpusmapping.data.MoleGroup;
-import br.furb.corpusmapping.data.MoleGroupRepository;
-import br.furb.corpusmapping.data.Patient;
-import br.furb.corpusmapping.data.PatientRepository;
+import br.furb.corpusmapping.data.database.CorpusMappingSQLHelper;
+import br.furb.corpusmapping.data.model.ImageRecord;
+import br.furb.corpusmapping.data.database.ImageRecordRepository;
+import br.furb.corpusmapping.data.model.MoleGroup;
+import br.furb.corpusmapping.data.database.MoleGroupRepository;
+import br.furb.corpusmapping.data.model.Patient;
+import br.furb.corpusmapping.data.database.PatientRepository;
 import br.furb.corpusmapping.util.ImageUtils;
 
 public class BackupDataImporter extends DataImporter {
@@ -52,15 +51,10 @@ public class BackupDataImporter extends DataImporter {
 
     @Override
     protected void importData(InputStream inputStream) throws Exception {
-
         Log.d(TAG, "import data: " + (this.json ? "json" : "zip"));
-
         if (this.json) {
-
-            //   final int version = validate(json);
-            final JsonObject root = inputStreamToJson(inputStream);
-
-            final SQLiteDatabase database = dbHelper.getWritableDatabase();
+            JsonObject root = inputStreamToJson(inputStream);
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
             try {
                 database.beginTransaction();
 
@@ -78,59 +72,48 @@ public class BackupDataImporter extends DataImporter {
                     importImageRecords(database, gson, root);
 
                 }
-
                 database.setTransactionSuccessful();
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
                 throw e;
-            }finally {
+            } finally {
                 database.endTransaction();
                 database.close();
             }
         } else {
+            ZipInputStream zin = new ZipInputStream(inputStream);
+            ZipEntry ze = null;
+            while ((ze = zin.getNextEntry()) != null) {
+                Log.d(TAG, ze.getName());
+                String name = ze.getName();
+                if (name.contains("/")) {
+                    String path = name.split("/")[0];
+                    String fileName = name.split("/")[1];
 
-            try {
-                ZipInputStream zin = new ZipInputStream(inputStream);
-                ZipEntry ze = null;
-                while ((ze = zin.getNextEntry()) != null) {
-                    //create dir if required while unzipping
-                    Log.d(TAG, ze.getName());
-                    //         if (ze.isDirectory()) {
-                    String name = ze.getName();
-                    if (name.contains("/")) {
-                        String path = name.split("/")[0];
-                        String fileName = name.split("/")[1];
+                    long id = Long.parseLong(path.split("_")[0]);
+                    String patientName = path.split("_")[1];
 
-                        long id = Long.parseLong(path.split("_")[0]);
-                        String patientName = path.split("_")[1];
+                    // copia as imagens para o  deretorio do paciente
+                    File patientImagesDir = ImageUtils.getPatientImagesDir(id, patientName);
+                    if (!patientImagesDir.exists()) {
+                        patientImagesDir.mkdirs();
+                    }
+                    File imgFile = new File(patientImagesDir, fileName);
 
-                        // copia as imagens para o  deretorio do paciente
-                        File patientImagesDir = ImageUtils.getPatientImagesDir(id, patientName);
-                        if (!patientImagesDir.exists()) {
-                            patientImagesDir.mkdirs();
-                        }
-                        File imgFile = new File(patientImagesDir, fileName);
-
-                        if (!imgFile.exists()) {
-                            Log.d(TAG, "copying image: " + imgFile.getName());
-                            // copia a imagem apenas se não existir
-                            boolean created = imgFile.createNewFile();
-                            if (created) {
-                                FileOutputStream outputStream = new FileOutputStream(imgFile);
-                                IOUtils.copy(zin, outputStream);
-                                outputStream.close();
-                            }
+                    if (!imgFile.exists()) {
+                        Log.d(TAG, "copying image: " + imgFile.getName());
+                        // copia a imagem apenas se não existir
+                        boolean created = imgFile.createNewFile();
+                        if (created) {
+                            FileOutputStream outputStream = new FileOutputStream(imgFile);
+                            IOUtils.copy(zin, outputStream);
+                            outputStream.close();
                         }
                     }
-                    // }
-
-                    zin.closeEntry();
                 }
-                zin.close();
-            } catch (Exception e) {
-                System.out.println(e);
+                zin.closeEntry();
             }
-
+            zin.close();
         }
     }
 
@@ -149,9 +132,16 @@ public class BackupDataImporter extends DataImporter {
             Patient patient = gson.fromJson(jsonArray.get(i).getAsJsonObject(), Patient.class);
             PatientRepository patientRepository = PatientRepository.getInstance(context);
 
-            if (patientRepository.getById(patient.getId(), database) != null) {
-                //TODO antes de sobrescrever, verificar a data de alteração do registro.
-                patientRepository.save(patient, database);
+            Patient patientLocal = patientRepository.getById(patient.getId(), database);
+            if (patientLocal != null) {
+                //verifica a data da última alteração do registro antes de sobreescrever.
+
+                if (patientLocal.getLastUpdate() != null && patient.getLastUpdate() != null &&
+                        !patientLocal.getLastUpdate().isAfter(patient.getLastUpdate())) {
+                    // só restaura com o valor do backup se a última alteração local foi anterior ao backup.
+                    patientRepository.save(patient, database);
+                }
+
             } else {
                 patientRepository.insert(patient, database, patient.getId());
             }
@@ -165,9 +155,14 @@ public class BackupDataImporter extends DataImporter {
             MoleGroup moleGroup = gson.fromJson(jsonArray.get(i).getAsJsonObject(), MoleGroup.class);
             long id = moleGroup.getId();
             MoleGroupRepository repository = MoleGroupRepository.getInstance(context);
-            if (repository.getById(moleGroup.getId(), database) != null) {
-                //TODO antes de sobrescrever, verificar a data de alteração do registro.
-                repository.save(moleGroup, database);
+            MoleGroup moleGroupLocal = repository.getById(moleGroup.getId(), database);
+            if (moleGroupLocal != null) {
+                //verifica a data da última alteração do registro antes de sobreescrever.
+                if (moleGroupLocal.getLastUpdate() != null && moleGroup.getLastUpdate() != null &&
+                        !moleGroupLocal.getLastUpdate().isAfter(moleGroup.getLastUpdate())) {
+                    // só restaura com o valor do backup se a última alteração local foi anterior ao backup.
+                    repository.save(moleGroup, database);
+                }
             } else {
                 repository.insert(moleGroup, database, id);
             }
@@ -179,9 +174,14 @@ public class BackupDataImporter extends DataImporter {
         for (int i = 0; i < jsonArray.size(); i++) {
             ImageRecord imageRecord = gson.fromJson(jsonArray.get(i).getAsJsonObject(), ImageRecord.class);
             ImageRecordRepository repository = ImageRecordRepository.getInstance(context);
-            if (repository.getById(imageRecord.getId(), database) != null) {
-                //TODO antes de sobrescrever, verificar a data de alteração do registro.
-                repository.save(imageRecord, database);
+            ImageRecord imageRecordLocal = repository.getById(imageRecord.getId(), database);
+            if (imageRecordLocal != null) {
+                //verifica a data da última alteração do registro antes de sobreescrever.
+                if (imageRecordLocal.getLastUpdate() != null && imageRecord.getLastUpdate() != null &&
+                        !imageRecordLocal.getLastUpdate().isAfter(imageRecord.getLastUpdate())) {
+                    // só restaura com o valor do backup se a última alteração local foi anterior ao backup.
+                    repository.save(imageRecord, database);
+                }
             } else {
                 repository.insert(imageRecord, database, imageRecord.getId());
             }

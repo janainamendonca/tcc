@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/action_insert_patient"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_social_person_add"
         android:orderInCategory="100"
         app:showAsAction="always|withText"
         android:title="@string/action_insert_patient" />

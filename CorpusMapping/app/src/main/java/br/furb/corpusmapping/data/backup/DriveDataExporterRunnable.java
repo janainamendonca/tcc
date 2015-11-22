@@ -11,9 +11,8 @@ import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.internal.pe;
 
-import br.furb.corpusmapping.ui.settings.data.ExportActivity;
+import br.furb.corpusmapping.ui.data.ExportActivity;
 import br.furb.corpusmapping.util.EventBus;
 import br.furb.corpusmapping.util.LocalExecutor;
 import br.furb.corpusmapping.util.errors.ExportError;
@@ -26,9 +25,8 @@ public class DriveDataExporterRunnable implements Runnable {
     private final Context context;
     private final EventBus eventBus;
     private final String fileTitle;
-    private ExportCallback callback;
 
-    public DriveDataExporterRunnable(GoogleApiClient googleApiClient, DriveId driveId, ExportActivity.ExportType exportType, ExportActivity.Destination destination, Context context, EventBus eventBus, String fileTitle, ExportCallback callback) {
+    public DriveDataExporterRunnable(GoogleApiClient googleApiClient, DriveId driveId, ExportActivity.ExportType exportType, ExportActivity.Destination destination, Context context, EventBus eventBus, String fileTitle) {
         this.googleApiClient = googleApiClient;
         this.driveId = driveId;
         this.exportType = exportType;
@@ -36,38 +34,50 @@ public class DriveDataExporterRunnable implements Runnable {
         this.context = context;
         this.eventBus = eventBus;
         this.fileTitle = fileTitle;
-        this.callback = callback;
     }
 
     @Override
     public void run() {
-        final DriveFolder driveFolder = Drive.DriveApi.getFolder(googleApiClient, driveId);
-
-        // Cria um folder onde será criado um arquivo json com os dados e um arquivo zip com as imagens
-        MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(fileTitle).build();
-        PendingResult<DriveFolder.DriveFolderResult> pendingResult = driveFolder.createFolder(googleApiClient, changeSet);
+        DriveFolder driveFolder = Drive.DriveApi.getFolder(googleApiClient, driveId);
+        /*
+         * Cria um folder onde será criado o arquivo json com os dados
+         * e um arquivo zip com as imagens
+         */
+        MetadataChangeSet.Builder builder = new MetadataChangeSet.Builder();
+        MetadataChangeSet changeSet = builder.setTitle(fileTitle).build();
+        PendingResult<DriveFolder.DriveFolderResult> pendingResult =
+                driveFolder.createFolder(googleApiClient, changeSet);
         DriveFolder.DriveFolderResult driveFolderResult = pendingResult.await();
         DriveFolder backupDriveFolder = driveFolderResult.getDriveFolder();
 
         exportJson(backupDriveFolder);
         exportImages(backupDriveFolder);
-
-        callback.onExportFinished();
     }
 
     private void exportJson(DriveFolder backupDriveFolder) {
         // cria o json com os dados
-        final DriveApi.DriveContentsResult result = Drive.DriveApi.newDriveContents(googleApiClient).await();
+        DriveApi.DriveContentsResult result = Drive.DriveApi.newDriveContents(googleApiClient).await();
 
         if (!result.getStatus().isSuccess()) {
             throw new ExportError("Data export has failed.");
         }
 
-        final DriveContents contents = result.getDriveContents();
-        final DataExporterRunnable dataExporterRunnable = new DataExporterRunnable(eventBus, exportType.getDataExporter(contents.getOutputStream(), context, true));
-        dataExporterRunnable.run();
+        DriveContents contents = result.getDriveContents();
+        boolean isJson = true;
+        BackupDataExporter exporter = new BackupDataExporter(contents.getOutputStream(), context, isJson);
+        try {
+            exporter.exportData();
+            eventBus.post(exporter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ExportError error = new ExportError("Data export has failed. " + e.getMessage(), e);
+            eventBus.post(error);
+        }
 
-        MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(fileTitle + ".json").setMimeType("application/json").build();
+        MetadataChangeSet.Builder builder = new MetadataChangeSet.Builder();
+        builder.setTitle(fileTitle + ".json");
+        builder.setMimeType("application/json");
+        MetadataChangeSet changeSet = builder.build();
         backupDriveFolder.createFile(googleApiClient, changeSet, contents).await();
     }
 
