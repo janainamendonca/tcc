@@ -26,7 +26,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:label="@string/app_name" >
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
             <intent-filter>
@@ -35,87 +35,81 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".patient.PatientsActivity"
-            android:label="@string/title_activity_patients_activity" />
-        <activity
-            android:name=".patient.PatientSelectedActivity"
-            android:label="@string/title_activity_patient_form"
-            android:parentActivityName=".MainActivity" >
+            android:name=".ui.main.CorpusMappingActivity"
+            android:label="Corpus Mapping"
+            android:parentActivityName=".ui.main.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.main.MainActivity" />
         </activity>
         <activity
-            android:name=".patient.PatientFormActivity"
-            android:label="@string/title_activity_patient_form"
-            android:parentActivityName=".patient.PatientsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".patient.PatientsActivity" />
+            android:name=".ui.patient.PatientFormActivity"
+            android:label="@string/title_activity_patient_form" >
         </activity>
         <activity
-            android:name=".capture.SaveImageActivity"
+            android:name=".ui.bodylink.SaveImageActivity"
             android:label="@string/title_activity_save_image"
-            android:parentActivityName=".patient.PatientSelectedActivity" >
+            android:parentActivityName=".ui.main.CorpusMappingActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".patient.PatientSelectedActivity" />
+                android:value=".ui.main.CorpusMappingActivity" />
         </activity>
         <activity
-            android:name=".capture.SelectBodyPartActivity"
+            android:name=".ui.bodylink.SelectBodyPartActivity"
             android:label="@string/title_activity_select_body_part"
-            android:parentActivityName=".capture.SaveImageActivity" >
+            android:parentActivityName=".ui.bodylink.SaveImageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".capture.SaveImageActivity" />
+                android:value=".ui.bodylink.SaveImageActivity" />
         </activity>
         <activity
-            android:name=".capture.BodyImageSliderActivity"
+            android:name=".ui.common.BodyImageSliderActivity"
             android:label="@string/title_activity_image_slider"
-            android:parentActivityName=".capture.SaveImageActivity" >
+            android:parentActivityName=".ui.bodylink.SaveImageActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".capture.SaveImageActivity" />
+                android:value=".ui.bodylink.SaveImageActivity" />
         </activity>
         <activity
-            android:name=".view.ViewImagesActivity"
+            android:name=".ui.view.ViewImagesActivity"
             android:label="@string/title_activity_view_images"
-            android:parentActivityName=".patient.PatientSelectedActivity" >
+            android:parentActivityName=".ui.main.CorpusMappingActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".patient.PatientSelectedActivity" />
+                android:value=".ui.main.CorpusMappingActivity" />
         </activity>
         <activity
-            android:name=".view.MoleImageSliderActivity"
+            android:name=".ui.view.MoleImageSliderActivity"
             android:label="@string/title_activity_image_slider"
-            android:parentActivityName=".view.ViewImagesActivity" >
+            android:parentActivityName=".ui.view.ViewImagesActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.ViewImagesActivity" />
+                android:value=".ui.view.ViewImagesActivity" />
         </activity>
         <activity
-            android:name=".view.MoleDetailedImageSliderActivity"
+            android:name=".ui.view.MoleDetailedImageSliderActivity"
             android:label="Detalhes"
-            android:parentActivityName=".view.MoleImageSliderActivity" >
+            android:parentActivityName=".ui.view.MoleImageSliderActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MoleImageSliderActivity" />
+                android:value=".ui.view.MoleImageSliderActivity" />
         </activity>
         <activity
-            android:name=".view.ViewBodyDiagramActivity"
+            android:name=".ui.view.ViewBodyDiagramActivity"
             android:label="@string/title_activity_view_body_diagram"
-            android:parentActivityName=".patient.PatientSelectedActivity" >
+            android:parentActivityName=".ui.main.CorpusMappingActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".patient.PatientSelectedActivity" />
+                android:value=".ui.main.CorpusMappingActivity" />
         </activity>
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".ui.settings.data.DataActivity"
+            android:name=".ui.data.DataActivity"
             android:label="@string/title_activity_data"
             android:parentActivityName=".ui.settings.SettingsActivity" >
             <meta-data
@@ -123,25 +117,25 @@
                 android:value="br.furb.corpusmapping.ui.settings.SettingsActivity" />
         </activity>
         <activity
-            android:name=".ui.settings.data.ExportActivity"
+            android:name=".ui.data.ExportActivity"
             android:label="@string/title_activity_data"
-            android:parentActivityName=".ui.settings.data.DataActivity" >
+            android:parentActivityName=".ui.data.DataActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.ui.settings.data.DataActivity" />
+                android:value=".ui.data.DataActivity" />
         </activity>
         <activity
-            android:name=".ui.settings.data.ImportActivity"
+            android:name=".ui.data.ImportActivity"
             android:label="@string/title_activity_data"
-            android:parentActivityName=".ui.settings.data.DataActivity" >
+            android:parentActivityName=".ui.data.DataActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.furb.corpusmapping.ui.settings.data.DataActivity" />
+                android:value=".ui.data.DataActivity" />
         </activity>
-        <activity android:name=".ui.camera.CameraActivity" />
-        <activity android:name=".ui.camera.ViewPhotoActivity" />
+        <activity android:name=".ui.capture.CameraActivity" />
+        <activity android:name=".ui.capture.ViewPhotoActivity" />
         <activity
-            android:name=".GabaritoActivity"
+            android:name=".ui.template.TemplateActivity"
             android:label="@string/title_activity_gabarito" >
         </activity>
     </application>

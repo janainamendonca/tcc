@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.furb.corpusmapping.DashboardFragment">
+    tools:context="br.furb.corpusmapping.ui.main.DashboardFragment">
 
     <TableLayout
         android:layout_width="match_parent"
@@ -17,7 +17,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Paciente:" />
+                android:text="Paciente:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <TextView
                 android:id="@+id/txtPatient"
@@ -26,6 +27,7 @@
                 android:layout_gravity="start"
                 android:layout_span="2"
                 android:paddingLeft="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:text="" />
             <!--
             <ImageButton
@@ -61,17 +63,140 @@
                     />
 
             </TableRow> -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp">
+
+                <ImageView
+                    android:id="@+id/imgNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_class_green" />
+
+                <TextView
+                    android:id="@+id/txtNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imgNormal"
+                    android:paddingTop="9dp"
+                    android:text="10 pintas com risco baixo" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_class_yellow" />
+
+                <TextView
+                    android:id="@+id/txtWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imgWarning"
+                    android:paddingTop="10dp"
+                    android:text="5 pintas com risco médio"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgDanger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_class_red"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false" />
+
+                <TextView
+                    android:id="@+id/txtDanger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imgDanger"
+                    android:paddingTop="10dp"
+                    android:text="2 pintas com risco alto"
+                     />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imgNone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/ic_ic_class_gray" />
+
+                <TextView
+                    android:id="@+id/txtNone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imgNone"
+                    android:paddingTop="10dp"
+                    android:text="2 pintas não classificadas" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtLastUpdate"
+                android:paddingTop="8dp"
+                android:text="Última imagem capturada no dia 12/11/2015"
+                />
+
+        </LinearLayout>
+
 
 
             <Button
                 android:id="@+id/btnAddImage"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_camera3"
+                android:drawableRight="@drawable/ic_camera"
                 android:paddingTop="16dp"
                 android:text="Capturar imagem"
                 android:layout_gravity="center_horizontal" />
 
+
+
+
+        <Button
+            android:id="@+id/btnViewDiagram"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_body"
+            android:paddingTop="16dp"
+            android:text="Consultar mapeamento"
+            android:layout_gravity="center_horizontal" />
 
         <Button
             android:id="@+id/btnViewImages"
@@ -80,15 +205,7 @@
             android:drawableRight="@drawable/ic_images25"
             android:paddingTop="16dp"
             android:text="Consultar imagens"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:id="@+id/btnViewDiagram"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableRight="@drawable/ic_images25"
-            android:paddingTop="16dp"
-            android:text="Consultar diagrama"
+            android:visibility="invisible"
             android:layout_gravity="center_horizontal" />
 
     </TableLayout>

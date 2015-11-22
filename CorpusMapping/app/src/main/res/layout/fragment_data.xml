@@ -33,7 +33,7 @@
                     android:textColor="?colorPrimaryDark" />
 
                 <Button
-                    android:id="@+id/backup_B"
+                    android:id="@+id/btnBackup"
                     style="@style/Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:text="Criar backup" />
 
                 <Button
-                    android:id="@+id/restoreAndMerge_B"
+                    android:id="@+id/btnRestoreAndMerge"
                     style="@style/Button.Flat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                     android:layout_marginTop="@dimen/space_normal" />
 
                 <Button
-                    android:id="@+id/restore_B"
+                    android:id="@+id/btnRestore"
                     style="@style/Button.Flat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

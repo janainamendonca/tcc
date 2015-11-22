@@ -14,7 +14,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         />
 
-    <br.furb.corpusmapping.tablayout.SlidingTabLayout
+    <br.furb.corpusmapping.ui.common.tablayout.SlidingTabLayout
         android:id="@+id/tabs"
         android:background="?attr/colorPrimary"
         android:layout_width="match_parent"
