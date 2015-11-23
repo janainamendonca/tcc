@@ -111,8 +111,17 @@ private void importJson(Metadata jsonMetadata) {
             throw new ImportError("A importação falhou. Tente novamente. Status do Google Drive: " + result.getStatus().getStatusMessage());
         }
 
-        final DriveContents contents = result.getDriveContents();
-        final DataImporterRunnable dataImporterRunnable = new DataImporterRunnable(eventBus, importType.getDataImporter(contents.getInputStream(), context, false));
-        dataImporterRunnable.run();
+        DriveContents contents = result.getDriveContents();
+        BackupDataImporter importer = new BackupDataImporter(contents.getInputStream(), context, false, false);
+        try {
+            importer.importData();
+            eventBus.post(importer);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ImportError error = new ImportError("A importação dos dados falhou. " + e.getMessage(), e);
+            eventBus.post(error);
+        } finally {
+            IOUtils.closeQuietly(importer);
+        }
     }
 }

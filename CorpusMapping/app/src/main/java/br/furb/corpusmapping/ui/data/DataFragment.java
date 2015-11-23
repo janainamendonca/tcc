@@ -47,13 +47,13 @@ public class DataFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackup:
-                ExportActivity.start(getActivity(), ExportActivity.ExportType.Backup, ExportActivity.Destination.GoogleDrive);
+                ExportActivity.start(getActivity());
                 break;
             case R.id.btnRestore:
-                ImportActivity.start(getActivity(), ImportActivity.ImportType.Backup, ImportActivity.Source.GoogleDrive);
+                ImportActivity.start(getActivity(), ImportActivity.ImportType.Backup);
                 break;
             case R.id.btnRestoreAndMerge:
-                ImportActivity.start(getActivity(), ImportActivity.ImportType.MergeBackup, ImportActivity.Source.GoogleDrive);
+                ImportActivity.start(getActivity(), ImportActivity.ImportType.MergeBackup);
                 break;
         }
     }
