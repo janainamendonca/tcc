@@ -18,6 +18,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -176,35 +177,12 @@ public class ImageUtils {
     }
 
     public static boolean containsTemplate(Context context, Uri uri) {
-        Bitmap bitmap = decodeSampledBitmapFromResource(context, uri, 100, 100);
-        return verifySquare(bitmap, context);
+        Bitmap bitmap = decodeSampledBitmapFromResource(context, uri, 300, 300);
+        return verifySquare(bitmap);
     }
 
-    private static boolean verifySquare(Bitmap image, Context context) {
+    private static boolean verifySquare(Bitmap image) {
         image = toGrayscale(image);
-
-        //////////////
-        //Salva a imagem na escala de cinza.
-      /*  OutputStream outputStream = null;
-        try {
-            Bitmap.CompressFormat outputFormat =
-                    Bitmap.CompressFormat.JPEG;
-            File gray = new File(getAppRootDir(), "gray");
-            gray.mkdirs();
-            File f = new File(gray, new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg");
-            Uri uri = Uri.fromFile(f);
-            outputStream = context.getContentResolver().openOutputStream(uri);
-            if (outputStream != null) {
-                image.compress(outputFormat, 100, outputStream);
-            }
-        } catch (IOException ex) {
-        } finally {
-            try {
-                if (outputStream != null) outputStream.close();
-            } catch (IOException e) {
-            }
-        }*/
-        //////////////
 
         int height = image.getHeight();
         int width = image.getWidth();
@@ -213,7 +191,7 @@ public class ImageUtils {
         Log.d(TAG, "Width: " + width);
 
         List<Point> points = new ArrayList<>();
-        int[][] matrix = new int[width][height];
+        int[][] matrixBinary = new int[width][height];
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -221,13 +199,12 @@ public class ImageUtils {
                 int red = Color.red(color);
                 int green = Color.green(color);
                 int blue = Color.blue(color);
-
                 if (red < 85 && green < 85 && blue < 85) {
                     Point point = new Point();
                     point.x = x;
                     point.y = y;
                     points.add(point);
-                    matrix[x][y] = 1;
+                    matrixBinary[x][y] = 1;
                 }
             }
         }
@@ -238,23 +215,21 @@ public class ImageUtils {
         Log.d(TAG, "Rect size: " + rectSize);
         Log.d(TAG, "%: " + (100 * rectSize) / totalSize);
 
-        Log.d(TAG, Arrays.deepToString(matrix));
-
-        int tempSize = 5;
-        int[][] template = new int[tempSize][tempSize];
-        for (int i = 0; i < tempSize; i++) {
-            for (int j = 0; j < tempSize; j++) {
+        int templateSize = 5; // tamanho do gabarito
+        int[][] template = new int[templateSize][templateSize];
+        for (int i = 0; i < templateSize; i++) {
+            for (int j = 0; j < templateSize; j++) {
                 template[i][j] = 1;
             }
         }
         boolean found = false;
         mainLoop:
-        for (int i = 0; i < matrix.length - tempSize; i++) {
-            for (int j = 0; j < matrix[i].length - tempSize; j++) {
+        for (int i = 0; i < matrixBinary.length - templateSize; i++) {
+            for (int j = 0; j < matrixBinary[i].length - templateSize; j++) {
                 found = true;
-                for (int k = 0; k < tempSize; k++) {
-                    for (int l = 0; l < tempSize; l++) {
-                        if (matrix[i + k][j + l] != template[k][l]) {
+                for (int k = 0; k < templateSize; k++) {
+                    for (int l = 0; l < templateSize; l++) {
+                        if (matrixBinary[i + k][j + l] != template[k][l]) {
                             found = false;
                         }
                     }
@@ -299,9 +274,6 @@ public class ImageUtils {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         try {
             stream = ctx.getContentResolver().openInputStream(res);
-            // d = Drawable.createFromStream(stream, null);
-
-            // First decode with inJustDecodeBounds=true to check dimensions
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(stream, null, options);
         } catch (Exception e) {
