@@ -13,15 +13,12 @@ import com.google.android.gms.drive.OpenFileActivityBuilder;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.data.backup.BackupDataImporter;
 import br.furb.corpusmapping.data.backup.DataImporter;
-import br.furb.corpusmapping.data.backup.DataImporterRunnable;
 import br.furb.corpusmapping.data.backup.DriveDataImporterRunnable;
 import br.furb.corpusmapping.util.LocalExecutor;
 import br.furb.corpusmapping.util.errors.AppError;
@@ -44,15 +41,13 @@ public class ImportActivity extends BaseActivity {
     ExecutorService localExecutor;
 
     private ImportType importType;
-    private Source source;
     private GoogleApiClient googleApiClient;
     private boolean isProcessStarted = false;
     private boolean isFileRequested = false;
 
-    public static void start(Context context, ImportType importType, Source source) {
+    public static void start(Context context, ImportType importType) {
         final Intent intent = new Intent(context, ImportActivity.class);
         intent.putExtra(EXTRA_IMPORT_TYPE, importType);
-        intent.putExtra(EXTRA_SOURCE, source);
         context.startActivity(intent);
     }
 
@@ -66,7 +61,6 @@ public class ImportActivity extends BaseActivity {
 
         // Get extras
         importType = (ImportType) getIntent().getSerializableExtra(EXTRA_IMPORT_TYPE);
-        source = (Source) getIntent().getSerializableExtra(EXTRA_SOURCE);
 
         // Restore state
         if (savedInstanceState != null) {
@@ -81,7 +75,7 @@ public class ImportActivity extends BaseActivity {
         getEventBus().register(this);
         if (!isProcessStarted) {
             isProcessStarted = true;
-            isFileRequested = source.startImportProcess(this);
+            isFileRequested = startImportProcess(this);
         }
     }
 
@@ -100,11 +94,6 @@ public class ImportActivity extends BaseActivity {
         }
 
         switch (requestCode) {
-            case REQUEST_LOCAL_FILE:
-                final String path = data.getData().getPath();
-                onLocalFileSelected(new File(path));
-                break;
-
             case REQUEST_DRIVE_FILE:
                 final DriveId driveId = data.getParcelableExtra(OpenFileActivityBuilder.EXTRA_RESPONSE_DRIVE_ID);
                 googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
@@ -133,11 +122,6 @@ public class ImportActivity extends BaseActivity {
             finish();
         }
     }
-
-   /* @Override
-    protected Analytics.Screen getScreen() {
-        return Analytics.Screen.Import;
-    }*/
 
     @Subscribe
     public void onDataImporterFinished(DataImporter dataImporter) {
@@ -169,19 +153,18 @@ public class ImportActivity extends BaseActivity {
         importData(new DriveDataImporterRunnable(googleApiClient, driveId, importType, this, getEventBus()));
     }
 
-    private void onLocalFileSelected(File file) {
-        final InputStream inputStream;
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            throw new ImportError("Data import failed.", e);
-        }
-        final DataImporter dataImporter = importType.getDataImporter(inputStream, this, false);
-        importData(new DataImporterRunnable(getEventBus(), dataImporter));
-    }
-
     private void importData(Runnable importRunnable) {
         localExecutor.execute(importRunnable);
+    }
+
+    public boolean startImportProcess(BaseActivity activity) {
+        GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
+        if (googleApi_F == null) {
+            googleApi_F = GoogleApiFragment.with(UNIQUE_GOOGLE_API_ID).setUseDrive(true).build();
+            activity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
+        }
+        googleApi_F.connect();
+        return false;
     }
 
     public static enum ImportType {
@@ -197,40 +180,9 @@ public class ImportActivity extends BaseActivity {
             public DataImporter getDataImporter(InputStream inputStream, Context context, boolean json) {
                 return new BackupDataImporter(inputStream, context, true, json);
             }
-        },
-
-        CSV {
-            @Override
-            public DataImporter getDataImporter(InputStream inputStream, Context context, boolean json) {
-                throw new IllegalStateException("CSV import is not supported.");
-            }
         };
 
         public abstract DataImporter getDataImporter(InputStream inputStream, Context context, boolean json);
     }
 
-    public static enum Source {
-       /* File {
-            @Override
-            public boolean startImportProcess(BaseActivity activity, GeneralPrefs generalPrefs) {
-                FilePickerActivity.startFile(activity, REQUEST_LOCAL_FILE, generalPrefs.getLastFileExportPath());
-                return true;
-            }
-        },*/
-
-        GoogleDrive {
-            @Override
-            public boolean startImportProcess(BaseActivity activity) {
-                GoogleApiFragment googleApi_F = (GoogleApiFragment) activity.getSupportFragmentManager().findFragmentByTag(FRAGMENT_GOOGLE_API);
-                if (googleApi_F == null) {
-                    googleApi_F = GoogleApiFragment.with(UNIQUE_GOOGLE_API_ID).setUseDrive(true).build();
-                    activity.getSupportFragmentManager().beginTransaction().add(android.R.id.content, googleApi_F, FRAGMENT_GOOGLE_API).commit();
-                }
-                googleApi_F.connect();
-                return false;
-            }
-        };
-
-        public abstract boolean startImportProcess(BaseActivity activity);
-    }
 }

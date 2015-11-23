@@ -40,16 +40,15 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
         Bitmap originalImage = BitmapFactory.decodeFile(path, null);
         originalImage = adjustRotation(originalImage);
         croppedImage = ImageUtils.cropImage(this, originalImage);
+        /////////
+        saveCroppedImage();
+        /////////
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageBitmap(croppedImage);
 
-        //CÓDIGO
-
         findViewById(R.id.btnCancel).setOnClickListener(this);
         findViewById(R.id.btnOk).setOnClickListener(this);
-
-
 
        /* if (!ImageUtils.containsTemplate(this, uri)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -70,6 +69,26 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
             Toast.makeText(this, "Gabarito detectado!", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Gabarito não detectado!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void saveCroppedImage() {
+        new File(path).delete();
+
+        // salva a imagem recortada
+        OutputStream outputStream = null;
+        try {
+            outputStream = getContentResolver().openOutputStream(uri);
+            if (outputStream != null) {
+                croppedImage.compress(outputFormat, outputQuality, outputStream);
+            }
+        } catch (IOException ex) {
+            Log.e(TAG, "Cannot open file: " + uri, ex);
+        } finally {
+            try {
+                if (outputStream != null) outputStream.close();
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -105,68 +124,8 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnOk) {
-       /*     new File(path).delete();
-
-            OutputStream outputStream = null;
-            try {
-                outputStream = getContentResolver().openOutputStream(uri);
-                if (outputStream != null) {
-                    croppedImage.compress(outputFormat, outputQuality, outputStream);
-                }
-            } catch (IOException ex) {
-                // TODO: report error to caller
-                Log.e(TAG, "Cannot open file: " + uri, ex);
-            } finally {
-                try {
-                    if (outputStream != null) outputStream.close();
-                } catch (IOException e) {
-                }
-            }*/
-/*
-            new File(path).delete();
-
-            ByteBuffer byteBuffer = ByteBuffer.allocate(croppedImage.getByteCount());
-            croppedImage.copyPixelsToBuffer(byteBuffer);
-
-            byte[] bytes = byteBuffer.array();
-            //salva a imagem
-            FileOutputStream outStream = null;
-            try {
-                // Write to SD Card
-                outStream = new FileOutputStream(path);
-                // outStream.write(data);
-                IOUtils.write(bytes, outStream);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (outStream != null) {
-                    try {
-                        outStream.close();
-                    } catch (IOException e) {
-                    }
-                }
-            }
-*/
             //apaga a imagem original
-            new File(path).delete();
-
-            // salva a imagem recortada
-            OutputStream outputStream = null;
-            try {
-                outputStream = getContentResolver().openOutputStream(uri);
-                if (outputStream != null) {
-                    croppedImage.compress(outputFormat, outputQuality, outputStream);
-                }
-            } catch (IOException ex) {
-                Log.e(TAG, "Cannot open file: " + uri, ex);
-            } finally {
-                try {
-                    if (outputStream != null) outputStream.close();
-                } catch (IOException e) {
-                }
-            }
+            //  saveCroppedImage();
             setResult(Activity.RESULT_OK);
             finish();
         } else {

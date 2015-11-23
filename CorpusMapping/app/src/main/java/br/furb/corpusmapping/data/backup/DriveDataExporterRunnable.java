@@ -20,17 +20,13 @@ import br.furb.corpusmapping.util.errors.ExportError;
 public class DriveDataExporterRunnable implements Runnable {
     private final GoogleApiClient googleApiClient;
     private final DriveId driveId;
-    private final ExportActivity.ExportType exportType;
-    private final ExportActivity.Destination destination;
     private final Context context;
     private final EventBus eventBus;
     private final String fileTitle;
 
-    public DriveDataExporterRunnable(GoogleApiClient googleApiClient, DriveId driveId, ExportActivity.ExportType exportType, ExportActivity.Destination destination, Context context, EventBus eventBus, String fileTitle) {
+    public DriveDataExporterRunnable(GoogleApiClient googleApiClient, DriveId driveId, Context context, EventBus eventBus, String fileTitle) {
         this.googleApiClient = googleApiClient;
         this.driveId = driveId;
-        this.exportType = exportType;
-        this.destination = destination;
         this.context = context;
         this.eventBus = eventBus;
         this.fileTitle = fileTitle;
@@ -90,8 +86,15 @@ public class DriveDataExporterRunnable implements Runnable {
         }
 
         final DriveContents contents = result.getDriveContents();
-        final DataExporterRunnable dataExporterRunnable = new DataExporterRunnable(eventBus, exportType.getDataExporter(contents.getOutputStream(), context, false));
-        dataExporterRunnable.run();
+        BackupDataExporter exporter = new BackupDataExporter(contents.getOutputStream(), context, false);
+        try {
+            exporter.exportData();
+            eventBus.post(exporter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ExportError error = new ExportError("Data export has failed. " + e.getMessage(), e);
+            eventBus.post(error);
+        }
 
         final MetadataChangeSet changeSet = new MetadataChangeSet.Builder().setTitle(fileTitle + ".zip").setMimeType("application/zip").build();
 
