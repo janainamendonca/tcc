@@ -178,11 +178,36 @@ public class ImageUtils {
 
     public static boolean containsTemplate(Context context, Uri uri) {
         Bitmap bitmap = decodeSampledBitmapFromResource(context, uri, 300, 300);
-        return verifySquare(bitmap);
+        return verifySquare(bitmap, context);
     }
 
-    private static boolean verifySquare(Bitmap image) {
+    private static boolean verifySquare(Bitmap image, Context context) {
         image = toGrayscale(image);
+
+        //////////////
+        //Salva a imagem na escala de cinza.
+        OutputStream outputStream = null;
+        File f = null;
+        try {
+            Bitmap.CompressFormat outputFormat =
+                    Bitmap.CompressFormat.JPEG;
+            File gray = new File(getAppRootDir(), "gray");
+            gray.mkdirs();
+            f = new File(gray, new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg");
+            Uri uri = Uri.fromFile(f);
+            outputStream = context.getContentResolver().openOutputStream(uri);
+            if (outputStream != null) {
+                image.compress(outputFormat, 100, outputStream);
+            }
+        } catch (IOException ex) {
+        } finally {
+            try {
+                if (outputStream != null) outputStream.close();
+            } catch (IOException e) {
+            }
+        }
+        ////
+
 
         int height = image.getHeight();
         int width = image.getWidth();
@@ -193,21 +218,82 @@ public class ImageUtils {
         List<Point> points = new ArrayList<>();
         int[][] matrixBinary = new int[width][height];
 
+        //**********/
+        int centerY = image.getHeight() / 2;
+        int centerX = image.getWidth() / 2;
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpi = displayMetrics.densityDpi;
+        float pixelForDp = dpi / 160f;
+        float roiSizeOnScreen = INTERNAL_SQUARE_SIZE * pixelForDp;
+        int roiSizeOnImage = (int) (roiSizeOnScreen * image.getHeight()) / displayMetrics.heightPixels;
+        int width1 = (int) (roiSizeOnImage + (roiSizeOnImage * 0.2));
+        int height1 = (int) (roiSizeOnImage + (roiSizeOnImage * 0.1));
+        Log.d(TAG, "Density Dpi: " + dpi);
+        Log.d(TAG, "Height pixels: " + displayMetrics.heightPixels);
+        Log.d(TAG, "Width pixels: " + displayMetrics.widthPixels);
+        Log.d(TAG, "Size: " + roiSizeOnImage);
+
+        int x1 = centerX - (width1 / 2);
+        int y1 = centerY - (height1 / 2);
+
+        //**********/
+
+        //
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        Bitmap imageBinary = BitmapFactory.decodeFile(f.getPath(), options);
+        imageBinary.isMutable();
+
+        //
+
+        BoundingBox bbox = new BoundingBox(x1, y1, x1 + width1, y1 + height1);
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                int color = image.getPixel(x, y);
-                int red = Color.red(color);
-                int green = Color.green(color);
-                int blue = Color.blue(color);
-                if (red < 85 && green < 85 && blue < 85) {
-                    Point point = new Point();
-                    point.x = x;
-                    point.y = y;
-                    points.add(point);
-                    matrixBinary[x][y] = 1;
+                imageBinary.setPixel(x, y, Color.WHITE);
+                if (!bbox.isInner(x, y)) {
+                    int color = image.getPixel(x, y);
+                    int red = Color.red(color);
+                    int green = Color.green(color);
+                    int blue = Color.blue(color);
+                    if (red < 90 && green < 90 && blue < 90) {
+                        Point point = new Point();
+                        point.x = x;
+                        point.y = y;
+                        points.add(point);
+                        matrixBinary[x][y] = 1;
+                        //
+                        imageBinary.setPixel(x, y, Color.BLACK);
+                    }
                 }
             }
         }
+
+
+//////////////
+        //Salva a imagem na binarizada.
+        outputStream = null;
+        try {
+            Bitmap.CompressFormat outputFormat =
+                    Bitmap.CompressFormat.JPEG;
+            File gray = new File(getAppRootDir(), "black");
+            gray.mkdirs();
+            f = new File(gray, f.getName());
+            Uri uri = Uri.fromFile(f);
+            outputStream = context.getContentResolver().openOutputStream(uri);
+            if (outputStream != null) {
+                imageBinary.compress(outputFormat, 100, outputStream);
+            }
+        } catch (IOException ex) {
+        } finally {
+            try {
+                if (outputStream != null) outputStream.close();
+            } catch (IOException e) {
+            }
+        }
+
+        //////////////
+
 
         int totalSize = width * height;
         int rectSize = points.size();
@@ -215,7 +301,7 @@ public class ImageUtils {
         Log.d(TAG, "Rect size: " + rectSize);
         Log.d(TAG, "%: " + (100 * rectSize) / totalSize);
 
-        int templateSize = 5; // tamanho do gabarito
+        int templateSize = 50; // tamanho do gabarito
         int[][] template = new int[templateSize][templateSize];
         for (int i = 0; i < templateSize; i++) {
             for (int j = 0; j < templateSize; j++) {
@@ -226,16 +312,50 @@ public class ImageUtils {
         mainLoop:
         for (int i = 0; i < matrixBinary.length - templateSize; i++) {
             for (int j = 0; j < matrixBinary[i].length - templateSize; j++) {
-                found = true;
-                for (int k = 0; k < templateSize; k++) {
-                    for (int l = 0; l < templateSize; l++) {
-                        if (matrixBinary[i + k][j + l] != template[k][l]) {
-                            found = false;
+                found = false;
+                int blackCount = 0;
+                int blackCount1 = 0;
+                int blackCount2 = 0;
+                int blackCount3 = 0;
+                int blackCount4 = 0;
+
+                int s = templateSize / 2;
+                // divide o template em quato partes
+                for (int k = 0; k < s; k++) {
+                    for (int l = 0; l < s; l++) {
+                        if (matrixBinary[i + k][j + l] == template[k][l]) {
+                            blackCount1 += 1;
                         }
                     }
                 }
 
-                if (found) {
+                for (int k = 0; k < s; k++) {
+                    for (int l = s - 1; l < templateSize; l++) {
+                        if (matrixBinary[i + k][j + l] == template[k][l]) {
+                            blackCount2 += 1;
+                        }
+                    }
+                }
+
+                for (int k = s - 1; k < templateSize; k++) {
+                    for (int l = s - 1; l < templateSize; l++) {
+                        if (matrixBinary[i + k][j + l] == template[k][l]) {
+                            blackCount3 += 1;
+                        }
+                    }
+                }
+
+                for (int k = s - 1; k < templateSize; k++) {
+                    for (int l = 0; l < s; l++) {
+                        if (matrixBinary[i + k][j + l] == template[k][l]) {
+                            blackCount4 += 1;
+                        }
+                    }
+                }
+
+              //  Log.d(TAG, "BlackCount 1: " + blackCount1 + " BlackCount 2: " + blackCount2 + " BlackCount 3: " + blackCount3 + " BlackCount 4: " + blackCount4);
+                if (blackCount1 >150 && blackCount2 > 150 && blackCount3 > 150 && blackCount4 > 150) {
+                    found = true;
                     break mainLoop;
                 }
             }

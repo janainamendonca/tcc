@@ -1,22 +1,35 @@
 package br.furb.corpusmapping.ui.capture;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.util.ImageUtils;
+import br.furb.corpusmapping.util.VerifyTemplateService;
 
 
 public class ViewPhotoActivity extends Activity implements View.OnClickListener {
@@ -28,6 +41,10 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
     private Bitmap.CompressFormat outputFormat =
             Bitmap.CompressFormat.JPEG; // utilizado para salvar a imagem cortada.
     private int outputQuality = 100;
+
+    private Button btOk;
+    private Button btCancel;
+    private TextView txtMsgWait;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +64,12 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageBitmap(croppedImage);
 
-        findViewById(R.id.btnCancel).setOnClickListener(this);
-        findViewById(R.id.btnOk).setOnClickListener(this);
+        btCancel = (Button) findViewById(R.id.btnCancel);
+        btCancel.setOnClickListener(this);
+        btOk = (Button) findViewById(R.id.btnOk);
+        btOk.setOnClickListener(this);
+
+        txtMsgWait = (TextView) findViewById(R.id.txtMsgWait);
 
        /* if (!ImageUtils.containsTemplate(this, uri)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -64,11 +85,73 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
             });
             builder.show();
         }*/
-
+/*
         if (ImageUtils.containsTemplate(this, uri)) {
             Toast.makeText(this, "Gabarito detectado!", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Gabarito não detectado!", Toast.LENGTH_LONG).show();
+        }*/
+
+        btOk.setVisibility(View.INVISIBLE);
+        btCancel.setVisibility(View.INVISIBLE);
+        verifyTemplate();
+    }
+
+    private void verifyTemplate() {
+        IntentFilter mStatusIntentFilter = new IntentFilter(
+                VerifyTemplateService.RESULT_ACTION);
+
+        // Instantiates a new DownloadStateReceiver
+        ResponseReceiver mResponseReceiver =
+                new ResponseReceiver();
+        // Registers the DownloadStateReceiver and its intent filters
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mResponseReceiver,
+                mStatusIntentFilter);
+
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        float dpi = displayMetrics.densityDpi;
+
+        VerifyTemplateService.start(this, path, dpi, displayMetrics.heightPixels, displayMetrics.widthPixels);
+    }
+
+    // Broadcast receiver for receiving status updates from the IntentService
+    private class ResponseReceiver extends BroadcastReceiver {
+        // Prevents instantiation
+        private ResponseReceiver() {
+        }
+
+        // Called when the BroadcastReceiver gets an Intent it's registered to receive
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean found = intent.getBooleanExtra(VerifyTemplateService.RESULT_STATUS, false);
+
+            txtMsgWait.setVisibility(View.INVISIBLE);
+            btOk.setVisibility(View.VISIBLE);
+            btCancel.setVisibility(View.VISIBLE);
+
+           /* if (found) {
+                Toast.makeText(ViewPhotoActivity.this, "Gabarito detectado!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(ViewPhotoActivity.this, "Gabarito não detectado!", Toast.LENGTH_LONG).show();
+            }*/
+
+            if (!found) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewPhotoActivity.this);
+                builder.setMessage("Não foi possível detectar a presença do gabarito na imagem. Favor realizar a captura novamente.");
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new File(path).delete();
+                        ViewPhotoActivity.this.setResult(Activity.RESULT_CANCELED);
+                        finish();
+                    }
+                });
+                if (!(ViewPhotoActivity.this.isFinishing())) {
+                    builder.show();
+                }
+            }
         }
     }
 

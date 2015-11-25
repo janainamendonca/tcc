@@ -1,7 +1,11 @@
 package br.furb.corpusmapping.ui.capture;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.ErrorCallback;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -23,6 +28,7 @@ import br.furb.corpusmapping.R;
 public class CameraActivity extends Activity {
 
     public static final String IMAGE_PATH = "IMAGE_PATH";
+    public static final String PREF_MOSTRAR_MSG_CAMERA = "mostrar_msg_camera";
     private Activity context;
     private CameraPreview cameraPreview;
     private Camera camera;
@@ -57,11 +63,30 @@ public class CameraActivity extends Activity {
         });
 
         path = getIntent().getStringExtra(IMAGE_PATH);
+
+        final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        boolean mostrarMsgCamera = sharedPref.getBoolean(PREF_MOSTRAR_MSG_CAMERA, true);
+        if (mostrarMsgCamera) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("1. Coloque o gabarito próximo a pinta. 2. Posicione a câmera para que a pinta fique dentro do quadrado vermelho e o gabarito dentro do verde.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(PREF_MOSTRAR_MSG_CAMERA, false);
+                    editor.commit();
+                }
+            });
+            builder.show();
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         if (camera == null) {
             camera = Camera.open();
             camera.startPreview();
@@ -81,6 +106,7 @@ public class CameraActivity extends Activity {
                         CameraInfo.CAMERA_FACING_BACK, camera);
             cameraPreview.setCamera(camera);
         }
+
     }
 
     private void setCameraDisplayOrientation(Activity activity, int cameraId,
