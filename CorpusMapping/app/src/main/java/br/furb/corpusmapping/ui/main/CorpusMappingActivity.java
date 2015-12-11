@@ -28,6 +28,11 @@ import br.furb.corpusmapping.ui.settings.SettingsActivity;
 import br.furb.corpusmapping.ui.view.ViewBodyDiagramActivity;
 import br.furb.corpusmapping.ui.view.ViewImagesActivity;
 
+/**
+ * Activity que apresenta o painel (dashboard) com as principais funcionalidades do aplicativo.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class CorpusMappingActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private DrawerLayout mDrawerLayout;

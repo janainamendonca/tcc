@@ -25,7 +25,9 @@ import android.widget.TextView;
 import org.joda.time.LocalDateTime;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import br.furb.corpusmapping.ui.main.CorpusMappingApp;
 import br.furb.corpusmapping.data.model.ImageType;
@@ -44,7 +46,11 @@ import br.furb.corpusmapping.util.ImageUtils;
 
 import static br.furb.corpusmapping.ui.view.MoleClassificationDialog.show;
 
-
+/**
+ * Activity para visualização das imagens de forma ampliada.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class MoleDetailedImageSliderActivity extends ActionBarActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_IMAGE = 1;
     public static final String PARAM_IMAGES = "images";
@@ -71,7 +77,6 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
         for(int i = 0; i < records.length;i++){
             images[i] = (ImageRecord) records[i];
         }
-        //images = (ImageRecord[]) getIntent().getSerializableExtra(PARAM_IMAGES);
         int selectedImage = getIntent().getIntExtra(PARAM_SELECTED_IMAGE, 0);
         numItems = images.length;
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
@@ -271,8 +276,9 @@ public class MoleDetailedImageSliderActivity extends ActionBarActivity implement
                     imageRecord.setPatientId(patientId);
                     ImageRecordRepository.getInstance(MoleDetailedImageSliderActivity.this).save(imageRecord);
 
-                    images = Arrays.copyOf(images, images.length + 1);
-                    images[images.length - 1] = imageRecord;
+                    List<ImageRecord> list = new ArrayList<>(Arrays.asList(images));
+                    list.add(0, imageRecord);
+                    images = list.toArray(new ImageRecord[list.size()]);
                     numItems = images.length;
                     imageFragmentPagerAdapter.notifyDataSetChanged();
                     Intent data = new Intent();

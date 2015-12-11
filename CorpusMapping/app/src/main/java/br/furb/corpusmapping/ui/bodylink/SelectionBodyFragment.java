@@ -20,6 +20,7 @@ import static br.furb.corpusmapping.ui.common.BodyImageSliderActivity.PARAM_IMAG
 
 /**
  * Fragment apresentado para o usuário selecionar a região (ponto) do tronco onde deseja associar a imagem capturada.
+ *  @author Janaina  Carraro Mendonça Lima
  */
 public class SelectionBodyFragment extends Fragment implements View.OnClickListener {
 

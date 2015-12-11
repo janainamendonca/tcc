@@ -20,6 +20,8 @@ import static br.furb.corpusmapping.ui.view.MoleImageSliderActivity.PARAM_IMAGES
 /**
  * Listener para quando uma pinta é selecionada na imagem da parte do corpo.
  * Apresenta uma activity com todas as imagens associadas a pinta selecionada.
+ *
+ * @author Janaina Carraro Mendonça Lima
  */
 public class ViewMolesTouchListener extends ImageBoundingBoxTouchListener {
 

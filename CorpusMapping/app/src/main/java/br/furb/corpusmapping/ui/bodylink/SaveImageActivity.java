@@ -27,6 +27,7 @@ import br.furb.corpusmapping.util.BoundingBox;
 
 /**
  * Activity que apresenta as regiões do corpo para o usuário escolher com qual parte do corpo ele quer associar a imagem que foi capturada.
+ * @author Janaina  Carraro Mendonça Lima
  */
 public class SaveImageActivity extends ActionBarActivity {
 

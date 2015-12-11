@@ -14,7 +14,11 @@ import android.widget.ListView;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.ui.patient.PatientsListFragment;
 
-
+/**
+ * Activity inicial do aplicativo.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class MainActivity extends ActionBarActivity  {
 
     private DrawerLayout mDrawerLayout;

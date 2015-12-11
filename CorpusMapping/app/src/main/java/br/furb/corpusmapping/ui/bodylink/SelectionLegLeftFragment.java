@@ -20,6 +20,7 @@ import static br.furb.corpusmapping.ui.common.BodyImageSliderActivity.PARAM_IMAG
 
 /**
  * Fragment apresentado para o usuário selecionar a região (ponto) da perna esquerda onde deseja associar a imagem capturada.
+ * @author Janaina Carraro Mendonça Lima
  */
 public class SelectionLegLeftFragment extends Fragment implements View.OnClickListener {
 
@@ -72,12 +73,6 @@ public class SelectionLegLeftFragment extends Fragment implements View.OnClickLi
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-       /* try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
     }
 
     @Override
@@ -111,18 +106,7 @@ public class SelectionLegLeftFragment extends Fragment implements View.OnClickLi
         getActivity().startActivityForResult(i, SelectBodyPartActivity.REQUEST_CODE);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
 

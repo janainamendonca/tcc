@@ -18,7 +18,7 @@ import br.furb.corpusmapping.data.database.PatientRepository;
 /**
  * Activity para o cadastro de pacientes
  *
- * @author Janaína Mendonça Lima
+ * @author Janaína Carraro Mendonça Lima
  */
 public class PatientFormActivity extends Activity implements View.OnClickListener {
 

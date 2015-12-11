@@ -25,7 +25,6 @@ public class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime>, J
     @Override
     public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
         String retVal = fmt.print(src);
-        Log.v("MY LOCALDATE SERIALIZED", retVal);
         return new JsonPrimitive(retVal);
     }
 
@@ -33,7 +32,6 @@ public class LocalDateTimeSerializer implements JsonSerializer<LocalDateTime>, J
     @Override
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
-        Log.v("LOCALDATE DESERIALIZED", json.getAsString());
         return fmt.parseLocalDateTime(json.getAsString());
     }
 }

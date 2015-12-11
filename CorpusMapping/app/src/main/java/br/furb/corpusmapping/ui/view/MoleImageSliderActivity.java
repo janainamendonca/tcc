@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -27,7 +28,9 @@ import org.joda.time.LocalDateTime;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import br.furb.corpusmapping.ui.main.CorpusMappingApp;
 import br.furb.corpusmapping.data.model.ImageType;
@@ -47,7 +50,11 @@ import br.furb.corpusmapping.util.ImageUtils;
 
 import static br.furb.corpusmapping.ui.view.MoleClassificationDialog.show;
 
-
+/**
+ * Activity para visualização de duas imagens lado à lado.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class MoleImageSliderActivity extends ActionBarActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_IMAGE = 1;
     private static final int REQUEST_CODE_IMAGE_SLIDER = 2;
@@ -55,7 +62,6 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
     ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     ViewPager viewPager;
     private ImageRecord[] images;
-    private int numItems;
     private MoleGroup moleGroup;
     private ImageView imgClassification;
     private ImageView imgBodyPart;
@@ -70,38 +76,11 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        images = getImages(getIntent());
-
-        numItems = images.length;
+        images = getImages(getIntent(), savedInstanceState);
 
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-
-        /*
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            boolean alteradoListener = false;
-
-            public void onPageSelected(int position) {
-                int pageCount = numItems;
-                if (position == 0 && !alteradoListener) {
-                    viewPager.setCurrentItem(pageCount - 1, false);
-                } else if (position == pageCount - 1) {
-                    // viewPager.setCurrentItem(1, false);
-                    alteradoListener = true;
-                    viewPager.setCurrentItem(0, false);
-                    alteradoListener = false;
-                }
-            }
-
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            public void onPageScrollStateChanged(int state) {
-            }
-        });*/
 
         viewPager.setAdapter(imageFragmentPagerAdapter);
 
@@ -152,7 +131,11 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
 
         @Override
         public int getCount() {
-            return numItems;
+            int count = images.length / 2;
+            if (images.length % 2 > 0) {
+                count += 1;
+            }
+            return count;
         }
 
         @Override
@@ -182,6 +165,12 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(PARAM_IMAGES, images);
     }
 
     private void takePicture() {
@@ -259,9 +248,11 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
                     imageRecord.setPatientId(patientId);
                     ImageRecordRepository.getInstance(MoleImageSliderActivity.this).save(imageRecord);
 
-                    images = Arrays.copyOf(images, images.length + 1);
-                    images[images.length - 1] = imageRecord;
-                    numItems = images.length;
+                    // images = Arrays.copyOf(images, images.length + 1);
+                    List<ImageRecord> list = new ArrayList<>(Arrays.asList(images));
+                    list.add(0, imageRecord);
+                    images = list.toArray(new ImageRecord[list.size()]);
+                    //images[images.length - 1] = imageRecord;
                     imageFragmentPagerAdapter.notifyDataSetChanged();
                 }
             });
@@ -270,29 +261,48 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
             dialog.show();
         } else if (requestCode == REQUEST_CODE_IMAGE_SLIDER && resultCode == RESULT_OK) {
             if (data != null) {
-                images = getImages(data);
-                numItems = images.length;
+                ImageRecord[] imageRecords = getImages(data);
+                images = imageRecords.length > 0 ? imageRecords : images;
                 imageFragmentPagerAdapter.notifyDataSetChanged();
             }
         }
 
     }
 
-    private ImageRecord[] getImages(Intent intent){
+    private ImageRecord[] getImages(Intent intent) {
         Object[] records = (Object[]) intent.getSerializableExtra(PARAM_IMAGES);
-        ImageRecord[] images = new ImageRecord[records.length];
 
-        for(int i = 0; i < records.length;i++){
-            images[i] = (ImageRecord) records[i];
+        if (records != null) {
+            ImageRecord[] images = new ImageRecord[records.length];
+
+            for (int i = 0; i < records.length; i++) {
+                images[i] = (ImageRecord) records[i];
+            }
+            return images;
+        }
+        return new ImageRecord[0];
+    }
+
+    private ImageRecord[] getImages(Intent intent, Bundle savedInstance) {
+        Object[] records = (Object[]) intent.getSerializableExtra(PARAM_IMAGES);
+
+        if (savedInstance != null && records == null) {
+            records = (Object[]) savedInstance.getSerializable(PARAM_IMAGES);
         }
 
-        return images;
+        if (records != null) {
+            ImageRecord[] images = new ImageRecord[records.length];
+
+            for (int i = 0; i < records.length; i++) {
+                images[i] = (ImageRecord) records[i];
+            }
+            return images;
+        }
+        return new ImageRecord[0];
     }
 
     public static class SwipeFragment extends Fragment implements View.OnClickListener {
 
-
-        private Bitmap bitmap;
 
         private ImageRecord[] images;
 
@@ -309,7 +319,7 @@ public class MoleImageSliderActivity extends ActionBarActivity implements View.O
             ImageRecord image2;
 
             if (position == images.length - 1 && images.length > 1) {
-                image2 = images[0];
+                image2 = null;
             } else {
                 image2 = (position + 1 < images.length ? images[position + 1] : null);
             }

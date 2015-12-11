@@ -35,7 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.main.CorpusMappingActivity"
             android:label="Corpus Mapping"
@@ -138,6 +137,11 @@
             android:name=".ui.template.TemplateActivity"
             android:label="@string/title_activity_gabarito" >
         </activity>
+
+        <service
+            android:name=".util.VerifyTemplateService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

@@ -33,11 +33,15 @@ import br.furb.corpusmapping.util.ImageUtils;
 import br.furb.corpusmapping.ui.view.ViewBodyDiagramActivity;
 import br.furb.corpusmapping.ui.view.ViewImagesActivity;
 
+/**
+ * Fragment que fornece o acesso ás principais funcionalidades do aplicativo.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class DashboardFragment extends Fragment implements View.OnClickListener {
 
     public static final String PARAM_PATIENT_ID = "patientId";
     private static final int REQUEST_CODE_IMAGE = 1;
-    private static final String TAG = DashboardFragment.class.getName();
     private long patientId;
     private PatientRepository repository;
     private TextView txtPatient;

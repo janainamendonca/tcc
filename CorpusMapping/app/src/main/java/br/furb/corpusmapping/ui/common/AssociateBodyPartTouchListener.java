@@ -29,6 +29,7 @@ import br.furb.corpusmapping.util.ImageDrawer;
 
 /**
  * Created by Janaina on 25/08/2015.
+ * @author Janaina Carraro Mendonça Lima
  */
 public class AssociateBodyPartTouchListener extends ImageBoundingBoxTouchListener {
 
