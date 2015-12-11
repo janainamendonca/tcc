@@ -24,6 +24,11 @@ import br.furb.corpusmapping.util.LocalExecutor;
 import br.furb.corpusmapping.util.errors.AppError;
 import br.furb.corpusmapping.util.errors.ImportError;
 
+/**
+ * Activity para importação dos dados de backup.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class ImportActivity extends BaseActivity {
     private static final String EXTRA_IMPORT_TYPE = "EXTRA_IMPORT_TYPE";
     private static final String EXTRA_SOURCE = "EXTRA_SOURCE";

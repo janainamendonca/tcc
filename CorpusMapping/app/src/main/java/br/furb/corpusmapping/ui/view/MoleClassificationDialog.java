@@ -13,6 +13,8 @@ import br.furb.corpusmapping.data.database.MoleGroupRepository;
 
 /**
  * Diálogo para selecionar a classificação de uma pinta (norma, atenção, perigo)
+ *
+ * @author Janaina Carraro Mendonça Lima
  */
 public class MoleClassificationDialog {
 

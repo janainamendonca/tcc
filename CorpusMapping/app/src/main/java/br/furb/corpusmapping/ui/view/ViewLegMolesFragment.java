@@ -21,6 +21,8 @@ import static br.furb.corpusmapping.ui.common.BodyImageSliderActivity.PARAM_IMAG
 
 /**
  * Fragment para visualização das pintas das pernas e pés. Permite escolher entre o lado direito e esquerdo
+ *
+ * @author Janaina Carraro Mendonça Lima
  */
 public class ViewLegMolesFragment extends Fragment implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 

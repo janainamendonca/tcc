@@ -26,6 +26,11 @@ import br.furb.corpusmapping.util.BodyImagesUtil;
 import br.furb.corpusmapping.util.ImageDrawer;
 import br.furb.corpusmapping.ui.view.ViewMolesTouchListener;
 
+/**
+ * Activity para navegação pelas partes do corpo.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class BodyImageSliderActivity extends FragmentActivity {
 
     public static final String PARAM_IMAGES = "images";
@@ -47,7 +52,7 @@ public class BodyImageSliderActivity extends FragmentActivity {
         images = getIntent().getIntArrayExtra(PARAM_IMAGES);
         bodyParts = getIntent().getStringArrayExtra(PARAM_BODY_PARTS);
         isToAssociate = getIntent().getBooleanExtra(PARAM_IS_TO_ASSOCIATE, true);
-        int current = getIntent().getIntExtra(PARAM_CURRENT,0);
+        int current = getIntent().getIntExtra(PARAM_CURRENT, 0);
         numItems = images.length;
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -105,7 +110,7 @@ public class BodyImageSliderActivity extends FragmentActivity {
                 listener.setMoveEnabled(false);
                 listener.setZoomEnabled(false);
                 imageView.setOnTouchListener(listener);
-            }else{
+            } else {
                 ViewMolesTouchListener listener = new ViewMolesTouchListener(getActivity(), resource, bodyParts[position], bitmap, BodyImagesUtil.getBoundingBoxForImage(resource));
                 listener.setMoveEnabled(false);
                 listener.setZoomEnabled(false);

@@ -33,7 +33,7 @@ import br.furb.corpusmapping.data.model.Patient;
 public class ImageUtils {
 
     private static final String TAG = "ImageUtils";
-    public static final int EXTERNAL_SQUARE_SIZE = 256;
+    public static final int EXTERNAL_SQUARE_SIZE = 192;// 256;
     public static final int INTERNAL_SQUARE_SIZE = 96;
 
     /**

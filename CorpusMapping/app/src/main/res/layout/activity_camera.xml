@@ -16,7 +16,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
-        <RelativeLayout
+      <!--  <RelativeLayout
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center">
@@ -53,11 +53,11 @@
                 android:background="@android:color/holo_red_dark"
                 android:paddingTop="8dp" />
 
-        </RelativeLayout>
+        </RelativeLayout> -->
 
         <RelativeLayout
-            android:layout_width="256dp"
-            android:layout_height="256dp"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
             android:layout_gravity="center">
 
             <View
@@ -65,7 +65,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_height="1dp"
                 android:layout_span="3"
-                android:background="@android:color/holo_green_dark"
+                android:background="@android:color/holo_red_dark"
                 android:paddingTop="8dp" />
 
             <View
@@ -73,7 +73,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_height="1dp"
                 android:layout_span="3"
-                android:background="@android:color/holo_green_dark"
+                android:background="@android:color/holo_red_dark"
                 android:paddingTop="8dp" />
 
             <View
@@ -81,7 +81,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_height="match_parent"
                 android:layout_span="3"
-                android:background="@android:color/holo_green_dark"
+                android:background="@android:color/holo_red_dark"
                 android:paddingTop="8dp" />
 
             <View
@@ -89,7 +89,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_height="match_parent"
                 android:layout_span="3"
-                android:background="@android:color/holo_green_dark"
+                android:background="@android:color/holo_red_dark"
                 android:paddingTop="8dp" />
 
         </RelativeLayout>

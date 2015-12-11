@@ -18,6 +18,8 @@ import static br.furb.corpusmapping.ui.common.BodyImageSliderActivity.PARAM_IMAG
 
 /**
  * Fragment para visualização das pintas do tronco
+ *
+ * @author Janaina Carraro Mendonça Lima
  */
 public class ViewBodyMolesFragment extends Fragment implements View.OnClickListener {
 

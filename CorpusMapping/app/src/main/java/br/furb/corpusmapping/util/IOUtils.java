@@ -29,21 +29,6 @@ public class IOUtils {
         }
     }
 
-   /* public static JsonObject readJsonObject(Response response) throws IOException {
-        InputStream in = response.getBody().in();
-        JsonObject json = IOUtils.toJsonObject(in);
-        IOUtils.closeQuietly(in);
-
-        return json;
-    }
-
-    public static JsonArray readJsonArray(Response response) throws IOException {
-        InputStream in = response.getBody().in();
-        JsonArray json = IOUtils.toJsonArray(in);
-        IOUtils.closeQuietly(in);
-
-        return json;
-    }*/
 
     public static JsonObject toJsonObject(InputStream in) {
         InputStreamReader reader = new InputStreamReader(in);

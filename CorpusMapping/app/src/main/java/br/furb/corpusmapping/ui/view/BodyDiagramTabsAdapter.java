@@ -14,15 +14,11 @@ import br.furb.corpusmapping.R;
  * Created by Janaina on 26/09/2015.
  */
 public class BodyDiagramTabsAdapter extends FragmentPagerAdapter {
-    String[] titulosAbas;
-    TypedArray bgColors;
-    TypedArray textColors;
+   private String[] titulosAbas;
 
     public BodyDiagramTabsAdapter(Context ctx, FragmentManager fm) {
         super(fm);
         titulosAbas = ctx.getResources().getStringArray(R.array.bodyParts);
-        // bgColors = ctx.getResources().obtainTypedArray(R.array.cores_bg);
-        //textColors = ctx.getResources().obtainTypedArray(R.array.cores_texto);
     }
 
     @Override

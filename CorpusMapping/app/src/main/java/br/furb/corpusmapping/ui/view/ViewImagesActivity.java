@@ -20,6 +20,8 @@ import br.furb.corpusmapping.data.database.ImageRecordRepository;
 /**
  * Activity para visualização das última imagem de cada pinta.
  * As imagens são apresentadas em forma de uma lista (uma imagem abaixo da outra).
+ *
+ * @author Janaina Carraro Mendonça Lima
  */
 public class ViewImagesActivity extends ActionBarActivity {
     Map<Long, List<ImageRecord>> moleImages;

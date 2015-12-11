@@ -25,6 +25,10 @@ import java.io.IOException;
 
 import br.furb.corpusmapping.R;
 
+/**
+ * Activity que abre a câmera e renderiza o preview da mesma com um quadrado vermelho, representando a região de interesse.
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class CameraActivity extends Activity {
 
     public static final String IMAGE_PATH = "IMAGE_PATH";
@@ -68,7 +72,7 @@ public class CameraActivity extends Activity {
         boolean mostrarMsgCamera = sharedPref.getBoolean(PREF_MOSTRAR_MSG_CAMERA, true);
         if (mostrarMsgCamera) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("1. Coloque o gabarito próximo a pinta. 2. Posicione a câmera para que a pinta fique dentro do quadrado vermelho e o gabarito dentro do verde.");
+            builder.setMessage("1. Coloque o gabarito próximo a pinta. 2. Posicione a câmera para que a pinta fique dentro do quadrado vermelho.");
             builder.setCancelable(true);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override

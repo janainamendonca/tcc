@@ -24,6 +24,11 @@ import br.furb.corpusmapping.util.LocalExecutor;
 import br.furb.corpusmapping.util.errors.AppError;
 import br.furb.corpusmapping.util.errors.ExportError;
 
+/**
+ * Activity para exportação dos dados de backup.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class ExportActivity extends BaseActivity {
 
     private static final int REQUEST_DRIVE_DIRECTORY = 2;
@@ -122,24 +127,24 @@ public class ExportActivity extends BaseActivity {
     }
 
     @Subscribe
-public void onGoogleApiClientConnected(GoogleApiConnection connection) {
-    if (isDirectoryRequested || !connection.contains(UNIQUE_GOOGLE_API_ID)) {
-        return;
-    }
+    public void onGoogleApiClientConnected(GoogleApiConnection connection) {
+        if (isDirectoryRequested || !connection.contains(UNIQUE_GOOGLE_API_ID)) {
+            return;
+        }
 
-    googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
-    final IntentSender intentSender = Drive.DriveApi
-            .newOpenFileActivityBuilder()
-            .setMimeType(new String[]{"application/vnd.google-apps.folder"})
-            .build(googleApiClient);
+        googleApiClient = connection.get(UNIQUE_GOOGLE_API_ID);
+        final IntentSender intentSender = Drive.DriveApi
+                .newOpenFileActivityBuilder()
+                .setMimeType(new String[]{"application/vnd.google-apps.folder"})
+                .build(googleApiClient);
 
-    try {
-        startIntentSenderForResult(intentSender, REQUEST_DRIVE_DIRECTORY, null, 0, 0, 0);
-        isDirectoryRequested = true;
-    } catch (IntentSender.SendIntentException e) {
-        throw new ExportError("Unable to show Google Drive.", e);
+        try {
+            startIntentSenderForResult(intentSender, REQUEST_DRIVE_DIRECTORY, null, 0, 0, 0);
+            isDirectoryRequested = true;
+        } catch (IntentSender.SendIntentException e) {
+            throw new ExportError("Unable to show Google Drive.", e);
+        }
     }
-}
 
     private void onDriveDirectorySelected(DriveId driveId) {
         exportData(new DriveDataExporterRunnable(googleApiClient, driveId, this, getEventBus(), getFileTitle()));

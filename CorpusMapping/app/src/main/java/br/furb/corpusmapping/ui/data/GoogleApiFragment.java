@@ -14,6 +14,9 @@ import com.google.android.gms.drive.Drive;
 
 import br.furb.corpusmapping.util.EventBus;
 
+/**
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class GoogleApiFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String ARG_UNIQUE_CLIENT_ID = "ARG_UNIQUE_CLIENT_ID";
     private static final String ARG_USE_DRIVE = "ARG_USE_DRIVE";

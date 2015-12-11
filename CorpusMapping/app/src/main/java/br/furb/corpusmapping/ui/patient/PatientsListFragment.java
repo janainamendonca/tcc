@@ -29,6 +29,11 @@ import br.furb.corpusmapping.data.model.Patient;
 import br.furb.corpusmapping.data.database.PatientRepository;
 import br.furb.corpusmapping.util.ImageUtils;
 
+/**
+ * Fragment utilizado para listagem dos pacientes cadastrados.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class PatientsListFragment extends Fragment implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
 

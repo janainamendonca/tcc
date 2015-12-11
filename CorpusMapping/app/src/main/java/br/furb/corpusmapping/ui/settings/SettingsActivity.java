@@ -14,6 +14,12 @@ import br.furb.corpusmapping.ui.template.TemplateActivity;
 import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.ui.data.DataActivity;
 
+/**
+ * Activity de configurações do aplicativo.
+ * Obs.: não está sendo utilizada.
+ *
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class SettingsActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private SettingsAdapter adapter;

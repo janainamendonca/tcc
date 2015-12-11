@@ -31,7 +31,10 @@ import br.furb.corpusmapping.R;
 import br.furb.corpusmapping.util.ImageUtils;
 import br.furb.corpusmapping.util.VerifyTemplateService;
 
-
+/**
+ * Activity para o usuário visualizar a imagem após a captura.
+ * @author Janaina Carraro Mendonça Lima
+ */
 public class ViewPhotoActivity extends Activity implements View.OnClickListener {
     public static final String IMAGE_PATH = "IMAGE_PATH";
     private static final String TAG = ViewPhotoActivity.class.getSimpleName();
@@ -91,10 +94,10 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener 
         } else {
             Toast.makeText(this, "Gabarito não detectado!", Toast.LENGTH_LONG).show();
         }*/
-
-        btOk.setVisibility(View.INVISIBLE);
-        btCancel.setVisibility(View.INVISIBLE);
-        verifyTemplate();
+        txtMsgWait.setVisibility(View.INVISIBLE);
+        // btOk.setVisibility(View.INVISIBLE);
+        //  btCancel.setVisibility(View.INVISIBLE);
+        //   verifyTemplate();
     }
 
     private void verifyTemplate() {

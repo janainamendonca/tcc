@@ -19,11 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p/>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
+ * Service que verifica a presença do gabarito preenchido.
+ * Obs.: nao está sendo utilizado porque não é mais realizada a verificação.
+ *
+ * @author Janaina Carraro Mendonça Lima
  */
 public class VerifyTemplateService extends IntentService {
     private static final String IMAGE_PATH = "image_path";
@@ -58,24 +57,14 @@ public class VerifyTemplateService extends IntentService {
             int screenWidth = intent.getIntExtra(SCREEN_WIDTH, 0);
             boolean found = foundTemplate(imagePath, dpi, screenHeight, screenWidth);
 
-               /*
-     * Creates a new Intent containing a Uri object
-     * BROADCAST_ACTION is a custom Intent action
-     */
             Intent localIntent =
                     new Intent(RESULT_ACTION)
-                            // Puts the status into the Intent
                             .putExtra(RESULT_STATUS, found);
-            // Broadcasts the Intent to receivers in this app.
             LocalBroadcastManager.getInstance(this).sendBroadcast(localIntent);
 
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
     private boolean foundTemplate(String imagePath, float dpi, int screenHeight, int screenWidth) {
         Bitmap image = ImageUtils.decodeSampledBitmapFromResource(this, Uri.fromFile(new File(imagePath)), 300, 300);
         image = ImageUtils.toGrayscale(image);
@@ -107,19 +96,10 @@ public class VerifyTemplateService extends IntentService {
 
         //**********/
 
-        //
-       /* BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = true;
-        Bitmap imageBinary = BitmapFactory.decodeFile(f.getPath(), options);
-        imageBinary.isMutable();
-*/
-        //
-
         BoundingBox bbox = new BoundingBox(x1, y1, x1 + width1, y1 + height1);
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                // imageBinary.setPixel(x, y, Color.WHITE);
                 if (!bbox.isInner(x, y)) {
                     int color = image.getPixel(x, y);
                     int red = Color.red(color);
@@ -132,36 +112,10 @@ public class VerifyTemplateService extends IntentService {
                         points.add(point);
                         matrixBinary[x][y] = 1;
                         //
-                        //imageBinary.setPixel(x, y, Color.BLACK);
                     }
                 }
             }
         }
-
-/*
-//////////////
-        //Salva a imagem na binarizada.
-        outputStream = null;
-        try {
-            Bitmap.CompressFormat outputFormat =
-                    Bitmap.CompressFormat.JPEG;
-            File gray = new File(getAppRootDir(), "black");
-            gray.mkdirs();
-            f = new File(gray, f.getName());
-            Uri uri = Uri.fromFile(f);
-            outputStream = context.getContentResolver().openOutputStream(uri);
-            if (outputStream != null) {
-                imageBinary.compress(outputFormat, 100, outputStream);
-            }
-        } catch (IOException ex) {
-        } finally {
-            try {
-                if (outputStream != null) outputStream.close();
-            } catch (IOException e) {
-            }
-        }
-
-        //////////////*/
 
 
         int totalSize = width * height;
@@ -182,7 +136,6 @@ public class VerifyTemplateService extends IntentService {
         for (int i = 0; i < matrixBinary.length - templateSize; i++) {
             for (int j = 0; j < matrixBinary[i].length - templateSize; j++) {
                 found = false;
-                int blackCount = 0;
                 int blackCount1 = 0;
                 int blackCount2 = 0;
                 int blackCount3 = 0;
